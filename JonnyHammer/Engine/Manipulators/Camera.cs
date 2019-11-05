@@ -6,7 +6,7 @@ namespace JonnyHamer.Engine.Manipulators
 {
     public static class Camera
     {
-        private static Vector3 position;
+        private static Vector3 position = Vector3.Zero;
 
         public static Matrix ViewMatrix { get; set; }
         public static int AreaWidth { get; set; }

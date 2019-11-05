@@ -5,15 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JonnyHammer.Engine.Scenes;
+using JonnyHamer.Engine.Manipulators;
 
 namespace JonnyHamer.Engine.Helpers
 {
     public class SceneManager
     {
-        private static int elapsedTime;
-        private static bool isWaiting;
-        private static int waitingTime;
-        private static Action onStopWaiting;
         private static Dictionary<string, Scene> scenes = new Dictionary<string, Scene>();
 
         public static Scene CurrentScene { get; set; }
@@ -52,44 +49,16 @@ namespace JonnyHamer.Engine.Helpers
             onSceneChanged?.Invoke();
         }
 
-        public static void Wait(int milliseconds, Action onStopWaiting = null)
-        {
-            isWaiting = true;
-            elapsedTime = 0;
-            waitingTime = milliseconds;
-            SceneManager.onStopWaiting = onStopWaiting;
-        }
-
-        private static void StopWaiting()
-        {
-            isWaiting = false;
-            elapsedTime = 0;
-            waitingTime = 0;
-            onStopWaiting?.Invoke();
-        }
-
         public static void Update(GameTime gameTime)
         {
+            Camera.Update();
             SoundTrack.Update(gameTime);
-
-            if (isWaiting)
-            {
-                elapsedTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
-
-                if (elapsedTime < waitingTime)
-                    return;
-                else
-                    StopWaiting();
-
-                if (isWaiting)
-                    return;
-            }
-
-            CurrentScene.Update(gameTime);
+            CurrentScene?.Update(gameTime);
         }
+
         public static void Draw(SpriteBatch spriteBatch)
         {
-            CurrentScene.Draw(spriteBatch);
+            CurrentScene?.Draw(spriteBatch);
         }
     }
 }

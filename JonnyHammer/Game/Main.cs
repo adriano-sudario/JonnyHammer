@@ -1,21 +1,15 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+﻿using JonnyHammer.Engine;
+using Microsoft.Xna.Framework;
 
 namespace JonnyHammer
 {
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Main : Game
+    public class Main : Core
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        
         public Main()
         {
-            graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
         }
 
         /// <summary>
@@ -26,8 +20,6 @@ namespace JonnyHammer
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
         }
 
@@ -37,10 +29,7 @@ namespace JonnyHammer
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
+            base.LoadContent();
         }
 
         /// <summary>
@@ -49,7 +38,7 @@ namespace JonnyHammer
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+            base.UnloadContent();
         }
 
         /// <summary>
@@ -59,11 +48,6 @@ namespace JonnyHammer
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            // TODO: Add your update logic here
-
             base.Update(gameTime);
         }
 
@@ -73,10 +57,6 @@ namespace JonnyHammer
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.LightGreen);
-
-            // TODO: Add your drawing code here
-
             base.Draw(gameTime);
         }
     }
