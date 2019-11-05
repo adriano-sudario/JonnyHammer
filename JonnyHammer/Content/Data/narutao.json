@@ -1,0 +1,108 @@
+{ "frames": {
+   "narutao 0.aseprite": {
+    "frame": { "x": 0, "y": 0, "w": 58, "h": 63 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 58, "h": 63 },
+    "sourceSize": { "w": 58, "h": 63 },
+    "duration": 100
+   },
+   "narutao 1.aseprite": {
+    "frame": { "x": 58, "y": 0, "w": 58, "h": 63 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 58, "h": 63 },
+    "sourceSize": { "w": 58, "h": 63 },
+    "duration": 100
+   },
+   "narutao 2.aseprite": {
+    "frame": { "x": 116, "y": 0, "w": 58, "h": 63 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 58, "h": 63 },
+    "sourceSize": { "w": 58, "h": 63 },
+    "duration": 100
+   },
+   "narutao 3.aseprite": {
+    "frame": { "x": 174, "y": 0, "w": 58, "h": 63 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 58, "h": 63 },
+    "sourceSize": { "w": 58, "h": 63 },
+    "duration": 100
+   },
+   "narutao 4.aseprite": {
+    "frame": { "x": 232, "y": 0, "w": 58, "h": 63 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 58, "h": 63 },
+    "sourceSize": { "w": 58, "h": 63 },
+    "duration": 100
+   },
+   "narutao 5.aseprite": {
+    "frame": { "x": 290, "y": 0, "w": 58, "h": 63 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 58, "h": 63 },
+    "sourceSize": { "w": 58, "h": 63 },
+    "duration": 100
+   },
+   "narutao 6.aseprite": {
+    "frame": { "x": 348, "y": 0, "w": 58, "h": 63 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 58, "h": 63 },
+    "sourceSize": { "w": 58, "h": 63 },
+    "duration": 100
+   },
+   "narutao 7.aseprite": {
+    "frame": { "x": 406, "y": 0, "w": 58, "h": 63 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 58, "h": 63 },
+    "sourceSize": { "w": 58, "h": 63 },
+    "duration": 100
+   },
+   "narutao 8.aseprite": {
+    "frame": { "x": 464, "y": 0, "w": 58, "h": 63 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 58, "h": 63 },
+    "sourceSize": { "w": 58, "h": 63 },
+    "duration": 100
+   },
+   "narutao 9.aseprite": {
+    "frame": { "x": 522, "y": 0, "w": 58, "h": 63 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 58, "h": 63 },
+    "sourceSize": { "w": 58, "h": 63 },
+    "duration": 100
+   },
+   "narutao 10.aseprite": {
+    "frame": { "x": 580, "y": 0, "w": 58, "h": 63 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 58, "h": 63 },
+    "sourceSize": { "w": 58, "h": 63 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.15-x64",
+  "image": "narutao.png",
+  "format": "RGBA8888",
+  "size": { "w": 638, "h": 63 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "Running", "from": 0, "to": 3, "direction": "forward" },
+   { "name": "Idle", "from": 4, "to": 10, "direction": "forward" }
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}
