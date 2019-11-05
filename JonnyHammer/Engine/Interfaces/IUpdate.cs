@@ -4,6 +4,6 @@ namespace JonnyHammer.Engine.Interfaces
 {
     public interface IUpdate
     {
-        public abstract void Update(GameTime gameTime);
+        public void Update(GameTime gameTime);
     }
 }

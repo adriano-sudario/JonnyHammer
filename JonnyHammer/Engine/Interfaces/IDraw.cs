@@ -4,6 +4,6 @@ namespace JonnyHammer.Engine.Interfaces
 {
     public interface IDraw
     {
-        public abstract void Draw(SpriteBatch spriteBatch);
+        public void Draw(SpriteBatch spriteBatch);
     }
 }

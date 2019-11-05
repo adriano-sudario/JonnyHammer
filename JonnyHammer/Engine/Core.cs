@@ -5,7 +5,7 @@ using System;
 
 namespace JonnyHammer.Engine
 {
-    public class Core : Game
+    public class Core : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -39,14 +39,14 @@ namespace JonnyHammer.Engine
         {
             base.Initialize();
             Quit = Exit;
-            Loader.Initialize(Content);
-            Screen.Initialize(graphics, GraphicsDevice);
-            IsFullScreen = isFullScreen;
         }
 
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            Loader.Initialize(Content);
+            Screen.Initialize(graphics, GraphicsDevice);
+            IsFullScreen = isFullScreen;
         }
 
         protected override void UnloadContent() { }

@@ -1,4 +1,6 @@
-﻿using JonnyHammer.Engine;
+﻿using JonnyHamer.Engine.Helpers;
+using JonnyHammer.Engine;
+using JonnyHammer.Game.Scenes;
 using Microsoft.Xna.Framework;
 
 namespace JonnyHammer
@@ -30,6 +32,8 @@ namespace JonnyHammer
         protected override void LoadContent()
         {
             base.LoadContent();
+
+            SceneManager.AddScene("nujustu_scene", new Nujutsu());
         }
 
         /// <summary>
