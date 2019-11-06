@@ -26,8 +26,9 @@ namespace JonnyHamer.Engine.Manipulators
 
         public static void Update(Entity body)
         {
-            var spriteSource = (body.GetComponent<SpriteComponent>()?.Origin ?? Vector2.Zero) * (body.Scale * Screen.Scale);
-            AdjustPosition(body.Position - spriteSource, body.Width, body.Height);
+            var sprite = body.GetComponent<SpriteComponent>();
+            var spriteSource = (sprite?.Origin ?? Vector2.Zero) * (body.Scale * Screen.Scale);
+            AdjustPosition(body.Position - spriteSource, sprite.Width, sprite.Height);
             Update();
         }
 

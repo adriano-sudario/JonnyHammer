@@ -1,9 +1,11 @@
 ﻿using JonnyHamer.Engine.Entities;
 using JonnyHamer.Engine.Entities.Sprites;
 using JonnyHamer.Engine.Helpers;
+using JonnyHamer.Engine.Inputs;
 using JonnyHammer.Engine;
 using JonnyHammer.Engine.Helpers;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace JonnyHammer.Game.Characters
 {
@@ -11,13 +13,15 @@ namespace JonnyHammer.Game.Characters
     {
         float speed = 3f;
         MoveComponent move;
+        KeyboardInput keyboard;
 
-        public AnimatedSpriteComponent Animation { get; private set; }
+        AnimatedSpriteComponent animations;
 
         public BigNaruto(Vector2 position) : base(position)
         {
+            keyboard = new KeyboardInput();
             move = AddComponent<MoveComponent>();
-            Animation = AddComponent(CreateNarutaoAnimations());
+            animations = AddComponent(CreateNarutaoAnimations());
         }
 
         static AnimatedSpriteComponent CreateNarutaoAnimations()
@@ -28,9 +32,23 @@ namespace JonnyHammer.Game.Characters
             return new AnimatedSpriteComponent(spriteSheet, animationFrames);
         }
 
+        public override void Update(GameTime gameTime)
+        {
+            keyboard.Update();
+
+            if (keyboard.IsPressing(Keys.Right))
+                Run(Direction.Horizontal.Right);
+            else if (keyboard.IsPressing(Keys.Left))
+                Run(Direction.Horizontal.Left);
+            else
+                animations.Change("Idle");
+
+            base.Update(gameTime);
+        }
+
         public void Run(Direction.Horizontal direction)
         {
-            Animation.Change("Running");
+            animations.Change("Running");
             move.MoveAndSlide(new Vector2(
                 direction == Direction.Horizontal.Left ? -speed : speed, 0));
         }

@@ -9,6 +9,7 @@ namespace JonnyHamer.Engine.Entities.Sprites
     public class SpriteComponent : Component
     {
         private Texture2D spriteStrip;
+        public bool IsVisible { get; set; }
 
         public virtual Rectangle Source { get; set; }
         public virtual int SpriteWidth => spriteStrip.Width;
@@ -21,6 +22,9 @@ namespace JonnyHamer.Engine.Entities.Sprites
         public Color Color { get; set; } = Color.White;
         public float LayerDepth { get; set; }
 
+        public int Width => (int)(SpriteWidth * (Scale * Screen.Scale));
+        public int Height => (int)(SpriteHeight * (Scale * Screen.Scale));
+
         public SpriteComponent(Texture2D spriteStrip, Rectangle source = default, float opacity = 1f, Vector2 origin = default, float rotation = 0)
         {
             this.spriteStrip = spriteStrip;
@@ -28,6 +32,7 @@ namespace JonnyHamer.Engine.Entities.Sprites
             Opacity = opacity;
             Origin = origin;
             Rotation = rotation;
+            IsVisible = true;
         }
 
 
@@ -39,6 +44,9 @@ namespace JonnyHamer.Engine.Entities.Sprites
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+
+            if (!IsVisible) return;
+
             var effect = FacingDirection == Direction.Horizontal.Left ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             spriteBatch.Draw(spriteStrip, SpritePosition, Source, Color * Opacity, Rotation, Origin, SpriteScale * Screen.Scale, effect, LayerDepth);
         }

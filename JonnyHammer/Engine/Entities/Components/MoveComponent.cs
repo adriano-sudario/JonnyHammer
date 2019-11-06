@@ -30,8 +30,8 @@ namespace JonnyHammer.Engine
 
             if (keepOnScreenBounds)
             {
-                position.X = MathHelper.Clamp(position.X, 0, Camera.AreaWidth - Width);
-                position.Y = MathHelper.Clamp(position.Y, 0, Camera.AreaHeight - Height);
+                position.X = MathHelper.Clamp(position.X, 0, Camera.AreaWidth - Sprite.Width);
+                position.Y = MathHelper.Clamp(position.Y, 0, Camera.AreaHeight - Sprite.Height);
             }
 
             Position = position;
@@ -66,7 +66,7 @@ namespace JonnyHammer.Engine
         public void SetOrigin(float origin, bool keepInPlace = true)
         {
             float totalScale = (Scale * Screen.Scale);
-            Vector2 updatedOrigin = origin == 0 ? Vector2.Zero : new Vector2((Width * origin) / totalScale, (Height * origin) / totalScale);
+            Vector2 updatedOrigin = origin == 0 ? Vector2.Zero : new Vector2((Sprite.Width * origin) / totalScale, (Sprite.Height * origin) / totalScale);
 
             if (keepInPlace)
                 MoveAndSlide((updatedOrigin * totalScale) - (Sprite.Origin * totalScale), false);
@@ -80,7 +80,7 @@ namespace JonnyHammer.Engine
                 return;
 
             float totalScale = (Scale * Screen.Scale);
-            Sprite.Origin = new Vector2((Width * origin.X) / totalScale, (Height * origin.Y) / totalScale) * -1;
+            Sprite.Origin = new Vector2((Sprite.Width * origin.X) / totalScale, (Sprite.Height * origin.Y) / totalScale) * -1;
 
             if (keepInPlace)
                 MoveAndSlide(Sprite.Origin * totalScale);

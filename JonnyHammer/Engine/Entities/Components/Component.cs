@@ -16,9 +16,7 @@ namespace JonnyHammer.Engine
 
         public Vector2 Position { get => Entity.Position; set => Entity.Position = value; }
         public Direction.Horizontal FacingDirection { get => Entity.FacingDirection; set => Entity.FacingDirection = value; }
-        public int Width => Entity.Width;
         public float Scale { get => Entity.Scale; set => Entity.Scale = value; }
-        public int Height => Entity.Height;
 
         public virtual void Draw(SpriteBatch spriteBatch) { }
 
@@ -27,5 +25,8 @@ namespace JonnyHammer.Engine
         public virtual void Start() { }
 
         public virtual void Update(GameTime gameTime) { }
+        public T GetComponent<T>() where T : IComponent => Entity.GetComponent<T>();
+        public T[] GetComponents<T>() where T : IComponent => Entity.GetComponents<T>();
+
     }
 }
