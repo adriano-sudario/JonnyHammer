@@ -115,51 +115,35 @@ namespace JonnyHamer.Engine.Entities
             for (var i = 0; i < coroutines.Count; i++)
             {
                 var task = coroutines[i];
-
-                if (task.WaitTime > TimeSpan.Zero)
-                {
-                    task.WaitTime -= gameTime.ElapsedGameTime;
-                    continue;
-                }
-                task.WaitTime = TimeSpan.Zero;
-
-                if (task.WaitFrames > 0)
-                {
-                    task.WaitFrames--;
-                    continue;
-                }
-                task.WaitFrames = 0;
-
-                task.WaitTime = TimeSpan.Zero;
-                var hasJob = task.Routine.MoveNext();
-
-                if (!hasJob)
+                if (task.Done)
                 {
                     coroutines.Remove(task);
                     continue;
                 }
 
-                switch (task.Routine.Current)
-                {
-                    case TimeSpan t:
-                        task.WaitTime = t;
-                        break;
-
-                    case int n:
-                        task.WaitFrames = n;
-                        break;
-                    case null:
-                    default:
-                        continue;
-                }
-
+                task.Update(gameTime);
             }
         }
 
-        public void StartCoroutine(IEnumerator coroutine, TimeSpan? wait = null) => coroutines.Add(new CoroutineTask(coroutine, wait ?? TimeSpan.Zero));
-        public void StartCoroutine(IEnumerator coroutine, int waitFrames) => coroutines.Add(new CoroutineTask(coroutine, TimeSpan.Zero, waitFrames));
-        public void StopCoroutines() => coroutines.Clear();
+        public void StartCoroutine(IEnumerator coroutine)
+        {
+            var c = new CoroutineTask(coroutine, null);
+            coroutines.Add(c);
+        }
 
+        public void StartCoroutine(IEnumerator coroutine, TimeSpan wait)
+        {
+            var c = new CoroutineTask(coroutine, new WaitTime(wait));
+            coroutines.Add(c);
+        }
+
+        public void StartCoroutine(IEnumerator coroutine, int numberOfFrames)
+        {
+            var c = new CoroutineTask(coroutine, new WaitFrames(numberOfFrames));
+            coroutines.Add(c);
+        }
+
+        public void StopCoroutines() => coroutines.Clear();
         public void Invoke(Action action, TimeSpan waitFor) => StartCoroutine(waitAndRun(action, waitFor));
         IEnumerator waitAndRun(Action action, TimeSpan time)
         {

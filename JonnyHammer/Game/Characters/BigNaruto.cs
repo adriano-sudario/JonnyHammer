@@ -14,6 +14,8 @@ namespace JonnyHammer.Game.Characters
     public class BigNaruto : Entity
     {
         float speed = 3f;
+        bool couldBlink = false;
+
         KeyboardInput keyboard;
 
         MoveComponent move;
@@ -28,7 +30,7 @@ namespace JonnyHammer.Game.Characters
 
 
             StartCoroutine(ScaleNaruto());
-            StartCoroutine(Blinknaruto());
+            StartCoroutine(BlinkNaruto());
 
         }
 
@@ -48,11 +50,13 @@ namespace JonnyHammer.Game.Characters
                 Scale -= 0.01f;
                 yield return null;
             }
+
+            couldBlink = true;
         }
 
-        IEnumerator Blinknaruto()
+        IEnumerator BlinkNaruto()
         {
-            yield return TimeSpan.FromSeconds(10);
+            yield return new WaitUntil(() => couldBlink);
 
             for (var i = 0; i < 30; i++)
             {
