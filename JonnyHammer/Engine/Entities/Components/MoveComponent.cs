@@ -14,7 +14,7 @@ namespace JonnyHammer.Engine
 
         public override void Start()
         {
-            Sprite = Entity.GetComponent<SpriteComponent>();
+            Sprite = GetComponent<SpriteComponent>();
             MoveTo(Position);
         }
 

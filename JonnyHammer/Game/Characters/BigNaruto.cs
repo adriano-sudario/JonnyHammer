@@ -28,16 +28,19 @@ namespace JonnyHammer.Game.Characters
 
 
             StartCoroutine(ScaleNaruto());
+            StartCoroutine(Blinknaruto());
+
         }
 
         IEnumerator ScaleNaruto()
         {
-            yield return TimeSpan.FromSeconds(2);
+            yield return TimeSpan.FromSeconds(3); // wait 3 seconds
 
             while (Scale < 3)
             {
                 Scale += 0.01f;
-                yield return null;
+                yield return null; // wait 1 frame
+
             }
 
             while (Scale > 1)
@@ -47,6 +50,18 @@ namespace JonnyHammer.Game.Characters
             }
         }
 
+        IEnumerator Blinknaruto()
+        {
+            yield return TimeSpan.FromSeconds(10);
+
+            for (var i = 0; i < 30; i++)
+            {
+                animations.IsVisible = !animations.IsVisible;
+                yield return 5; // wait 5 frames
+            }
+
+            animations.IsVisible = true;
+        }
         AnimatedSpriteComponent CreateNarutaoAnimations()
         {
             var spriteSheet = Loader.LoadTexture("narutao");

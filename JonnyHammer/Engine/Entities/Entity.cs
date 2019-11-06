@@ -123,6 +123,14 @@ namespace JonnyHamer.Engine.Entities
                 }
                 task.WaitTime = TimeSpan.Zero;
 
+                if (task.WaitFrames > 0)
+                {
+                    task.WaitFrames--;
+                    continue;
+                }
+                task.WaitFrames = 0;
+
+                task.WaitTime = TimeSpan.Zero;
                 var hasJob = task.Routine.MoveNext();
 
                 if (!hasJob)
@@ -137,6 +145,9 @@ namespace JonnyHamer.Engine.Entities
                         task.WaitTime = t;
                         break;
 
+                    case int n:
+                        task.WaitFrames = n;
+                        break;
                     case null:
                     default:
                         continue;
@@ -146,6 +157,7 @@ namespace JonnyHamer.Engine.Entities
         }
 
         public void StartCoroutine(IEnumerator coroutine, TimeSpan? wait = null) => coroutines.Add(new CoroutineTask(coroutine, wait ?? TimeSpan.Zero));
+        public void StartCoroutine(IEnumerator coroutine, int waitFrames) => coroutines.Add(new CoroutineTask(coroutine, TimeSpan.Zero, waitFrames));
         public void StopCoroutines() => coroutines.Clear();
 
         public void Invoke(Action action, TimeSpan waitFor) => StartCoroutine(waitAndRun(action, waitFor));
