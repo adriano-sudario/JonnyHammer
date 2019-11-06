@@ -23,7 +23,7 @@ namespace JonnyHamer.Engine.Entities.Sprites
     public class AnimatedSprite : Sprite
     {
         private int elapsedTime;
-        private Dictionary<string, Frame[]> sequences;
+        private IDictionary<string, Frame[]> sequences;
         private Frame[] currentSequence;
         private int currentFrameIndex;
 
@@ -44,8 +44,8 @@ namespace JonnyHamer.Engine.Entities.Sprites
 
         public event EventHandler<FrameChangeEventArgs> OnFrameChange;
 
-        public AnimatedSprite(Texture2D spriteStrip, Dictionary<string, Frame[]> sequences, bool isLooping = true, bool autoPlay = true, 
-            EventHandler<FrameChangeEventArgs> onFrameChange = null, Rectangle source = default, 
+        public AnimatedSprite(Texture2D spriteStrip, IDictionary<string, Frame[]> sequences, bool isLooping = true, bool autoPlay = true,
+            EventHandler<FrameChangeEventArgs> onFrameChange = null, Rectangle source = default,
             float opacity = 1f, Vector2 origin = default) : base(spriteStrip, source: source, opacity: opacity, origin: origin)
         {
             if (spriteStrip == null)
