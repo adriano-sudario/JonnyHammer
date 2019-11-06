@@ -14,63 +14,38 @@ namespace JonnyHamer.Engine.Entities
 {
     public class Entity : IDraw, IUpdate
     {
-
         private IList<IComponent> components = new List<IComponent>();
-        private IList<IScalable> scalables = new List<IScalable>();
         private IList<CoroutineTask> coroutines = new List<CoroutineTask>();
-        private IList<IMovable> movables = new List<IMovable>();
         protected bool isActive = true;
 
-        private float scale = 1;
-        public float Scale
-        {
-            get => scale; set
-            {
-                scale = value;
-
-                foreach (var scalable in scalables)
-                    scalable.Scale = scale;
-            }
-        }
-        private Vector2 position;
-        public Vector2 Position
-        {
-            get => position; set
-            {
-                position = value;
-                foreach (var movable in movables)
-                    movable.Position = position;
-            }
-        }
+        public float Scale { get; set; } = 1;
+        public Vector2 Position { get; set; }
         public Direction.Horizontal FacingDirection { get; set; }
         public Entity(Vector2 position,
             Direction.Horizontal facingDirection = Direction.Horizontal.Right,
             float scale = 1f)
         {
             FacingDirection = facingDirection;
-            this.scale = scale;
+            Scale = scale;
             Position = position;
 
         }
-
-        
 
         public virtual void Update(GameTime gameTime)
         {
            if (!isActive)
                 return;
 
-            for (var i = 0; i < components.Count; i++)
+           for (var i = 0; i < components.Count; i++)
                 components[i].Update(gameTime);
 
-            UpdateCoroutines(gameTime);
+           UpdateCoroutines(gameTime);
 
         }
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (!isActive)
                 return;
-
 
             for (int i = 0; i < components.Count; i++)
                 components[i].Draw(spriteBatch);
@@ -80,28 +55,11 @@ namespace JonnyHamer.Engine.Entities
         {
             component.SetEntity(this);
             components.Add(component);
-            CheckBehaviour(component);
             component.Start();
             return component;
         }
 
         public T AddComponent<T>() where T : IComponent, new() => AddComponent(new T());
-
-        void CheckBehaviour(IComponent component)
-        {
-            if (component is IScalable s)
-            {
-                scalables.Add(s);
-                s.Scale = Scale;
-            }
-
-            if (component is IMovable m)
-            {
-                movables.Add(m);
-                m.Position = Position;
-            }
-        }
-
 
         public T GetComponent<T>() where T : IComponent => components.OfType<T>().FirstOrDefault();
         public T[] GetComponents<T>() where T : IComponent => components.OfType<T>().ToArray();

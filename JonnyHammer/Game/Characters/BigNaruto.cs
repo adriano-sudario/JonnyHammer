@@ -41,7 +41,6 @@ namespace JonnyHammer.Game.Characters
             {
                 Scale += 0.01f;
                 yield return null; // wait 1 frame
-
             }
 
             while (Scale > 1)

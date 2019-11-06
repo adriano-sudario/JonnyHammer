@@ -9,11 +9,8 @@ namespace JonnyHammer.Engine
 {
     public class Component : IComponent
     {
-        public Component()
-        {
-
-        }
-
+        public Component() { }
+        
         public Entity Entity { get; private set; }
 
         public Direction.Horizontal FacingDirection { get => Entity.FacingDirection; set => Entity.FacingDirection = value; }

@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace JonnyHamer.Engine.Entities.Sprites
 {
-    public class SpriteComponent : Component, IScalable, IMovable
+    public class SpriteComponent : Component
     {
         private Texture2D spriteStrip;
         public bool IsVisible { get; set; }
@@ -16,18 +16,15 @@ namespace JonnyHamer.Engine.Entities.Sprites
         public virtual Rectangle Source { get; set; }
         public virtual int SpriteWidth => spriteStrip.Width;
         public virtual int SpriteHeight => spriteStrip.Height;
-        public float SpriteScale { get; set; }
         public float Rotation { get; set; }
         public float Opacity { get; set; }
-        public Vector2 Position { get; set; }
         public Vector2 Origin { get; set; }
         public Color Color { get; set; } = Color.White;
         public float LayerDepth { get; set; }
 
-        public int Width => (int)(SpriteWidth * (Scale * Screen.Scale));
-        public int Height => (int)(SpriteHeight * (Scale * Screen.Scale));
+        public int Width => (int)(SpriteWidth * (Entity.Scale * Screen.Scale));
+        public int Height => (int)(SpriteHeight * (Entity.Scale * Screen.Scale));
 
-        public float Scale { get => SpriteScale; set => SpriteScale = value; }
 
         public SpriteComponent(Texture2D spriteStrip, Rectangle source = default, float opacity = 1f, Vector2 origin = default, float rotation = 0)
         {
@@ -40,19 +37,13 @@ namespace JonnyHamer.Engine.Entities.Sprites
         }
 
 
-        public override void Start()
-        {
-            SpriteScale = Entity.Scale;
-            Position = Entity.Position;
-        }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-
             if (!IsVisible) return;
 
             var effect = FacingDirection == Direction.Horizontal.Left ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            spriteBatch.Draw(spriteStrip, Position, Source, Color * Opacity, Rotation, Origin, SpriteScale * Screen.Scale, effect, LayerDepth);
+            spriteBatch.Draw(spriteStrip, Entity.Position, Source, Color * Opacity, Rotation, Origin, Entity.Scale * Screen.Scale, effect, LayerDepth);
         }
     }
 }

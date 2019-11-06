@@ -6,9 +6,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace JonnyHammer.Engine.Entities.Components.Collider
 {
-    public class ColliderComponent : Component, IScalable
+    public class ColliderComponent : Component
     {
-        public float Scale { get; set; }
         public bool IsDebug { get; set; }
         
         private Rectangle bounds;
@@ -19,14 +18,14 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
             get 
         {
                 var position = new Vector2(Entity.Position.X, Entity.Position.Y) + new Vector2(bounds.X, bounds.Y);
-                return new Rectangle((int) position.X, (int) position.Y, (int) (bounds.Width * Scale), (int) (bounds.Height *  Scale));
+                return new Rectangle((int) position.X, (int) position.Y, (int) (bounds.Width * Entity.Scale), (int) (bounds.Height *  Entity.Scale));
         }
             private set => bounds = value;
         }
 
         public ColliderComponent(Rectangle rectangle, bool isDebug = false)
         {
-            IsDebug = isDebug;
+            IsDebug = isDebug && System.Diagnostics.Debugger.IsAttached;
             Bounds = rectangle;
             debugTexture = Core.GetDebugTexture(Color.Red);
         }
@@ -39,7 +38,13 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
         }
 
         public ColliderComponent(SpriteComponent spriteComponent) 
-            : this(new Rectangle((int)spriteComponent.Position.X, (int) spriteComponent.Position.Y, spriteComponent.Width, spriteComponent.Height)) { }
+            : this(
+                new Rectangle(
+                    (int)spriteComponent.Entity.Position.X,
+                    (int)spriteComponent.Entity.Position.Y, 
+                    spriteComponent.Width, 
+                    spriteComponent.Height)
+                ) { }
        
         
         

@@ -17,9 +17,9 @@ namespace JonnyHamer.Engine.Helpers
 
         public static T GetScene<T>(string sceneId) where T : Scene => (T)scenes[sceneId];
 
-        public static T GetScene<T>() where T : Scene => (T)scenes.Where(s => s.Value.GetType() == typeof(T)).First().Value;
+        public static T GetScene<T>() where T : Scene => (T)scenes.First(s => s.Value.GetType() == typeof(T)).Value;
 
-        public static T GetScene<T>(Scene scene) where T : Scene => (T)scenes.Where(s => s.Value == scene).First().Value;
+        public static T GetScene<T>(Scene scene) where T : Scene => (T)scenes.First(s => s.Value == scene).Value;
 
         public static T GetCurrentScene<T>() where T : Scene => (T)CurrentScene;
 
