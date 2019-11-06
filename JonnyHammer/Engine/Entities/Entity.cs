@@ -1,8 +1,11 @@
 ﻿using JonnyHammer.Engine;
+using JonnyHammer.Engine.Entities;
 using JonnyHammer.Engine.Helpers;
 using JonnyHammer.Engine.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,12 +15,24 @@ namespace JonnyHamer.Engine.Entities
     {
 
         private IList<IComponent> components = new List<IComponent>();
+        private IList<IScalable> scalables = new List<IScalable>();
+        private IList<CoroutineTask> coroutines = new List<CoroutineTask>();
 
         protected bool isActive = true;
 
         private bool runStart = false;
 
-        public float Scale { get; set; } = 1;
+        private float scale = 1;
+        public float Scale
+        {
+            get => scale; set
+            {
+                scale = value;
+
+                foreach (var scalable in scalables)
+                    scalable.Scale = scale;
+            }
+        }
 
         public Direction.Horizontal FacingDirection { get; set; }
 
@@ -29,7 +44,7 @@ namespace JonnyHamer.Engine.Entities
             float scale = 1f)
         {
             FacingDirection = facingDirection;
-            Scale = scale;
+            this.scale = scale;
             Position = position;
 
         }
@@ -53,8 +68,10 @@ namespace JonnyHamer.Engine.Entities
                 return;
 
 
-            for (int i = 0; i < components.Count; i++)
+            for (var i = 0; i < components.Count; i++)
                 components[i].Update(gameTime);
+
+            UpdateCoroutines(gameTime);
 
         }
         public virtual void Draw(SpriteBatch spriteBatch)
@@ -82,8 +99,61 @@ namespace JonnyHamer.Engine.Entities
             return component;
         }
 
+        void CheckScalable(IComponent component)
+        {
+            if (component is IScalable s)
+                scalables.Add(s);
+        }
+
+
         public T GetComponent<T>() where T : IComponent => components.OfType<T>().FirstOrDefault();
         public T[] GetComponents<T>() where T : IComponent => components.OfType<T>().ToArray();
+
+
+        void UpdateCoroutines(GameTime gameTime)
+        {
+            for (var i = 0; i < coroutines.Count; i++)
+            {
+                var task = coroutines[i];
+
+                if (task.WaitTime > TimeSpan.Zero)
+                {
+                    task.WaitTime -= gameTime.ElapsedGameTime;
+                    continue;
+                }
+                task.WaitTime = TimeSpan.Zero;
+
+                var hasJob = task.Routine.MoveNext();
+
+                if (!hasJob)
+                {
+                    coroutines.Remove(task);
+                    continue;
+                }
+
+                switch (task.Routine.Current)
+                {
+                    case TimeSpan t:
+                        task.WaitTime = t;
+                        break;
+
+                    case null:
+                    default:
+                        continue;
+                }
+
+            }
+        }
+
+        public void StartCoroutine(IEnumerator coroutine, TimeSpan? wait = null) => coroutines.Add(new CoroutineTask(coroutine, wait ?? TimeSpan.Zero));
+        public void StopCoroutines() => coroutines.Clear();
+
+        public void Invoke(Action action, TimeSpan waitFor) => StartCoroutine(waitAndRun(action, waitFor));
+        IEnumerator waitAndRun(Action action, TimeSpan time)
+        {
+            yield return time;
+            action();
+        }
 
     }
 }

@@ -6,6 +6,8 @@ using JonnyHammer.Engine;
 using JonnyHammer.Engine.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections;
 
 namespace JonnyHammer.Game.Characters
 {
@@ -23,6 +25,26 @@ namespace JonnyHammer.Game.Characters
 
             move = AddComponent<MoveComponent>();
             animations = AddComponent(CreateNarutaoAnimations());
+
+
+            StartCoroutine(ScaleNaruto());
+        }
+
+        IEnumerator ScaleNaruto()
+        {
+            yield return TimeSpan.FromSeconds(2);
+
+            while (Scale < 3)
+            {
+                Scale += 0.01f;
+                yield return null;
+            }
+
+            while (Scale > 1)
+            {
+                Scale -= 0.01f;
+                yield return null;
+            }
         }
 
         AnimatedSpriteComponent CreateNarutaoAnimations()

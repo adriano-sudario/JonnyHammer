@@ -1,12 +1,13 @@
 ﻿using JonnyHamer.Engine.Helpers;
 using JonnyHammer.Engine;
+using JonnyHammer.Engine.Entities;
 using JonnyHammer.Engine.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace JonnyHamer.Engine.Entities.Sprites
 {
-    public class SpriteComponent : Component
+    public class SpriteComponent : Component, IScalable
     {
         private Texture2D spriteStrip;
         public bool IsVisible { get; set; }
