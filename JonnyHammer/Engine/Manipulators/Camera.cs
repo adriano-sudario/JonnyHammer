@@ -1,6 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using JonnyHamer.Engine.Entities;
+﻿using JonnyHamer.Engine.Entities;
+using JonnyHamer.Engine.Entities.Sprites;
 using JonnyHamer.Engine.Helpers;
+using Microsoft.Xna.Framework;
 
 namespace JonnyHamer.Engine.Manipulators
 {
@@ -25,7 +26,7 @@ namespace JonnyHamer.Engine.Manipulators
 
         public static void Update(Entity body)
         {
-            Vector2 spriteSource = (body.Sprite?.Origin ?? Vector2.Zero) * (body.Scale * Screen.Scale);
+            var spriteSource = (body.GetComponent<SpriteComponent>()?.Origin ?? Vector2.Zero) * (body.Scale * Screen.Scale);
             AdjustPosition(body.Position - spriteSource, body.Width, body.Height);
             Update();
         }

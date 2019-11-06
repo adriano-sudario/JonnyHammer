@@ -1,46 +1,40 @@
 ﻿using JonnyHamer.Engine.Entities;
 using JonnyHamer.Engine.Entities.Sprites;
 using JonnyHamer.Engine.Helpers;
+using JonnyHammer.Engine;
 using JonnyHammer.Engine.Helpers;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace JonnyHammer.Game.Characters
 {
     public class BigNaruto : Entity
     {
-        public AnimatedSprite Animation => Sprite as AnimatedSprite;
+        float speed = 3f;
+        MoveComponent move;
 
-        private float speed = 3f;
+        public AnimatedSpriteComponent Animation { get; private set; }
 
-        public BigNaruto(Vector2 position) : base(position, GetNarutaoAnimation())
+        public BigNaruto(Vector2 position) : base(position)
         {
-
+            move = AddComponent<MoveComponent>();
+            Animation = AddComponent(CreateNarutaoAnimations());
         }
 
-        public static AnimatedSprite GetNarutaoAnimation()
+        static AnimatedSpriteComponent CreateNarutaoAnimations()
         {
             var spriteSheet = Loader.LoadTexture("narutao");
             var animationFrames = Loader.LoadAnimation("narutao");
 
-            return new AnimatedSprite(spriteSheet, animationFrames);
+            return new AnimatedSpriteComponent(spriteSheet, animationFrames);
         }
 
         public void Run(Direction.Horizontal direction)
         {
             Animation.Change("Running");
-            MoveAndSlide(new Vector2(
+            move.MoveAndSlide(new Vector2(
                 direction == Direction.Horizontal.Left ? -speed : speed, 0));
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            base.Draw(spriteBatch);
-        }
 
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-        }
     }
 }

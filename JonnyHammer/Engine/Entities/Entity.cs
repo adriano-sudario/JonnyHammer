@@ -1,141 +1,71 @@
 ﻿using JonnyHamer.Engine.Entities.Sprites;
 using JonnyHamer.Engine.Helpers;
-using JonnyHamer.Engine.Manipulators;
+using JonnyHammer.Engine;
 using JonnyHammer.Engine.Helpers;
 using JonnyHammer.Engine.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace JonnyHamer.Engine.Entities
 {
     public class Entity : IDraw, IUpdate
     {
+
         private Rectangle? customCollision;
+        private IList<IComponent> components = new List<IComponent>();
 
         protected bool isActive = true;
 
-        private Vector2 position;
-        private float scale;
 
-        public Sprite Sprite { get; private set; }
-        public float Scale
-        {
-            get => Sprite?.Scale ?? scale;
-            set
-            {
-                scale = value;
-                if (Sprite != null)
-                    Sprite.Scale = scale;
-            }
-        }
+        private bool runStart = false;
+        private SpriteComponent Sprite;
+
+        public float Scale { get; set; } = 1;
+
         public Direction.Horizontal FacingDirection { get; set; }
-        public Vector2 PreviousPosition { get; private set; }
-        public Vector2 Position
-        {
-            get => Sprite?.Position ?? position;
-            private set
-            {
-                position = value;
-                if (Sprite != null)
-                    Sprite.Position = position;
-            }
-        }
-        public Rectangle Collision
-        {
-            get
-            {
-                Vector2 spriteSource = (Sprite?.Origin ?? Vector2.Zero) * (Scale * Screen.Scale);
-                return customCollision ?? new Rectangle((int)(Position.X - spriteSource.X), (int)(Position.Y - spriteSource.Y), Width, Height);
-            }
-        }
-        public int Width => (int)((Sprite?.Width ?? 0) * (Scale * Screen.Scale));
-        public int Height => (int)((Sprite?.Height ?? 0) * (Scale * Screen.Scale));
+
+        public Vector2 Position { get; set; }
+
+        //public Rectangle Collision
+        //{
+        //    get
+        //    {
+        //        Vector2 spriteSource = (Sprite?.Origin ?? Vector2.Zero) * (Scale * Screen.Scale);
+        //        return customCollision ?? new Rectangle((int)(Position.X - spriteSource.X), (int)(Position.Y - spriteSource.Y), Width, Height);
+        //    }
+        //}
+
+        //public bool CollidesWith(Entity body)
+        //{
+        //    return Collision.Intersects(body.Collision);
+        //}
+
+        public int Width => (int)((Sprite?.SpriteWidth ?? 0) * (Scale * Screen.Scale));
+        public int Height => (int)((Sprite?.SpriteHeight ?? 0) * (Scale * Screen.Scale));
+
         public bool IsVisible { get; set; }
 
-        public Entity(Vector2 position, Sprite sprite = null, Direction.Horizontal facingDirection = Direction.Horizontal.Right,
+        public Entity(Vector2 position, Direction.Horizontal facingDirection = Direction.Horizontal.Right,
             float scale = 1f, Rectangle? customCollision = null)
         {
             IsVisible = true;
-            Sprite = sprite;
             FacingDirection = facingDirection;
             Scale = scale;
-            this.customCollision = customCollision;
-            MoveTo(position);
-        }
-
-        public void ReplaceSprite(Sprite sprite, Rectangle? customCollision = null)
-        {
-            Sprite = sprite;
-            this.customCollision = customCollision;
-        }
-
-        public void MoveTo(Vector2 position, bool setFacingDirection = true, bool keepOnScreenBounds = true)
-        {
-            PreviousPosition = Position;
-
-            if (Position.X != position.X && setFacingDirection)
-            {
-                float horizontalDifference = position.X - Position.X;
-                FacingDirection = horizontalDifference < 0 ? Direction.Horizontal.Left : Direction.Horizontal.Right;
-            }
-
-            if (keepOnScreenBounds)
-            {
-                position.X = MathHelper.Clamp(position.X, 0, Camera.AreaWidth - Width);
-                position.Y = MathHelper.Clamp(position.Y, 0, Camera.AreaHeight - Height);
-            }
-            
             Position = position;
+            this.customCollision = customCollision;
+
         }
 
-        public void MoveTo(int x, int y, bool setFacingDirection = true, bool keepOnScreenBounds = true)
+        public void Start()
         {
-            MoveTo(new Vector2(x, y), setFacingDirection, keepOnScreenBounds);
+            Sprite = GetComponent<SpriteComponent>();
+
+            for (int i = 0; i < components.Count; i++)
+                components[i].Start();
         }
 
-        public void MoveHorizontally(int x, bool setFacingDirection = true, bool keepOnScreenBounds = true)
-        {
-            MoveTo(new Vector2(x, Position.Y), setFacingDirection, keepOnScreenBounds);
-        }
-
-        public void MoveVertically(int y, bool setFacingDirection = true, bool keepOnScreenBounds = true)
-        {
-            MoveTo(new Vector2(Position.X, y), setFacingDirection, keepOnScreenBounds);
-        }
-
-        public void MoveAndSlide(int x, int y, bool setFacingDirection = true, bool keepOnScreenBounds = true)
-        {
-            MoveTo(new Vector2(Position.X + x, Position.Y + y), setFacingDirection, keepOnScreenBounds);
-        }
-
-        public void MoveAndSlide(Vector2 position, bool setFacingDirection = true, bool keepOnScreenBounds = true)
-        {
-            if (position != Vector2.Zero)
-                MoveTo(Position + position, setFacingDirection, keepOnScreenBounds);
-        }
-
-        public void SetOrigin(float origin, bool keepInPlace = true)
-        {
-            float totalScale = (Scale * Screen.Scale);
-            Vector2 updatedOrigin = origin == 0 ? Vector2.Zero : new Vector2((Width * origin) / totalScale, (Height * origin) / totalScale);
-
-            if (keepInPlace)
-                MoveAndSlide((updatedOrigin * totalScale) - (Sprite.Origin * totalScale), false);
-
-            Sprite.Origin = updatedOrigin;
-        }
-
-        public void SetOrigin(Vector2 origin, bool keepInPlace = true)
-        {
-            if (Sprite == null)
-                return;
-
-            float totalScale = (Scale * Screen.Scale);
-            Sprite.Origin = new Vector2((Width * origin.X) / totalScale, (Height * origin.Y) / totalScale) * -1;
-
-            if (keepInPlace)
-                MoveAndSlide(Sprite.Origin * totalScale);
-        }
 
         public void CustomizeCollision(Rectangle collision)
         {
@@ -147,31 +77,51 @@ namespace JonnyHamer.Engine.Entities
             customCollision = null;
         }
 
-        public bool CollidesWith(Entity body)
-        {
-            return Collision.Intersects(body.Collision);
-        }
 
-        protected void UpdateAnimation(GameTime gameTime)
-        {
-            if (Sprite != null && Sprite.GetType() == typeof(AnimatedSprite))
-                (Sprite as AnimatedSprite).Update(gameTime);
-        }
 
         public virtual void Update(GameTime gameTime)
         {
+            if (!runStart)
+            {
+                Start();
+                runStart = false;
+            }
+
             if (!isActive)
                 return;
 
-            UpdateAnimation(gameTime);
-        }
 
+            for (int i = 0; i < components.Count; i++)
+                components[i].Update(gameTime);
+
+        }
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (!isActive || !IsVisible)
                 return;
 
-            Sprite?.Draw(spriteBatch, effect: FacingDirection == Direction.Horizontal.Left ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
+
+            for (int i = 0; i < components.Count; i++)
+                components[i].Draw(spriteBatch);
         }
+
+        public T AddComponent<T>(T component) where T : IComponent
+        {
+            component.SetEntity(this);
+            components.Add(component);
+            return component;
+        }
+
+        public T AddComponent<T>() where T : IComponent, new()
+        {
+            var component = new T();
+            component.SetEntity(this);
+            components.Add(component);
+            return component;
+        }
+
+        public T GetComponent<T>() where T : IComponent => components.OfType<T>().FirstOrDefault();
+        public T[] GetComponents<T>() where T : IComponent => components.OfType<T>().ToArray();
+
     }
 }

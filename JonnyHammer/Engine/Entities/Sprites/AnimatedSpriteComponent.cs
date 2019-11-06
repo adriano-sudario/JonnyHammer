@@ -20,7 +20,7 @@ namespace JonnyHamer.Engine.Entities.Sprites
         public int Duration { get; set; }
     }
 
-    public class AnimatedSprite : Sprite
+    public class AnimatedSpriteComponent : SpriteComponent
     {
         private int elapsedTime;
         private IDictionary<string, Frame[]> sequences;
@@ -34,8 +34,8 @@ namespace JonnyHamer.Engine.Entities.Sprites
         public bool IsLooping { get; set; }
         public bool AutoPlay { get; set; }
 
-        public override int Width => currentSequence?[currentFrameIndex].Source.Width ?? 0;
-        public override int Height => currentSequence?[currentFrameIndex].Source.Height ?? 0;
+        public override int SpriteWidth => currentSequence?[currentFrameIndex].Source.Width ?? 0;
+        public override int SpriteHeight => currentSequence?[currentFrameIndex].Source.Height ?? 0;
         public override Rectangle Source
         {
             get => CurrentFrame.Source;
@@ -44,12 +44,13 @@ namespace JonnyHamer.Engine.Entities.Sprites
 
         public event EventHandler<FrameChangeEventArgs> OnFrameChange;
 
-        public AnimatedSprite(Texture2D spriteStrip, IDictionary<string, Frame[]> sequences, bool isLooping = true, bool autoPlay = true,
+        public AnimatedSpriteComponent(Texture2D spriteStrip, IDictionary<string, Frame[]> sequences, bool isLooping = true, bool autoPlay = true,
             EventHandler<FrameChangeEventArgs> onFrameChange = null, Rectangle source = default,
             float opacity = 1f, Vector2 origin = default) : base(spriteStrip, source: source, opacity: opacity, origin: origin)
         {
             if (spriteStrip == null)
                 throw new Exception("spriteStrip não pode ser nulo");
+
 
             if (sequences == null || sequences.Count == 0)
                 throw new Exception("Não existe nenhuma sequência de animação");
@@ -60,7 +61,7 @@ namespace JonnyHamer.Engine.Entities.Sprites
             OnFrameChange = onFrameChange;
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             if (!IsPlaying)
                 return;
