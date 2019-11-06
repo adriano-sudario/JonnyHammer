@@ -12,19 +12,20 @@ namespace JonnyHammer.Game.Characters
     public class BigNaruto : Entity
     {
         float speed = 3f;
-        MoveComponent move;
         KeyboardInput keyboard;
 
+        MoveComponent move;
         AnimatedSpriteComponent animations;
 
         public BigNaruto(Vector2 position) : base(position)
         {
             keyboard = new KeyboardInput();
+
             move = AddComponent<MoveComponent>();
             animations = AddComponent(CreateNarutaoAnimations());
         }
 
-        static AnimatedSpriteComponent CreateNarutaoAnimations()
+        AnimatedSpriteComponent CreateNarutaoAnimations()
         {
             var spriteSheet = Loader.LoadTexture("narutao");
             var animationFrames = Loader.LoadAnimation("narutao");

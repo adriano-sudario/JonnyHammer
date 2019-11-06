@@ -20,7 +20,7 @@ namespace JonnyHamer.Engine.Helpers
             get
             {
                 if (string.IsNullOrEmpty(_contentFullPath))
-                    _contentFullPath = content.RootDirectory; //Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content");
+                    _contentFullPath = content.RootDirectory;
 
                 return _contentFullPath;
             }
