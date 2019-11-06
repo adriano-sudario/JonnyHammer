@@ -28,7 +28,7 @@ namespace JonnyHamer.Engine.Helpers
 
         public static void Initialize(ContentManager content) => Loader.content = content;
 
-        public static Texture2D LoadTexture(string textureName) => content.Load<Texture2D>("Graphics\\" + textureName);
+        public static Texture2D LoadTexture(string textureName) => content.Load<Texture2D>("Graphics/" + textureName);
         public static IDictionary<string, Frame[]> LoadAnimation(string aspriteJsonFile)
         {
             dynamic data = LoadDeserializedJsonFile(aspriteJsonFile);
@@ -70,9 +70,9 @@ namespace JonnyHamer.Engine.Helpers
             return frameData;
         }
 
-        public static SoundEffect LoadSound(string soundName) => content.Load<SoundEffect>("Sounds\\" + soundName);
+        public static SoundEffect LoadSound(string soundName) => content.Load<SoundEffect>("Sounds/" + soundName);
 
-        public static SpriteFont LoadFont(string fontName) => content.Load<SpriteFont>("Fonts\\" + fontName);
+        public static SpriteFont LoadFont(string fontName) => content.Load<SpriteFont>("Fonts/" + fontName);
 
         public static T LoadDeserializedJsonFile<T>(string fileName)
         {
@@ -85,11 +85,11 @@ namespace JonnyHamer.Engine.Helpers
             return JsonConvert.DeserializeObject(jsonString);
         }
 
-        private static string LoadJsonFile(string fileName) => File.ReadAllText(Path.Combine(ContentFullPath, "Data\\" + fileName + ".json"));
+        private static string LoadJsonFile(string fileName) => File.ReadAllText(Path.Combine(ContentFullPath, "Data/" + fileName + ".json"));
 
 
         public static void SaveJsonFile<T>(string fileName, T data) => SaveJsonFile(fileName, JsonConvert.SerializeObject(data));
 
-        private static void SaveJsonFile(string fileName, string jsonText) => File.WriteAllText(Path.Combine(ContentFullPath, "Data\\" + fileName + ".json"), jsonText);
+        private static void SaveJsonFile(string fileName, string jsonText) => File.WriteAllText(Path.Combine(ContentFullPath, "Data/" + fileName + ".json"), jsonText);
     }
 }

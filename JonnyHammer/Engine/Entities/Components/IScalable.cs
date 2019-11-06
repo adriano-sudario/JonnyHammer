@@ -2,6 +2,6 @@
 {
     public interface IScalable
     {
-        public float Scale { get; set; }
+        float Scale { get; set; }
     }
 }

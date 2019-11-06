@@ -5,6 +5,7 @@
     <ApplicationIcon />
     <StartupObject />
     <OutputType>Exe</OutputType>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
