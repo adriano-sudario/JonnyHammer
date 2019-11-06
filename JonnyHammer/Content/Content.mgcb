@@ -13,6 +13,9 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Data/narutao.json
+/copy:Data/narutao.json
+
 #begin Graphics/bg.jpg
 /importer:TextureImporter
 /processor:TextureProcessor

@@ -22,6 +22,7 @@ namespace JonnyHammer.Game.Scenes
             Camera.AreaHeight = background.Height;
             keyboard = new KeyboardInput();
             narutao = new BigNaruto(new Vector2(100, 300));
+
         }
 
         public override void Update(GameTime gameTime)
