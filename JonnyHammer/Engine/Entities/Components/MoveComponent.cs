@@ -9,22 +9,21 @@ namespace JonnyHammer.Engine
     public class MoveComponent : Component
     {
         private SpriteComponent Sprite;
-
         public Vector2 PreviousPosition { get; private set; }
 
         public override void Start()
         {
             Sprite = GetComponent<SpriteComponent>();
-            MoveTo(Position);
+            MoveTo(Entity.Position);
         }
 
         public void MoveTo(Vector2 position, bool setFacingDirection = true, bool keepOnScreenBounds = true)
         {
-            PreviousPosition = Position;
+            PreviousPosition = Entity.Position;
 
-            if (Position.X != position.X && setFacingDirection)
+            if (Entity.Position.X != position.X && setFacingDirection)
             {
-                float horizontalDifference = position.X - Position.X;
+                float horizontalDifference = position.X - Entity.Position.X;
                 FacingDirection = horizontalDifference < 0 ? Direction.Horizontal.Left : Direction.Horizontal.Right;
             }
 
@@ -34,7 +33,7 @@ namespace JonnyHammer.Engine
                 position.Y = MathHelper.Clamp(position.Y, 0, Camera.AreaHeight - Sprite.Height);
             }
 
-            Position = position;
+            Entity.Position = position;
         }
 
         public void MoveTo(int x, int y, bool setFacingDirection = true, bool keepOnScreenBounds = true)
@@ -44,23 +43,23 @@ namespace JonnyHammer.Engine
 
         public void MoveHorizontally(int x, bool setFacingDirection = true, bool keepOnScreenBounds = true)
         {
-            MoveTo(new Vector2(x, Position.Y), setFacingDirection, keepOnScreenBounds);
+            MoveTo(new Vector2(x, Entity.Position.Y), setFacingDirection, keepOnScreenBounds);
         }
 
         public void MoveVertically(int y, bool setFacingDirection = true, bool keepOnScreenBounds = true)
         {
-            MoveTo(new Vector2(Position.X, y), setFacingDirection, keepOnScreenBounds);
+            MoveTo(new Vector2(Entity.Position.X, y), setFacingDirection, keepOnScreenBounds);
         }
 
         public void MoveAndSlide(int x, int y, bool setFacingDirection = true, bool keepOnScreenBounds = true)
         {
-            MoveTo(new Vector2(Position.X + x, Position.Y + y), setFacingDirection, keepOnScreenBounds);
+            MoveTo(new Vector2(Entity.Position.X + x, Entity.Position.Y + y), setFacingDirection, keepOnScreenBounds);
         }
 
         public void MoveAndSlide(Vector2 position, bool setFacingDirection = true, bool keepOnScreenBounds = true)
         {
             if (position != Vector2.Zero)
-                MoveTo(Position + position, setFacingDirection, keepOnScreenBounds);
+                MoveTo(Entity.Position + position, setFacingDirection, keepOnScreenBounds);
         }
 
         public void SetOrigin(float origin, bool keepInPlace = true)

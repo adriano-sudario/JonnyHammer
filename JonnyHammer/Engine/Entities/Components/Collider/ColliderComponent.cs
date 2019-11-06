@@ -2,41 +2,60 @@
 using JonnyHamer.Engine.Entities.Sprites;
 using JonnyHamer.Engine.Helpers;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace JonnyHammer.Engine.Entities.Components.Collider
 {
-    public class ColliderComponent : Component
+    public class ColliderComponent : Component, IScalable
     {
-        private SpriteComponent Sprite;
-        private Rectangle? customCollision;
+        public float Scale { get; set; }
+        public bool IsDebug { get; set; }
+        
+        private Rectangle bounds;
+        private Texture2D debugTexture;
 
-        public override void Start()
+        public Rectangle Bounds
         {
-            Sprite = GetComponent<SpriteComponent>();
-            base.Start();
+            get 
+        {
+                var position = new Vector2(Entity.Position.X, Entity.Position.Y) + new Vector2(bounds.X, bounds.Y);
+                return new Rectangle((int) position.X, (int) position.Y, (int) (bounds.Width * Scale), (int) (bounds.Height *  Scale));
         }
-
-        public Rectangle Collision
-        {
-            get
-            {
-                var spriteSource = (Sprite?.Origin ?? Vector2.Zero) * (Entity.Scale * Screen.Scale);
-                return customCollision ?? new Rectangle((int)(Position.X - spriteSource.X), (int)(Position.Y - spriteSource.Y), Sprite.Width, Sprite.Height);
-            }
+            private set => bounds = value;
         }
 
-        public void CustomizeCollision(Rectangle collision)
+        public ColliderComponent(Rectangle rectangle, bool isDebug = false)
         {
-            customCollision = collision;
+            IsDebug = isDebug;
+            Bounds = rectangle;
+            debugTexture = Core.GetDebugTexture(Color.Red);
         }
 
-        public void ResetCollisionToSpriteBounds()
+        public override void Draw(SpriteBatch spriteBatch)
         {
-            customCollision = null;
+            if (!IsDebug) return;
+            
+            spriteBatch.Draw(debugTexture, Bounds, Color.White);
         }
-        public bool CollidesWith(Entity body)
-        {
-            return Collision.Intersects(Collision);
-        }
+
+        public ColliderComponent(SpriteComponent spriteComponent) 
+            : this(new Rectangle((int)spriteComponent.Position.X, (int) spriteComponent.Position.Y, spriteComponent.Width, spriteComponent.Height)) { }
+       
+        
+        
+       public bool CollidesWith(Rectangle rectangle) => Bounds.Intersects(rectangle);
+       
+       public bool CollidesWith(ColliderComponent collider) => CollidesWith(collider.Bounds);
+
+       public bool CollidesWith(Entity entity)
+       {
+           var colliders = entity.GetComponents<ColliderComponent>();
+           
+           for (var i = 0; i < colliders.Length; i++)
+               if (CollidesWith(colliders[i]))
+                   return true;
+
+           return false;
+       }
     }
 }

@@ -1,13 +1,14 @@
-﻿using JonnyHammer.Engine;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using JonnyHammer.Engine;
 using JonnyHammer.Engine.Entities;
+using JonnyHammer.Engine.Entities.Components;
 using JonnyHammer.Engine.Helpers;
 using JonnyHammer.Engine.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace JonnyHamer.Engine.Entities
 {
@@ -17,10 +18,8 @@ namespace JonnyHamer.Engine.Entities
         private IList<IComponent> components = new List<IComponent>();
         private IList<IScalable> scalables = new List<IScalable>();
         private IList<CoroutineTask> coroutines = new List<CoroutineTask>();
-
+        private IList<IMovable> movables = new List<IMovable>();
         protected bool isActive = true;
-
-        private bool runStart = false;
 
         private float scale = 1;
         public float Scale
@@ -33,12 +32,17 @@ namespace JonnyHamer.Engine.Entities
                     scalable.Scale = scale;
             }
         }
-
+        private Vector2 position;
+        public Vector2 Position
+        {
+            get => position; set
+            {
+                position = value;
+                foreach (var movable in movables)
+                    movable.Position = position;
+            }
+        }
         public Direction.Horizontal FacingDirection { get; set; }
-
-        public Vector2 Position { get; set; }
-
-
         public Entity(Vector2 position,
             Direction.Horizontal facingDirection = Direction.Horizontal.Right,
             float scale = 1f)
@@ -49,24 +53,12 @@ namespace JonnyHamer.Engine.Entities
 
         }
 
-        public void Start()
-        {
-            for (int i = 0; i < components.Count; i++)
-                components[i].Start();
-        }
-
+        
 
         public virtual void Update(GameTime gameTime)
         {
-            if (!runStart)
-            {
-                Start();
-                runStart = false;
-            }
-
-            if (!isActive)
+           if (!isActive)
                 return;
-
 
             for (var i = 0; i < components.Count; i++)
                 components[i].Update(gameTime);
@@ -88,16 +80,26 @@ namespace JonnyHamer.Engine.Entities
         {
             component.SetEntity(this);
             components.Add(component);
-            CheckScalable(component);
+            CheckBehaviour(component);
+            component.Start();
             return component;
         }
 
         public T AddComponent<T>() where T : IComponent, new() => AddComponent(new T());
 
-        void CheckScalable(IComponent component)
+        void CheckBehaviour(IComponent component)
         {
             if (component is IScalable s)
+            {
                 scalables.Add(s);
+                s.Scale = Scale;
+            }
+
+            if (component is IMovable m)
+            {
+                movables.Add(m);
+                m.Position = Position;
+            }
         }
 
 

@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections;
+using JonnyHammer.Engine.Entities.Components.Collider;
 
 namespace JonnyHammer.Game.Characters
 {
@@ -25,13 +26,11 @@ namespace JonnyHammer.Game.Characters
         {
             keyboard = new KeyboardInput();
 
-            move = AddComponent<MoveComponent>();
             animations = AddComponent(CreateNarutaoAnimations());
-
-
+            move = AddComponent<MoveComponent>();
             StartCoroutine(ScaleNaruto());
             StartCoroutine(BlinkNaruto());
-
+            AddComponent(new ColliderComponent(new Rectangle(0,0, animations.Width, animations.Height), true));
         }
 
         IEnumerator ScaleNaruto()
