@@ -26,6 +26,8 @@ namespace JonnyHamer.Engine.Entities.Sprites
         public int Width => (int)(SpriteWidth * (Scale * Screen.Scale));
         public int Height => (int)(SpriteHeight * (Scale * Screen.Scale));
 
+        public float Scale { get => SpriteScale; set => SpriteScale = value; }
+
         public SpriteComponent(Texture2D spriteStrip, Rectangle source = default, float opacity = 1f, Vector2 origin = default, float rotation = 0)
         {
             this.spriteStrip = spriteStrip;
@@ -39,7 +41,7 @@ namespace JonnyHamer.Engine.Entities.Sprites
 
         public override void Start()
         {
-            SpriteScale = Scale;
+            SpriteScale = Entity.Scale;
             SpritePosition = Position;
         }
 

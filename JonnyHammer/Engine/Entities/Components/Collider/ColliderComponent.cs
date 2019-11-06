@@ -20,7 +20,7 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
         {
             get
             {
-                var spriteSource = (Sprite?.Origin ?? Vector2.Zero) * (Scale * Screen.Scale);
+                var spriteSource = (Sprite?.Origin ?? Vector2.Zero) * (Entity.Scale * Screen.Scale);
                 return customCollision ?? new Rectangle((int)(Position.X - spriteSource.X), (int)(Position.Y - spriteSource.Y), Sprite.Width, Sprite.Height);
             }
         }

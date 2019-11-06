@@ -18,7 +18,6 @@ namespace JonnyHammer.Engine
 
         public Vector2 Position { get => Entity.Position; set => Entity.Position = value; }
         public Direction.Horizontal FacingDirection { get => Entity.FacingDirection; set => Entity.FacingDirection = value; }
-        public float Scale { get => Entity.Scale; set => Entity.Scale = value; }
 
         public virtual void Draw(SpriteBatch spriteBatch) { }
 

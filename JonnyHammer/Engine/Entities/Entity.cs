@@ -88,16 +88,11 @@ namespace JonnyHamer.Engine.Entities
         {
             component.SetEntity(this);
             components.Add(component);
+            CheckScalable(component);
             return component;
         }
 
-        public T AddComponent<T>() where T : IComponent, new()
-        {
-            var component = new T();
-            component.SetEntity(this);
-            components.Add(component);
-            return component;
-        }
+        public T AddComponent<T>() where T : IComponent, new() => AddComponent(new T());
 
         void CheckScalable(IComponent component)
         {
@@ -114,14 +109,14 @@ namespace JonnyHamer.Engine.Entities
         {
             for (var i = 0; i < coroutines.Count; i++)
             {
-                var task = coroutines[i];
-                if (task.Done)
+                var coroutine = coroutines[i];
+                if (coroutine.Done)
                 {
-                    coroutines.Remove(task);
+                    coroutines.Remove(coroutine);
                     continue;
                 }
 
-                task.Update(gameTime);
+                coroutine.Update(gameTime);
             }
         }
 

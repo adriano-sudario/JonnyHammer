@@ -85,6 +85,7 @@ namespace JonnyHammer.Game.Characters
             else
                 animations.Change("Idle");
 
+
             base.Update(gameTime);
         }
 

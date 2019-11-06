@@ -8,11 +8,11 @@ namespace JonnyHammer.Engine
     public class CoroutineTask
     {
         IEnumerator Routine { get; }
-        ICoroutineReturn Return { get; set; }
+        ICoroutineWaitable Return { get; set; }
 
         public bool Done { get; private set; }
 
-        public CoroutineTask(IEnumerator routine, ICoroutineReturn coroutineReturn = null)
+        public CoroutineTask(IEnumerator routine, ICoroutineWaitable coroutineReturn = null)
         {
             Routine = routine;
             Return = coroutineReturn;
@@ -22,7 +22,7 @@ namespace JonnyHammer.Engine
         {
             if (Return != null && Return.ShouldWait())
             {
-                Return.Step(gameTime);
+                Return.Update(gameTime);
                 return;
             }
 
@@ -33,21 +33,21 @@ namespace JonnyHammer.Engine
         void Next()
         {
             Done = !Routine.MoveNext();
-            Return = ICoroutineReturn.TryParseData(Routine.Current);
+            Return = ICoroutineWaitable.TryParseData(Routine.Current);
         }
 
     }
 
-    public interface ICoroutineReturn
+    public interface ICoroutineWaitable
     {
         bool ShouldWait();
 
-        void Step(GameTime gameTime);
+        void Update(GameTime gameTime);
 
-        static ICoroutineReturn TryParseData(object waitable) =>
+        static ICoroutineWaitable TryParseData(object waitable) =>
             waitable switch
             {
-                ICoroutineReturn x => x,
+                ICoroutineWaitable x => x,
                 TimeSpan t => new WaitTime(t),
                 int n => new WaitFrames(n),
                 _ => null,
@@ -55,16 +55,17 @@ namespace JonnyHammer.Engine
 
 
     }
-    public class WaitTime : ICoroutineReturn
+    public class WaitTime : ICoroutineWaitable
     {
         TimeSpan currentTime = TimeSpan.Zero;
 
         public WaitTime(TimeSpan time) => currentTime = time;
 
         public bool ShouldWait() => currentTime > TimeSpan.Zero;
-        public void Step(GameTime gameTime) => currentTime -= gameTime.ElapsedGameTime;
+        public void Update(GameTime gameTime) => currentTime -= gameTime.ElapsedGameTime;
     }
-    public class WaitFrames : ICoroutineReturn
+
+    public class WaitFrames : ICoroutineWaitable
     {
         int frames = 0;
 
@@ -72,10 +73,10 @@ namespace JonnyHammer.Engine
 
         public bool ShouldWait() => frames > 0;
 
-        public void Step(GameTime gameTime) => frames -= 1;
+        public void Update(GameTime gameTime) => frames -= 1;
     }
 
-    public class WaitUntil : ICoroutineReturn
+    public class WaitUntil : ICoroutineWaitable
     {
         protected Func<bool> predicate = null;
 
@@ -83,7 +84,7 @@ namespace JonnyHammer.Engine
 
         public virtual bool ShouldWait() => !predicate();
 
-        public void Step(GameTime gameTime) { }
+        public void Update(GameTime gameTime) { }
     }
     public class WaitWhile : WaitUntil
     {

@@ -65,7 +65,7 @@ namespace JonnyHammer.Engine
 
         public void SetOrigin(float origin, bool keepInPlace = true)
         {
-            float totalScale = (Scale * Screen.Scale);
+            float totalScale = (Entity.Scale * Screen.Scale);
             Vector2 updatedOrigin = origin == 0 ? Vector2.Zero : new Vector2((Sprite.Width * origin) / totalScale, (Sprite.Height * origin) / totalScale);
 
             if (keepInPlace)
@@ -79,7 +79,7 @@ namespace JonnyHammer.Engine
             if (Sprite == null)
                 return;
 
-            float totalScale = (Scale * Screen.Scale);
+            float totalScale = (Entity.Scale * Screen.Scale);
             Sprite.Origin = new Vector2((Sprite.Width * origin.X) / totalScale, (Sprite.Height * origin.Y) / totalScale) * -1;
 
             if (keepInPlace)
