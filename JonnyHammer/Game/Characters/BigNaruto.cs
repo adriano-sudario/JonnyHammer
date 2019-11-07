@@ -22,7 +22,7 @@ namespace JonnyHammer.Game.Characters
         MoveComponent move;
         AnimatedSpriteComponent animations;
 
-        public BigNaruto(Vector2 position) : base(position)
+        public BigNaruto() 
         {
             keyboard = new KeyboardInput();
 
@@ -30,7 +30,9 @@ namespace JonnyHammer.Game.Characters
             move = AddComponent<MoveComponent>();
             StartCoroutine(ScaleNaruto());
             StartCoroutine(BlinkNaruto());
-            AddComponent(new ColliderComponent(new Rectangle(0,0, animations.Width, animations.Height), true));
+            var collider = AddComponent(new ColliderComponent(new Rectangle(0,0, animations.Width, animations.Height), true ));
+
+            collider.OnCollide = (e) => { Console.WriteLine($"colidiu com {e.Name} {DateTime.UtcNow}"); };
         }
 
         IEnumerator ScaleNaruto()

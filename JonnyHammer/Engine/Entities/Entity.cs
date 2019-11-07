@@ -18,18 +18,11 @@ namespace JonnyHamer.Engine.Entities
         private IList<CoroutineTask> coroutines = new List<CoroutineTask>();
         protected bool isActive = true;
 
+        public  string Name { get; set; }
         public float Scale { get; set; } = 1;
         public Vector2 Position { get; set; }
         public Direction.Horizontal FacingDirection { get; set; }
-        public Entity(Vector2 position,
-            Direction.Horizontal facingDirection = Direction.Horizontal.Right,
-            float scale = 1f)
-        {
-            FacingDirection = facingDirection;
-            Scale = scale;
-            Position = position;
-
-        }
+        public Entity() { }
 
         public virtual void Update(GameTime gameTime)
         {

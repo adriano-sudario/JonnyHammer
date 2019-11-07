@@ -8,9 +8,9 @@ namespace JonnyHammer.Tiles
 {
     public class Floor: Entity
     {
-        public Floor(Vector2 position) : base(position)
+        public Floor() 
         {
-            AddComponent(new ColliderComponent(new Rectangle(100, 100, 100, 100), true));
+            AddComponent(new ColliderComponent(new Rectangle(0, 0, 100, 100), false, true));
         }
     }
 }
