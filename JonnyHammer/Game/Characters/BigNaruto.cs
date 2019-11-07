@@ -3,12 +3,12 @@ using JonnyHamer.Engine.Entities.Sprites;
 using JonnyHamer.Engine.Helpers;
 using JonnyHamer.Engine.Inputs;
 using JonnyHammer.Engine;
+using JonnyHammer.Engine.Entities.Components.Collider;
 using JonnyHammer.Engine.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections;
-using JonnyHammer.Engine.Entities.Components.Collider;
 
 namespace JonnyHammer.Game.Characters
 {
@@ -22,17 +22,18 @@ namespace JonnyHammer.Game.Characters
         MoveComponent move;
         AnimatedSpriteComponent animations;
 
-        public BigNaruto() 
+        public BigNaruto()
         {
             keyboard = new KeyboardInput();
 
             animations = AddComponent(CreateNarutaoAnimations());
+            var collider = AddComponent(new ColliderComponent(new Rectangle(0, 0, animations.Width, animations.Height), true));
             move = AddComponent<MoveComponent>();
+
+            collider.OnCollide += (e) => { Console.WriteLine($"colidiu com {e.Name} {DateTime.UtcNow.Millisecond}"); };
+
             StartCoroutine(ScaleNaruto());
             StartCoroutine(BlinkNaruto());
-            var collider = AddComponent(new ColliderComponent(new Rectangle(0,0, animations.Width, animations.Height), true ));
-
-            collider.OnCollide = (e) => { Console.WriteLine($"colidiu com {e.Name} {DateTime.UtcNow}"); };
         }
 
         IEnumerator ScaleNaruto()

@@ -20,14 +20,13 @@ namespace JonnyHammer.Game.Scenes
             Camera.AreaWidth = background.Width * 2;
             Camera.AreaHeight = background.Height;
 
-            narutao = Instantiate<BigNaruto>("Narutao", new Vector2(100, 300));
-            floor = Instantiate<Floor>("Parede", new Vector2(300, 300));
+            narutao = Spawn<BigNaruto>("Narutao", new Vector2(100, 300));
+            floor = Spawn<Floor>("Parede", new Vector2(500, 300));
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-
             Camera.Update(narutao);
         }
 

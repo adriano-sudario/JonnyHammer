@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using JonnyHamer.Engine.Helpers;
 using JonnyHammer.Engine;
-using JonnyHammer.Engine.Entities;
-using JonnyHammer.Engine.Entities.Components;
 using JonnyHammer.Engine.Helpers;
 using JonnyHammer.Engine.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace JonnyHamer.Engine.Entities
 {
@@ -18,7 +17,7 @@ namespace JonnyHamer.Engine.Entities
         private IList<CoroutineTask> coroutines = new List<CoroutineTask>();
         protected bool isActive = true;
 
-        public  string Name { get; set; }
+        public string Name { get; set; }
         public float Scale { get; set; } = 1;
         public Vector2 Position { get; set; }
         public Direction.Horizontal FacingDirection { get; set; }
@@ -26,13 +25,13 @@ namespace JonnyHamer.Engine.Entities
 
         public virtual void Update(GameTime gameTime)
         {
-           if (!isActive)
+            if (!isActive)
                 return;
 
-           for (var i = 0; i < components.Count; i++)
+            for (var i = 0; i < components.Count; i++)
                 components[i].Update(gameTime);
 
-           UpdateCoroutines(gameTime);
+            UpdateCoroutines(gameTime);
 
         }
         public virtual void Draw(SpriteBatch spriteBatch)
@@ -98,6 +97,9 @@ namespace JonnyHamer.Engine.Entities
             yield return time;
             action();
         }
+
+        public void Destroy() => SceneManager.CurrentScene.Destroy(this);
+        public void Destroy(TimeSpan waitFor) => Invoke(Destroy, waitFor);
 
     }
 }

@@ -1,6 +1,7 @@
 ﻿using JonnyHamer.Engine.Entities.Sprites;
 using JonnyHamer.Engine.Helpers;
 using JonnyHamer.Engine.Manipulators;
+using JonnyHammer.Engine.Entities.Components.Collider;
 using JonnyHammer.Engine.Helpers;
 using Microsoft.Xna.Framework;
 
@@ -8,12 +9,14 @@ namespace JonnyHammer.Engine
 {
     public class MoveComponent : Component
     {
-        private SpriteComponent Sprite;
+        SpriteComponent Sprite;
+        ColliderComponent Collider;
         public Vector2 PreviousPosition { get; private set; }
 
         public override void Start()
         {
             Sprite = GetComponent<SpriteComponent>();
+            Collider = GetComponent<ColliderComponent>();
             MoveTo(Entity.Position);
         }
 
@@ -33,7 +36,14 @@ namespace JonnyHammer.Engine
                 position.Y = MathHelper.Clamp(position.Y, 0, Camera.AreaHeight - Sprite.Height);
             }
 
+
             Entity.Position = position;
+
+            if (Collider?.CollidesWithAnyEntity() == true)
+            {
+                Entity.Position = PreviousPosition;
+                return;
+            }
         }
 
         public void MoveTo(int x, int y, bool setFacingDirection = true, bool keepOnScreenBounds = true)
