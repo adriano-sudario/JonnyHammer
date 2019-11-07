@@ -3,6 +3,7 @@ using JonnyHamer.Engine.Entities.Sprites;
 using JonnyHamer.Engine.Helpers;
 using JonnyHamer.Engine.Inputs;
 using JonnyHammer.Engine;
+using JonnyHammer.Engine.Entities.Components;
 using JonnyHammer.Engine.Entities.Components.Collider;
 using JonnyHammer.Engine.Helpers;
 using Microsoft.Xna.Framework;
@@ -20,6 +21,7 @@ namespace JonnyHammer.Game.Characters
         KeyboardInput keyboard;
 
         MoveComponent move;
+        private PlatformComponent platform;
         AnimatedSpriteComponent animations;
 
         public BigNaruto()
@@ -29,6 +31,7 @@ namespace JonnyHammer.Game.Characters
             animations = AddComponent(CreateNarutaoAnimations());
             var collider = AddComponent(new ColliderComponent(new Rectangle(0, 0, animations.Width, animations.Height), true));
             move = AddComponent<MoveComponent>();
+            platform = AddComponent<PlatformComponent>();
 
             collider.OnCollide += (e) => { Console.WriteLine($"colidiu com {e.Name} {DateTime.UtcNow.Millisecond}"); };
 
@@ -43,6 +46,7 @@ namespace JonnyHammer.Game.Characters
             while (Scale < 3)
             {
                 Scale += 0.01f;
+                move.MoveAndSlide(0, -1);
                 yield return null; // wait 1 frame
             }
 
@@ -79,6 +83,8 @@ namespace JonnyHammer.Game.Characters
         {
             keyboard.Update();
 
+            if (keyboard.IsPressing(Keys.Space))
+                platform.AddForce(new Vector2(0, 50));
             if (keyboard.IsPressing(Keys.Right))
                 Run(Direction.Horizontal.Right);
             else if (keyboard.IsPressing(Keys.Left))

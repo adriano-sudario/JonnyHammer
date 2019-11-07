@@ -1,16 +1,14 @@
 using JonnyHamer.Engine.Entities;
 using JonnyHammer.Engine.Entities.Components.Collider;
-using JonnyHammer.Engine.Helpers;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace JonnyHammer.Tiles
 {
-    public class Floor: Entity
+    public class Floor : Entity
     {
-        public Floor() 
+        public Floor()
         {
-            AddComponent(new ColliderComponent(new Rectangle(0, 0, 100, 100), false, true));
+            AddComponent(new ColliderComponent(new Rectangle(0, 0, 1000, 30), false, true));
         }
     }
 }

@@ -52,7 +52,7 @@ namespace JonnyHamer.Engine.Entities
         }
 
         public T AddComponent<T>() where T : IComponent, new() => AddComponent(new T());
-
+        public T RequireComponent<T>() where T : IComponent, new() => GetComponent<T>() ?? AddComponent<T>();
         public T GetComponent<T>() where T : IComponent => components.OfType<T>().FirstOrDefault();
         public T[] GetComponents<T>() where T : IComponent => components.OfType<T>().ToArray();
 
