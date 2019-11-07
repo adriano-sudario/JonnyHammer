@@ -20,7 +20,7 @@ namespace JonnyHammer.Engine
             MoveTo(Entity.Position);
         }
 
-        public void MoveTo(Vector2 position, bool setFacingDirection = true, bool keepOnScreenBounds = true)
+        public bool MoveTo(Vector2 position, bool setFacingDirection = true, bool keepOnScreenBounds = true)
         {
             PreviousPosition = Entity.Position;
 
@@ -36,63 +36,64 @@ namespace JonnyHammer.Engine
                 position.Y = MathHelper.Clamp(position.Y, 0, Camera.AreaHeight - Sprite.Height);
             }
 
-
             Entity.Position = position;
 
-            if (Collider?.CollidesWithAnyEntity() == true)
+            if (Collider?.CollidesWithAnyEntity() == true || (InEndOfScreen(position) && keepOnScreenBounds))
             {
                 Entity.Position = PreviousPosition;
-                return;
+                return false;
             }
+            return true;
         }
 
-        public void MoveTo(int x, int y, bool setFacingDirection = true, bool keepOnScreenBounds = true)
-        {
+        bool InEndOfScreen(Vector2 position) =>
+            position.X + Sprite.Width == Camera.AreaWidth
+           || position.Y + Sprite.Height == Camera.AreaHeight
+           || position.X == 0
+           || position.Y == 0;
+
+
+
+        public bool MoveTo(int x, int y, bool setFacingDirection = true, bool keepOnScreenBounds = true) =>
             MoveTo(new Vector2(x, y), setFacingDirection, keepOnScreenBounds);
-        }
 
-        public void MoveHorizontally(int x, bool setFacingDirection = true, bool keepOnScreenBounds = true)
-        {
+        public void MoveHorizontally(int x, bool setFacingDirection = true, bool keepOnScreenBounds = true) =>
             MoveTo(new Vector2(x, Entity.Position.Y), setFacingDirection, keepOnScreenBounds);
-        }
 
-        public void MoveVertically(int y, bool setFacingDirection = true, bool keepOnScreenBounds = true)
-        {
+        public void MoveVertically(int y, bool setFacingDirection = true, bool keepOnScreenBounds = true) =>
             MoveTo(new Vector2(Entity.Position.X, y), setFacingDirection, keepOnScreenBounds);
-        }
 
-        public void MoveAndSlide(int x, int y, bool setFacingDirection = true, bool keepOnScreenBounds = true)
-        {
+        public void MoveAndSlide(int x, int y, bool setFacingDirection = true, bool keepOnScreenBounds = true) =>
             MoveTo(new Vector2(Entity.Position.X + x, Entity.Position.Y + y), setFacingDirection, keepOnScreenBounds);
-        }
 
-        public void MoveAndSlide(Vector2 position, bool setFacingDirection = true, bool keepOnScreenBounds = true)
-        {
-            if (position != Vector2.Zero)
-                MoveTo(Entity.Position + position, setFacingDirection, keepOnScreenBounds);
-        }
+        public bool MoveAndSlide(Vector2 position, bool setFacingDirection = true, bool keepOnScreenBounds = true) =>
+            position != Vector2.Zero && MoveTo(Entity.Position + position, setFacingDirection, keepOnScreenBounds);
 
-        public void SetOrigin(float origin, bool keepInPlace = true)
+        public bool SetOrigin(float origin, bool keepInPlace = true)
         {
             float totalScale = (Entity.Scale * Screen.Scale);
             Vector2 updatedOrigin = origin == 0 ? Vector2.Zero : new Vector2((Sprite.Width * origin) / totalScale, (Sprite.Height * origin) / totalScale);
 
             if (keepInPlace)
-                MoveAndSlide((updatedOrigin * totalScale) - (Sprite.Origin * totalScale), false);
+                return MoveAndSlide((updatedOrigin * totalScale) - (Sprite.Origin * totalScale), false);
 
             Sprite.Origin = updatedOrigin;
+
+            return true;
         }
 
-        public void SetOrigin(Vector2 origin, bool keepInPlace = true)
+        public bool SetOrigin(Vector2 origin, bool keepInPlace = true)
         {
             if (Sprite == null)
-                return;
+                return false;
 
             float totalScale = (Entity.Scale * Screen.Scale);
             Sprite.Origin = new Vector2((Sprite.Width * origin.X) / totalScale, (Sprite.Height * origin.Y) / totalScale) * -1;
 
             if (keepInPlace)
-                MoveAndSlide(Sprite.Origin * totalScale);
+                return MoveAndSlide(Sprite.Origin * totalScale);
+
+            return true;
         }
     }
 }

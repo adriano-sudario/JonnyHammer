@@ -16,12 +16,12 @@ namespace JonnyHammer.Game.Characters
     public class BigNaruto : Entity
     {
         float speed = 3f;
-        bool couldBlink = false;
+        bool isScaling = false;
 
         KeyboardInput keyboard;
 
         MoveComponent move;
-        private PlatformComponent platform;
+        private SlimPhisycsComponent platform;
         AnimatedSpriteComponent animations;
 
         public BigNaruto()
@@ -31,17 +31,16 @@ namespace JonnyHammer.Game.Characters
             animations = AddComponent(CreateNarutaoAnimations());
             var collider = AddComponent(new ColliderComponent(new Rectangle(0, 0, animations.Width, animations.Height), true));
             move = AddComponent<MoveComponent>();
-            platform = AddComponent<PlatformComponent>();
+            platform = AddComponent<SlimPhisycsComponent>();
 
             collider.OnCollide += (e) => { Console.WriteLine($"colidiu com {e.Name} {DateTime.UtcNow.Millisecond}"); };
 
-            StartCoroutine(ScaleNaruto());
-            StartCoroutine(BlinkNaruto());
         }
 
         IEnumerator ScaleNaruto()
         {
-            yield return TimeSpan.FromSeconds(3); // wait 3 seconds
+            yield return new WaitUntil(() => !isScaling);
+            isScaling = true;
 
             while (Scale < 3)
             {
@@ -56,12 +55,11 @@ namespace JonnyHammer.Game.Characters
                 yield return null;
             }
 
-            couldBlink = true;
+            isScaling = false;
         }
 
         IEnumerator BlinkNaruto()
         {
-            yield return new WaitUntil(() => couldBlink);
 
             for (var i = 0; i < 30; i++)
             {
@@ -84,7 +82,16 @@ namespace JonnyHammer.Game.Characters
             keyboard.Update();
 
             if (keyboard.IsPressing(Keys.Space))
-                platform.AddForce(new Vector2(0, 50));
+                platform.AddForce(new Vector2(0, 4));
+
+            if (keyboard.HasPressed(Keys.S))
+            {
+                StartCoroutine(ScaleNaruto());
+            }
+
+            if (keyboard.HasPressed(Keys.A))
+                StartCoroutine(BlinkNaruto());
+
             if (keyboard.IsPressing(Keys.Right))
                 Run(Direction.Horizontal.Right);
             else if (keyboard.IsPressing(Keys.Left))
