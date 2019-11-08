@@ -12,7 +12,6 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
         public Body Body { get; private set; }
         public BodyType BodyType { get; private set; }
 
-        Vector2 fix = new Vector2(Screen.Width / 2, Screen.Height / 2);
 
         public PhysicsComponent(BodyType bodyType, ColliderComponent collider)
         {
@@ -40,6 +39,7 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
             Body.SetFriction(0.5f);
             Body.BodyType = BodyType;
         }
+
 
         public override void Update(GameTime gameTime)
         {

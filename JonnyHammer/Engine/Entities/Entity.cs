@@ -26,7 +26,11 @@ namespace JonnyHamer.Engine.Entities
 
         public Entity() { }
 
-        public virtual void Start() { }
+        public virtual void Load()
+        {
+            for (var i = 0; i < components.Count; i++)
+                components[i].Start();
+        }
 
         public virtual void Update(GameTime gameTime)
         {
@@ -35,8 +39,9 @@ namespace JonnyHamer.Engine.Entities
 
             if (!didStart)
             {
-                Start();
+                Load();
                 didStart = true;
+                return;
             }
 
             for (var i = 0; i < components.Count; i++)
@@ -58,7 +63,6 @@ namespace JonnyHamer.Engine.Entities
         {
             component.SetEntity(this);
             components.Add(component);
-            component.Start();
             return component;
         }
 

@@ -26,7 +26,7 @@ namespace JonnyHammer.Game.Characters
         AnimatedSpriteComponent animations;
 
         public BigNaruto() { }
-        public override void Start()
+        public override void Load()
         {
             keyboard = new KeyboardInput();
 
@@ -37,6 +37,8 @@ namespace JonnyHammer.Game.Characters
             physics = AddComponent(new PhysicsComponent(BodyType.Dynamic, collider));
 
             collider.OnCollide += (e) => { Console.WriteLine($"colidiu com {e.Name} {DateTime.UtcNow.Millisecond}"); };
+
+            base.Load();
         }
 
         IEnumerator ScaleNaruto()
@@ -84,6 +86,7 @@ namespace JonnyHammer.Game.Characters
             base.Update(gameTime);
             keyboard.Update();
 
+            physics.Body.Mass = 1;
             if (keyboard.IsPressing(Keys.Space))
             {
                 physics.Body.ApplyLinearImpulse(new Vector2(0, -50f) * physics.Body.Mass);
