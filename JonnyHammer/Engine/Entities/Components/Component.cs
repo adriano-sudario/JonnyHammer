@@ -28,5 +28,6 @@ namespace JonnyHammer.Engine
         public void StopCoroutines() => Entity.StopCoroutines();
         public void Invoke(Action action, TimeSpan waitFor) => Entity.Invoke(action, waitFor);
 
+        public virtual void Dispose() { }
     }
 }

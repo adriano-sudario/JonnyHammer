@@ -27,9 +27,7 @@ namespace JonnyHammer.Engine.Scenes
 
         public void Destroy(Entity entity)
         {
-            if (entity is IDisposable d)
-                d.Dispose();
-
+            entity.Dispose();
             entities.Remove(entity);
         }
 

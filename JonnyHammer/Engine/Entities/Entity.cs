@@ -11,20 +11,31 @@ using System.Linq;
 
 namespace JonnyHamer.Engine.Entities
 {
-    public class Entity : IDraw, IUpdate
+    public class Entity : IDraw, IUpdate, IDisposable
     {
         private IList<IComponent> components = new List<IComponent>();
         private IList<CoroutineTask> coroutines = new List<CoroutineTask>();
         protected bool isActive = true;
         bool didStart = false;
+        private float scale = 1;
+
+        public event Action OnSetScale = delegate { };
 
         public string Name { get; set; }
-        public float Scale { get; set; } = 1;
+        public float Scale
+        {
+            get => scale; set
+            {
+                scale = value;
+                OnSetScale();
+            }
+        }
         public Vector2 Position { get; set; }
         public Direction.Horizontal FacingDirection { get; set; }
         public float Rotation { get; internal set; }
 
         public Entity() { }
+
 
         public virtual void Load()
         {
@@ -131,5 +142,10 @@ namespace JonnyHamer.Engine.Entities
         public void Destroy() => SceneManager.CurrentScene.Destroy(this);
         public void Destroy(TimeSpan waitFor) => Invoke(Destroy, waitFor);
 
+        public void Dispose()
+        {
+            for (int i = 0; i < components.Count; i++)
+                components[i].Dispose();
+        }
     }
 }

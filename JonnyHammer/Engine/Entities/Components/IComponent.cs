@@ -5,7 +5,7 @@ using System.Collections;
 
 namespace JonnyHammer.Engine
 {
-    public interface IComponent : IDraw, IUpdate
+    public interface IComponent : IDraw, IUpdate, IDisposable
     {
         Entity Entity { get; }
         void SetEntity(Entity entity);
