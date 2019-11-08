@@ -3,9 +3,8 @@ using Microsoft.Xna.Framework;
 
 namespace JonnyHammer.Engine.Entities.Components
 {
-    public class SlimPhisycsComponent : Component
+    public class SlimPhysicsComponent : Component
     {
-
         public Vector2 GravityForce => new Vector2(0, Gravity);
         public float Gravity { get; set; } = 8f;
 

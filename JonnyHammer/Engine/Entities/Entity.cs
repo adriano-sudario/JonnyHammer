@@ -16,17 +16,28 @@ namespace JonnyHamer.Engine.Entities
         private IList<IComponent> components = new List<IComponent>();
         private IList<CoroutineTask> coroutines = new List<CoroutineTask>();
         protected bool isActive = true;
+        bool didStart = false;
 
         public string Name { get; set; }
         public float Scale { get; set; } = 1;
         public Vector2 Position { get; set; }
         public Direction.Horizontal FacingDirection { get; set; }
+        public float Rotation { get; internal set; }
+
         public Entity() { }
+
+        public virtual void Start() { }
 
         public virtual void Update(GameTime gameTime)
         {
             if (!isActive)
                 return;
+
+            if (!didStart)
+            {
+                Start();
+                didStart = true;
+            }
 
             for (var i = 0; i < components.Count; i++)
                 components[i].Update(gameTime);

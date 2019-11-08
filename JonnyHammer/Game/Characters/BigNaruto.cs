@@ -3,38 +3,40 @@ using JonnyHamer.Engine.Entities.Sprites;
 using JonnyHamer.Engine.Helpers;
 using JonnyHamer.Engine.Inputs;
 using JonnyHammer.Engine;
-using JonnyHammer.Engine.Entities.Components;
 using JonnyHammer.Engine.Entities.Components.Collider;
+using JonnyHammer.Engine.Entities.Components.Phisycs;
 using JonnyHammer.Engine.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections;
+using tainicom.Aether.Physics2D.Dynamics;
 
 namespace JonnyHammer.Game.Characters
 {
     public class BigNaruto : Entity
     {
-        float speed = 3f;
+        float speed = 10f;
         bool isScaling = false;
 
         KeyboardInput keyboard;
 
         MoveComponent move;
-        private SlimPhisycsComponent platform;
+        PhysicsComponent physics;
         AnimatedSpriteComponent animations;
 
-        public BigNaruto()
+        public BigNaruto() { }
+        public override void Start()
         {
             keyboard = new KeyboardInput();
 
             animations = AddComponent(CreateNarutaoAnimations());
             var collider = AddComponent(new ColliderComponent(new Rectangle(0, 0, animations.Width, animations.Height), true));
             move = AddComponent<MoveComponent>();
-            platform = AddComponent<SlimPhisycsComponent>();
+            //physics = AddComponent<SlimPhysicsComponent>();
+            physics = AddComponent(new PhysicsComponent(BodyType.Dynamic, collider));
 
             collider.OnCollide += (e) => { Console.WriteLine($"colidiu com {e.Name} {DateTime.UtcNow.Millisecond}"); };
-
         }
 
         IEnumerator ScaleNaruto()
@@ -79,10 +81,15 @@ namespace JonnyHammer.Game.Characters
 
         public override void Update(GameTime gameTime)
         {
+            base.Update(gameTime);
             keyboard.Update();
 
             if (keyboard.IsPressing(Keys.Space))
-                platform.AddForce(new Vector2(0, 4));
+            {
+                physics.Body.ApplyLinearImpulse(new Vector2(0, -50f) * physics.Body.Mass);
+
+            }
+            //physics.AddForce(new Vector2(0, 4));
 
             if (keyboard.HasPressed(Keys.S))
             {
@@ -100,14 +107,20 @@ namespace JonnyHammer.Game.Characters
                 animations.Change("Idle");
 
 
-            base.Update(gameTime);
         }
 
         public void Run(Direction.Horizontal direction)
         {
             animations.Change("Running");
-            move.MoveAndSlide(new Vector2(
-                direction == Direction.Horizontal.Left ? -speed : speed, 0));
+
+            if (FacingDirection != direction)
+                physics.Body.LinearVelocity = new Vector2(0, physics.Body.LinearVelocity.Y);
+
+            FacingDirection = direction;
+            var m = new Vector2(direction == Direction.Horizontal.Left ? -speed : speed, 0);
+            //move.MoveAndSlide(m);
+            physics.Body.ApplyLinearImpulse(m * physics.Body.Mass);
+
         }
 
 

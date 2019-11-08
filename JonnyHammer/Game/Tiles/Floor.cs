@@ -1,6 +1,8 @@
 using JonnyHamer.Engine.Entities;
 using JonnyHammer.Engine.Entities.Components.Collider;
+using JonnyHammer.Engine.Entities.Components.Phisycs;
 using Microsoft.Xna.Framework;
+using tainicom.Aether.Physics2D.Dynamics;
 
 namespace JonnyHammer.Tiles
 {
@@ -8,7 +10,15 @@ namespace JonnyHammer.Tiles
     {
         public Floor()
         {
-            AddComponent(new ColliderComponent(new Rectangle(0, 0, 1000, 30), false, true));
+        }
+
+        public override void Start()
+        {
+            base.Start();
+
+            var collider = AddComponent(new ColliderComponent(new Rectangle(0, 0, 1000, 30), false, true));
+            AddComponent(new PhysicsComponent(BodyType.Static, collider));
+
         }
     }
 }

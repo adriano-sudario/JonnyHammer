@@ -40,12 +40,6 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
             AutoCheck = autoCheck;
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            if (!IsDebug) return;
-
-            spriteBatch.Draw(debugTexture, Bounds, Color.White);
-        }
 
         public bool CollidesWithAnyEntity(bool stopOnFirst = false) => CollidesWithAnyEntity(out var _, stopOnFirst);
         public bool CollidesWithAnyEntity(out Entity[] entity, bool stopOnFirst = false)
@@ -93,11 +87,10 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
 
         public bool CollidesWith(Entity entity)
         {
-            if (Entity == entity)
+            if (Entity == entity || IsTrigger)
                 return false;
 
             var colliders = entity.GetComponents<ColliderComponent>();
-
             for (var i = 0; i < colliders.Length; i++)
                 if (CollidesWith(colliders[i]))
                     return true;
@@ -116,6 +109,12 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
 
 
             base.Update(gameTime);
+        }
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            if (!IsDebug) return;
+
+            spriteBatch.Draw(debugTexture, Bounds, Color.White);
         }
     }
 }
