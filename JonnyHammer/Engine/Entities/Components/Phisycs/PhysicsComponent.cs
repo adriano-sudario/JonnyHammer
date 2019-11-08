@@ -21,7 +21,6 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
 
         public override void Start()
         {
-            base.Start();
             Configure();
         }
 
@@ -35,7 +34,7 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
             collider.IsTrigger = true;
             collider.AutoCheck = false;
 
-            Body.SetRestitution(0.3f);
+            Body.SetRestitution(0.7f);
             Body.SetFriction(0.5f);
             Body.BodyType = BodyType;
         }

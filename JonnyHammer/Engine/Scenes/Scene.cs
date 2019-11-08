@@ -19,7 +19,7 @@ namespace JonnyHammer.Engine.Scenes
         public Scene()
         {
             World = new World();
-            World.Gravity = new Vector2(0, 100);
+            World.Gravity = new Vector2(0, 200);
 
             if (SceneManager.CurrentScene == null)
                 SceneManager.CurrentScene = this;
@@ -44,7 +44,7 @@ namespace JonnyHammer.Engine.Scenes
         {
             WorldStep(gameTime);
             for (int i = 0; i < entities.Count; i++)
-                entities[i].Update(gameTime);
+                entities[i].FullUpdate(gameTime);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)

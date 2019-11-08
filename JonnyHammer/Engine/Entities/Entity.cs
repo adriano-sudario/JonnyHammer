@@ -28,11 +28,25 @@ namespace JonnyHamer.Engine.Entities
 
         public virtual void Load()
         {
+        }
+
+        void BaseLoad()
+        {
             for (var i = 0; i < components.Count; i++)
                 components[i].Start();
         }
 
-        public virtual void Update(GameTime gameTime)
+
+        public virtual void Update(GameTime gameTime) { }
+
+        void IUpdate.Update(GameTime gameTime) => FullUpdate(gameTime);
+        public void FullUpdate(GameTime gameTime)
+        {
+            BaseUpdate(gameTime);
+            Update(gameTime);
+        }
+
+        private void BaseUpdate(GameTime gameTime)
         {
             if (!isActive)
                 return;
@@ -40,6 +54,7 @@ namespace JonnyHamer.Engine.Entities
             if (!didStart)
             {
                 Load();
+                BaseLoad();
                 didStart = true;
                 return;
             }
@@ -48,8 +63,8 @@ namespace JonnyHamer.Engine.Entities
                 components[i].Update(gameTime);
 
             UpdateCoroutines(gameTime);
-
         }
+
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (!isActive)

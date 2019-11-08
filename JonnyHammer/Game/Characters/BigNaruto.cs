@@ -38,7 +38,6 @@ namespace JonnyHammer.Game.Characters
 
             collider.OnCollide += (e) => { Console.WriteLine($"colidiu com {e.Name} {DateTime.UtcNow.Millisecond}"); };
 
-            base.Load();
         }
 
         IEnumerator ScaleNaruto()
