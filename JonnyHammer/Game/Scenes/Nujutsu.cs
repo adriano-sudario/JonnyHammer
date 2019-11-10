@@ -23,7 +23,9 @@ namespace JonnyHammer.Game.Scenes
             narutao = Spawn<BigNarutoFisica>("Narutao", new Vector2(100, 200));
             //narutao = Spawn<BigNaruto>("Narutao", new Vector2(100, 200));
 
-            Spawn<Floor>("Chao", new Vector2(0, 350));
+            Spawn<Floor>("Chao 1", new Vector2(0, 350), f => f.Width = 600);
+            Spawn<Floor>("Chao 2", new Vector2(700, 350), f => f.Width = 500);
+            Spawn<Floor>("Chao 2", new Vector2(1300, 300), f => f.Width = 400);
         }
 
         public override void Update(GameTime gameTime)

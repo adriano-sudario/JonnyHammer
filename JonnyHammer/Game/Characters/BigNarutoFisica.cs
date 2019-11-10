@@ -16,27 +16,52 @@ namespace JonnyHammer.Game.Characters
 {
     public class BigNarutoFisica : Entity
     {
+        enum State
+        {
+            Grounded,
+            Jumping,
+        }
+
         float force = 0.3f;
         bool isScaling = false;
+        State state = State.Jumping;
 
         KeyboardInput keyboard;
 
-        MoveComponent move;
         PhysicsComponent physics;
         AnimatedSpriteComponent animations;
 
+
+
         public BigNarutoFisica() { }
+
+
         public override void Load()
         {
             keyboard = new KeyboardInput();
 
             animations = AddComponent(CreateNarutaoAnimations());
-            var collider = AddComponent(new ColliderComponent(new Rectangle(0, 0, animations.Width, animations.Height), true));
-            move = AddComponent<MoveComponent>();
-            physics = AddComponent(new PhysicsComponent(BodyType.Dynamic, collider));
+
+            var debugColor = Color.Green;
+            debugColor.A = 90;
+            var collider = AddComponent(new ColliderComponent(new Rectangle(0, 0, animations.Width, animations.Height), autoCheck: true, isDebug: true, debugColor));
+
+            var floorTrigger = AddComponent(new ColliderComponent(new Rectangle(5, animations.Height, animations.Width - 10, 10), autoCheck: true, isDebug: true, Color.Yellow));
+            floorTrigger.IsTrigger = true;
+
+
 
             collider.OnCollide += (e) => { Console.WriteLine($"colidiu com {e.Name} {DateTime.UtcNow.Millisecond}"); };
 
+
+            floorTrigger.OnTrigger += (e) =>
+            {
+                Console.WriteLine($"pisou no chao");
+                state = State.Grounded;
+            };
+
+
+            physics = AddComponent(new PhysicsComponent(BodyType.Dynamic, collider));
         }
 
         IEnumerator ScaleNaruto()
@@ -84,10 +109,11 @@ namespace JonnyHammer.Game.Characters
             keyboard.Update();
 
             physics.Body.Mass = 1;
-            if (keyboard.IsPressing(Keys.Space))
+            if (keyboard.IsPressing(Keys.Space) && state != State.Jumping)
             {
                 physics.Body.ApplyLinearImpulse(new Vector2(0, -1f));
-
+                state = State.Jumping;
+                Console.WriteLine("Pulou!!!!");
             }
 
             if (keyboard.HasPressed(Keys.S))

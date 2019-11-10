@@ -31,10 +31,11 @@ namespace JonnyHammer.Engine.Scenes
             entities.Remove(entity);
         }
 
-        public T Spawn<T>(string name = "no name", Vector2? position = null) where T : Entity, new()
+        public T Spawn<T>(string name = "no name", Vector2? position = null, Action<T> configure = null) where T : Entity, new()
         {
             var entity = new T { Position = position ?? Vector2.Zero, FacingDirection = Direction.Horizontal.Right, Name = name };
             entities.Add(entity);
+            configure?.Invoke(entity);
             return entity;
         }
 

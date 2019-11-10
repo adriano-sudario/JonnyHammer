@@ -21,6 +21,7 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
         private Texture2D debugTexture;
 
         public event Action<Entity> OnCollide = delegate { };
+        public event Action<Entity> OnTrigger = delegate { };
 
         PhysicsComponent physics = null;
 
@@ -36,17 +37,17 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
             private set => bounds = value;
         }
 
-        public ColliderComponent(Rectangle rectangle, bool autoCheck = false, bool isDebug = false)
+        public ColliderComponent(Rectangle rectangle, bool autoCheck = false, bool isDebug = false, Color? debugColor = null)
         {
             IsDebug = isDebug && System.Diagnostics.Debugger.IsAttached;
             Bounds = rectangle;
-            debugTexture = Core.GetDebugTexture(Color.Red);
+            debugTexture = Core.GetDebugTexture(debugColor ?? Color.Red);
             AutoCheck = autoCheck;
         }
 
 
-        public bool CollidesWithAnyEntity(bool stopOnFirst = false) => CollidesWithAnyEntity(out var _, stopOnFirst);
-        public bool CollidesWithAnyEntity(out Entity[] entity, bool stopOnFirst = false)
+        public bool CollideOrTriggersWithAnyEntity(bool stopOnFirst = false) => CollideOrTriggersWithAnyEntity(out var _, stopOnFirst);
+        public bool CollideOrTriggersWithAnyEntity(out Entity[] entity, bool stopOnFirst = false)
         {
             if (SceneManager.CurrentScene == null)
             {
@@ -58,7 +59,7 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
             var entityList = new List<Entity>();
 
             for (int i = 0; i < entities.Count; i++)
-                if (CollidesWith(entities[i]))
+                if (!IsTrigger && CollidesWith(entities[i]) || (IsTrigger && TriggerWith(entities[i])))
                 {
                     if (stopOnFirst)
                     {
@@ -104,6 +105,22 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
 
             return false;
         }
+        public bool TriggerWith(Rectangle rectangle) => Bounds.Intersects(rectangle);
+
+        public bool TriggerWith(ColliderComponent collider) => CollidesWith(collider.Bounds);
+
+        public bool TriggerWith(Entity entity)
+        {
+            if (Entity == entity || !IsTrigger)
+                return false;
+
+            var colliders = entity.GetComponents<ColliderComponent>();
+            for (var i = 0; i < colliders.Length; i++)
+                if (CollidesWith(colliders[i]))
+                    return true;
+
+            return false;
+        }
 
         public override void Start()
         {
@@ -115,10 +132,14 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
             if (!AutoCheck)
                 return;
 
-            if (CollidesWithAnyEntity(out var collidedEntities))
+            if (CollideOrTriggersWithAnyEntity(out var collidedEntities))
                 for (var i = 0; i < collidedEntities.Length; i++)
-                    OnCollide(collidedEntities[i]);
-
+                {
+                    if (IsTrigger)
+                        OnTrigger(collidedEntities[i]);
+                    else
+                        OnCollide(collidedEntities[i]);
+                }
 
             base.Update(gameTime);
         }

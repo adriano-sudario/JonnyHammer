@@ -38,7 +38,7 @@ namespace JonnyHammer.Engine
 
             Entity.Position = position;
 
-            if (Collider?.CollidesWithAnyEntity() == true || (InEndOfScreen(position) && keepOnScreenBounds))
+            if ((Collider?.IsTrigger == false && Collider.CollideOrTriggersWithAnyEntity()) || (InEndOfScreen(position) && keepOnScreenBounds))
             {
                 Entity.Position = PreviousPosition;
                 return false;

@@ -8,10 +8,12 @@ namespace JonnyHammer.Tiles
 {
     public class Floor : Entity
     {
+        public int Width = 1000;
+
+
         public override void Load()
         {
-
-            var collider = AddComponent(new ColliderComponent(new Rectangle(0, 0, 1000, 30), false, true));
+            var collider = AddComponent(new ColliderComponent(new Rectangle(0, 0, Width, 30), false, true));
             AddComponent(new PhysicsComponent(BodyType.Static, collider));
 
             base.Load();
