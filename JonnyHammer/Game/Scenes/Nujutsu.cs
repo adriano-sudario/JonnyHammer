@@ -3,6 +3,7 @@ using JonnyHamer.Engine.Helpers;
 using JonnyHamer.Engine.Manipulators;
 using JonnyHammer.Engine.Scenes;
 using JonnyHammer.Game.Characters;
+using JonnyHammer.Game.Tiles;
 using JonnyHammer.Tiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -26,6 +27,11 @@ namespace JonnyHammer.Game.Scenes
             Spawn<Floor>("Chao 1", new Vector2(0, 350), f => f.Width = 600);
             Spawn<Floor>("Chao 2", new Vector2(700, 350), f => f.Width = 500);
             Spawn<Floor>("Chao 2", new Vector2(1300, 300), f => f.Width = 400);
+
+
+            Spawn<Box>("Box 1", new Vector2(800, 300));
+            Spawn<Box>("Box 2", new Vector2(800, 250));
+            Spawn<Box>("Box 3", new Vector2(800, 200));
         }
 
         public override void Update(GameTime gameTime)

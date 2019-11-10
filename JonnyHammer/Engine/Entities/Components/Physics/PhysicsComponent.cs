@@ -30,8 +30,8 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
 
         public override void Start()
         {
-            Entity.OnSetScale += Entity_OnSetScale;
             Configure();
+            Entity.OnSetScale += Entity_OnSetScale;
         }
 
         public override void Dispose()

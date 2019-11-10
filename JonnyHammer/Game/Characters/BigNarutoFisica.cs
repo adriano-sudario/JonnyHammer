@@ -108,7 +108,6 @@ namespace JonnyHammer.Game.Characters
             base.Update(gameTime);
             keyboard.Update();
 
-            physics.Body.Mass = 1;
             if (keyboard.IsPressing(Keys.Space) && state != State.Jumping)
             {
                 physics.Body.ApplyLinearImpulse(new Vector2(0, -1f));
