@@ -16,7 +16,7 @@ namespace JonnyHammer.Game.Characters
 {
     public class BigNarutoFisica : Entity
     {
-        float speed = 10f;
+        float force = 0.3f;
         bool isScaling = false;
 
         KeyboardInput keyboard;
@@ -33,7 +33,6 @@ namespace JonnyHammer.Game.Characters
             animations = AddComponent(CreateNarutaoAnimations());
             var collider = AddComponent(new ColliderComponent(new Rectangle(0, 0, animations.Width, animations.Height), true));
             move = AddComponent<MoveComponent>();
-            //physics = AddComponent<SlimPhysicsComponent>();
             physics = AddComponent(new PhysicsComponent(BodyType.Dynamic, collider));
 
             collider.OnCollide += (e) => { Console.WriteLine($"colidiu com {e.Name} {DateTime.UtcNow.Millisecond}"); };
@@ -48,7 +47,6 @@ namespace JonnyHammer.Game.Characters
             while (Scale < 3)
             {
                 Scale += 0.01f;
-                move.MoveAndSlide(0, -1);
                 yield return null; // wait 1 frame
             }
 
@@ -88,7 +86,7 @@ namespace JonnyHammer.Game.Characters
             physics.Body.Mass = 1;
             if (keyboard.IsPressing(Keys.Space))
             {
-                physics.Body.ApplyLinearImpulse(new Vector2(0, -100f) * physics.Body.Mass);
+                physics.Body.ApplyLinearImpulse(new Vector2(0, -1f));
 
             }
 
@@ -118,8 +116,7 @@ namespace JonnyHammer.Game.Characters
                 physics.Body.LinearVelocity = new Vector2(0, physics.Body.LinearVelocity.Y);
 
             FacingDirection = direction;
-            var m = new Vector2(direction == Direction.Horizontal.Left ? -speed : speed, 0);
-            //move.MoveAndSlide(m);
+            var m = new Vector2(direction == Direction.Horizontal.Left ? -force : force, 0);
             physics.Body.ApplyLinearImpulse(m * physics.Body.Mass);
 
         }

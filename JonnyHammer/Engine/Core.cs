@@ -1,7 +1,7 @@
-﻿using System;
-using JonnyHamer.Engine.Helpers;
+﻿using JonnyHamer.Engine.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace JonnyHammer.Engine
 {
@@ -13,13 +13,13 @@ namespace JonnyHammer.Engine
         private static Texture2D debugTexture;
         public static Texture2D GetDebugTexture(Color color)
         {
-            var texture = new Texture2D(debugTexture.GraphicsDevice, 1 ,1 );
+            var texture = new Texture2D(debugTexture.GraphicsDevice, 1, 1);
             if (color.A > 150) color.A = 150;
             texture.SetData(new[] { color });
             return texture;
         }
-        
-        
+
+
         public static Color Color { get; set; }
         public static Action Quit { get; private set; }
         public static bool IsFullScreen
@@ -56,7 +56,7 @@ namespace JonnyHammer.Engine
             Loader.Initialize(Content);
             Screen.Initialize(graphics, GraphicsDevice);
             IsFullScreen = isFullScreen;
-            debugTexture = new Texture2D(GraphicsDevice, 1 , 1);
+            debugTexture = new Texture2D(GraphicsDevice, 1, 1);
         }
 
         protected override void UnloadContent() { }

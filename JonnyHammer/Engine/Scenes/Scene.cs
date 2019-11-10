@@ -19,7 +19,7 @@ namespace JonnyHammer.Engine.Scenes
         public Scene()
         {
             World = new World();
-            World.Gravity = new Vector2(0, 200);
+            World.Gravity = new Vector2(0, 10);
 
             if (SceneManager.CurrentScene == null)
                 SceneManager.CurrentScene = this;

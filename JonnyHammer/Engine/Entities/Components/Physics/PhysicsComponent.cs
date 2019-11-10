@@ -12,7 +12,9 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
 
         public Body Body { get; private set; }
         public BodyType BodyType { get; private set; }
+        public Vector2 MaxVelocity { get; set; } = new Vector2(3, 3);
 
+        const float PixelsPerMeter = 100;
 
         public PhysicsComponent(BodyType bodyType, ColliderComponent collider)
         {
@@ -34,12 +36,19 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
             base.Dispose();
         }
 
+        float width => collider.Bounds.Width / PixelsPerMeter;
+        float height => collider.Bounds.Height / PixelsPerMeter;
+
+        float x => collider.Bounds.X / PixelsPerMeter;
+        float y => collider.Bounds.Y / PixelsPerMeter;
+
+
         void Entity_OnSetScale()
         {
             var fixture = Body.FixtureList[0];
             var d = fixture.Shape.Density;
             Body.Remove(fixture);
-            var rectangleVertices = PolygonTools.CreateRectangle(collider.Bounds.Width / 2, collider.Bounds.Height / 2);
+            var rectangleVertices = PolygonTools.CreateRectangle(width / 2, height / 2);
             Body.CreatePolygon(rectangleVertices, d);
         }
 
@@ -54,12 +63,12 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
         private Body CreateBody()
         {
             var body = SceneManager.CurrentScene.World.CreateRectangle(
-                collider.Bounds.Width,
-                collider.Bounds.Height,
-                1f, new Vector2(collider.Bounds.X + collider.Bounds.Width / 2, collider.Bounds.Y - collider.Bounds.Height / 2));
+                width,
+                height,
+                1f, new Vector2(x + width / 2, y - height / 2));
 
-            body.SetRestitution(0.7f);
-            body.SetFriction(1.5f);
+            //body.SetRestitution(0.5f);
+            body.SetFriction(0.3f);
             body.BodyType = BodyType;
             body.Tag = Entity.Name;
             body.OnCollision += Body_OnCollision;
@@ -75,8 +84,26 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
         public override void Update(GameTime gameTime)
         {
 
-            Entity.Position = Body.Position - new Vector2(collider.Bounds.Width, collider.Bounds.Height) / 2;
+            Entity.Position = (Body.Position - new Vector2(width, height) / 2) * PixelsPerMeter;
             Entity.Rotation = Body.Rotation;
+
+
+            if (MaxVelocity.Y > 0)
+            {
+                if (Body.LinearVelocity.Y > MaxVelocity.Y)
+                    Body.LinearVelocity = new Vector2(Body.LinearVelocity.X, MaxVelocity.Y);
+
+                if (Body.LinearVelocity.Y < -MaxVelocity.Y)
+                    Body.LinearVelocity = new Vector2(Body.LinearVelocity.X, -MaxVelocity.Y);
+            }
+
+            if (MaxVelocity.X > 0)
+            {
+                if (Body.LinearVelocity.X > MaxVelocity.X)
+                    Body.LinearVelocity = new Vector2(MaxVelocity.X, Body.LinearVelocity.Y);
+                if (Body.LinearVelocity.X < -MaxVelocity.X)
+                    Body.LinearVelocity = new Vector2(-MaxVelocity.X, Body.LinearVelocity.Y);
+            }
 
             base.Update(gameTime);
         }
