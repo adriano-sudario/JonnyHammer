@@ -11,21 +11,28 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
     public class PhysicsComponent : Component
     {
         readonly ColliderComponent collider;
+        private readonly float mass;
 
         public Body Body { get; private set; }
         public BodyType BodyType { get; private set; }
         public Vector2 MaxVelocity { get; set; } = new Vector2(3, 3);
 
-        const float PixelsPerMeter = 100;
+        public Vector2 Velocity
+        {
+            get => Body.LinearVelocity;
+            set => Body.LinearVelocity = value;
+        }
+
+        public const float PixelsPerMeter = 100;
 
         public IList<Body> Collided { get; } = new List<Body>();
 
 
-        public PhysicsComponent(BodyType bodyType, ColliderComponent collider)
+        public PhysicsComponent(BodyType bodyType, ColliderComponent collider, float mass = 1)
         {
             BodyType = bodyType;
             this.collider = collider;
-
+            this.mass = mass;
         }
 
         public override void Start()
@@ -78,6 +85,7 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
             body.Tag = Entity.Name;
             body.OnCollision += Body_OnCollision;
             body.Tag = Entity;
+            body.Mass = mass;
             return body;
         }
 
@@ -114,6 +122,21 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
             Collided.Clear();
         }
 
+        public void SetVelocity(float? x = null, float? y = null, bool noconvert = false)
+        {
+            var convertFactor = (noconvert ? 1 : PixelsPerMeter);
 
+            var newX = x.HasValue ? x.Value / convertFactor : Body.LinearVelocity.X;
+            var newY = y.HasValue ? y.Value / convertFactor : Body.LinearVelocity.Y;
+            Velocity = new Vector2(newX, newY);
+        }
+
+        public void ApplyForce(Vector2 force) => Body.ApplyLinearImpulse(force);
+
+        public void SetVelocity(Vector2 velocity, bool noconvert = false) =>
+            Velocity = velocity / (noconvert ? 1 : PixelsPerMeter);
+
+        public void MoveForward(float addPosition) =>
+            SetVelocity(addPosition, Body.LinearVelocity.Y, true);
     }
 }

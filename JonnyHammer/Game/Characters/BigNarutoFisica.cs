@@ -22,7 +22,7 @@ namespace JonnyHammer.Game.Characters
             Jumping,
         }
 
-        float force = 0.3f;
+        float speed = 3f;
         bool isScaling = false;
         State state = State.Jumping;
 
@@ -50,7 +50,6 @@ namespace JonnyHammer.Game.Characters
             floorTrigger.IsTrigger = true;
 
 
-
             collider.OnCollide += (e) => { Console.WriteLine($"colidiu com {e.Name} {DateTime.UtcNow.Millisecond}"); };
 
 
@@ -61,7 +60,7 @@ namespace JonnyHammer.Game.Characters
             };
 
 
-            physics = AddComponent(new PhysicsComponent(BodyType.Dynamic, collider));
+            physics = AddComponent(new PhysicsComponent(BodyType.Dynamic, collider, mass: 1));
         }
 
         IEnumerator ScaleNaruto()
@@ -110,7 +109,7 @@ namespace JonnyHammer.Game.Characters
 
             if (keyboard.IsPressing(Keys.Space) && state != State.Jumping)
             {
-                physics.Body.ApplyLinearImpulse(new Vector2(0, -1f));
+                physics.ApplyForce(new Vector2(0, -1f));
                 state = State.Jumping;
                 Console.WriteLine("Pulou!!!!");
             }
@@ -128,22 +127,24 @@ namespace JonnyHammer.Game.Characters
             else if (keyboard.IsPressing(Keys.Left))
                 Run(Direction.Horizontal.Left);
             else
+            {
                 animations.Change("Idle");
-
+                if (physics.Velocity.X != 0) Stop();
+            }
 
         }
+
+        void Stop() => physics.SetVelocity(x: 0);
 
         public void Run(Direction.Horizontal direction)
         {
             animations.Change("Running");
-
-            if (FacingDirection != direction)
-                physics.Body.LinearVelocity = new Vector2(0, physics.Body.LinearVelocity.Y);
-
             FacingDirection = direction;
-            var m = new Vector2(direction == Direction.Horizontal.Left ? -force : force, 0);
-            physics.Body.ApplyLinearImpulse(m * physics.Body.Mass);
 
+            if (FacingDirection != direction) Stop();
+
+            var m = direction == Direction.Horizontal.Left ? -speed : speed;
+            physics.MoveForward(m);
         }
 
 
