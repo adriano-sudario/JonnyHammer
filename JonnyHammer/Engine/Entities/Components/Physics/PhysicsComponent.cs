@@ -1,8 +1,10 @@
 ﻿using JonnyHamer.Engine.Helpers;
 using JonnyHammer.Engine.Entities.Components.Collider;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using tainicom.Aether.Physics2D.Common;
 using tainicom.Aether.Physics2D.Dynamics;
+using tainicom.Aether.Physics2D.Dynamics.Contacts;
 
 namespace JonnyHammer.Engine.Entities.Components.Phisycs
 {
@@ -15,6 +17,9 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
         public Vector2 MaxVelocity { get; set; } = new Vector2(3, 3);
 
         const float PixelsPerMeter = 100;
+
+        public IList<Body> Collided { get; } = new List<Body>();
+
 
         public PhysicsComponent(BodyType bodyType, ColliderComponent collider)
         {
@@ -68,16 +73,17 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
                 1f, new Vector2(x + width / 2, y - height / 2));
 
             //body.SetRestitution(0.5f);
-            body.SetFriction(0.3f);
+            //body.SetFriction(0.3f);
             body.BodyType = BodyType;
             body.Tag = Entity.Name;
             body.OnCollision += Body_OnCollision;
-
+            body.Tag = Entity;
             return body;
         }
 
-        private bool Body_OnCollision(Fixture sender, Fixture other, tainicom.Aether.Physics2D.Dynamics.Contacts.Contact contact)
+        private bool Body_OnCollision(Fixture sender, Fixture other, Contact contact)
         {
+            Collided.Add(other.Body);
             return true;
         }
 
@@ -105,7 +111,7 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
                     Body.LinearVelocity = new Vector2(-MaxVelocity.X, Body.LinearVelocity.Y);
             }
 
-            base.Update(gameTime);
+            Collided.Clear();
         }
 
 

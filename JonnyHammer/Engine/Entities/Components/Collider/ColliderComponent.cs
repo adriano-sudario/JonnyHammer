@@ -1,6 +1,7 @@
 ﻿using JonnyHamer.Engine.Entities;
 using JonnyHamer.Engine.Entities.Sprites;
 using JonnyHamer.Engine.Helpers;
+using JonnyHammer.Engine.Entities.Components.Phisycs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -20,6 +21,9 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
         private Texture2D debugTexture;
 
         public event Action<Entity> OnCollide = delegate { };
+
+        PhysicsComponent physics = null;
+
 
         public Rectangle Bounds
         {
@@ -90,12 +94,20 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
             if (Entity == entity || IsTrigger)
                 return false;
 
+            if (physics?.Collided.Count > 0 && physics.Collided.Any(x => x.Tag == entity))
+                return true;
+
             var colliders = entity.GetComponents<ColliderComponent>();
             for (var i = 0; i < colliders.Length; i++)
                 if (CollidesWith(colliders[i]))
                     return true;
 
             return false;
+        }
+
+        public override void Start()
+        {
+            physics = Entity.GetComponent<PhysicsComponent>();
         }
 
         public override void Update(GameTime gameTime)
