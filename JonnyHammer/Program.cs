@@ -13,8 +13,8 @@ namespace JonnyHammer
         [STAThread]
         static void Main()
         {
-            using (var game = new Main())
-                game.Run();
+            using var game = new Main();
+            game.Run();
         }
     }
 }
