@@ -1,8 +1,10 @@
-﻿using JonnyHamer.Engine.Entities;
+﻿using Caieta.Components.Utils;
+using JonnyHamer.Engine.Entities;
 using JonnyHamer.Engine.Entities.Sprites;
 using JonnyHamer.Engine.Helpers;
 using JonnyHamer.Engine.Inputs;
 using JonnyHammer.Engine;
+using JonnyHammer.Engine.Entities.Components;
 using JonnyHammer.Engine.Entities.Components.Collider;
 using JonnyHammer.Engine.Entities.Components.Phisycs;
 using JonnyHammer.Engine.Helpers;
@@ -48,7 +50,7 @@ namespace JonnyHammer.Game.Characters
 
             var floorTrigger = AddComponent(new ColliderComponent(new Rectangle(5, animations.Height, animations.Width - 10, 10), autoCheck: true, isDebug: true, Color.Yellow));
             floorTrigger.IsTrigger = true;
-
+            AddComponent(new TweenComponent(TweenMode.Loop, TweenProperty.Scale, 2, EaseFunction.BigBackInOut, 1000));
 
             collider.OnCollide += (e) => { Console.WriteLine($"colidiu com {e.Name} {DateTime.UtcNow.Millisecond}"); };
 

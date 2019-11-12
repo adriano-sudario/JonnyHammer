@@ -1,4 +1,5 @@
-﻿using JonnyHamer.Engine.Entities;
+﻿using Caieta.Components.Utils;
+using JonnyHamer.Engine.Entities;
 using JonnyHamer.Engine.Entities.Sprites;
 using JonnyHamer.Engine.Helpers;
 using JonnyHamer.Engine.Inputs;
@@ -32,6 +33,7 @@ namespace JonnyHammer.Game.Characters
             var collider = AddComponent(new ColliderComponent(new Rectangle(0, 0, animations.Width, animations.Height), true));
             move = AddComponent<MoveComponent>();
             platform = AddComponent<SlimPhysicsComponent>();
+            AddComponent(new TweenComponent(TweenMode.Loop, TweenProperty.X, 10, EaseFunction.ElasticIn, 1000));
 
             collider.OnCollide += (e) => { Console.WriteLine($"colidiu com {e.Name} {DateTime.UtcNow.Millisecond}"); };
 
