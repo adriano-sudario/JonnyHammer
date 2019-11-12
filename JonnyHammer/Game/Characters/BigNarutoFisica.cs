@@ -130,8 +130,6 @@ namespace JonnyHammer.Game.Characters
             if (keyboard.HasPressed(Keys.A))
                 StartCoroutine(BlinkNaruto());
 
-            if (keyboard.HasPressed(Keys.LeftShift))
-                Dash();
 
             if (keyboard.IsPressing(Keys.Right))
                 Run(Direction.Horizontal.Right);
@@ -139,14 +137,13 @@ namespace JonnyHammer.Game.Characters
                 Run(Direction.Horizontal.Left);
             else
             {
-                if (state != State.Dashing)
-                {
-                    animations.Change("Idle");
-                    if (physics.Velocity.X != 0)
-                        physics.SetVelocity(x: physics.Velocity.X * .8f, noconvert: true);
-                }
+                animations.Change("Idle");
+                if (physics.Velocity.X != 0)
+                    physics.SetVelocity(x: physics.Velocity.X * .8f, noconvert: true);
             }
 
+            if (keyboard.HasPressed(Keys.LeftShift))
+                Dash();
 
         }
 
