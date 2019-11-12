@@ -80,7 +80,7 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
                 1f, new Vector2(x + width / 2, y - height / 2));
 
             //body.SetRestitution(0.5f);
-            //body.SetFriction(0.3f);
+            ///body.SetFriction(0.3f);
             body.BodyType = BodyType;
             body.Tag = Entity.Name;
             body.OnCollision += Body_OnCollision;
