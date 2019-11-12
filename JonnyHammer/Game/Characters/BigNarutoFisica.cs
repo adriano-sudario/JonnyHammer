@@ -20,6 +20,7 @@ namespace JonnyHammer.Game.Characters
         {
             Grounded,
             Jumping,
+            Dashing,
         }
 
         float speed = 3f;
@@ -56,7 +57,9 @@ namespace JonnyHammer.Game.Characters
             floorTrigger.OnTrigger += (e) =>
             {
                 Console.WriteLine($"pisou no chao");
-                state = State.Grounded;
+
+                if (state != State.Dashing)
+                    state = State.Grounded;
             };
 
 
@@ -105,6 +108,13 @@ namespace JonnyHammer.Game.Characters
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
+            if (state == State.Dashing)
+            {
+                physics.ApplyForce(new Vector2((FacingDirection == Direction.Horizontal.Left ? -1 : 1) * 2.8f, 0)); //-SceneManager.CurrentScene.World.Gravity.Y));
+                return;
+            }
+
             keyboard.Update();
 
             if (keyboard.IsPressing(Keys.Space) && state != State.Jumping)
@@ -115,12 +125,13 @@ namespace JonnyHammer.Game.Characters
             }
 
             if (keyboard.HasPressed(Keys.S))
-            {
                 StartCoroutine(ScaleNaruto());
-            }
 
             if (keyboard.HasPressed(Keys.A))
                 StartCoroutine(BlinkNaruto());
+
+            if (keyboard.HasPressed(Keys.LeftShift))
+                Dash();
 
             if (keyboard.IsPressing(Keys.Right))
                 Run(Direction.Horizontal.Right);
@@ -128,10 +139,34 @@ namespace JonnyHammer.Game.Characters
                 Run(Direction.Horizontal.Left);
             else
             {
-                animations.Change("Idle");
-                if (physics.Velocity.X != 0) Stop();
+                if (state != State.Dashing)
+                {
+                    animations.Change("Idle");
+                    if (physics.Velocity.X != 0)
+                        physics.SetVelocity(x: physics.Velocity.X * .8f, noconvert: true);
+                }
             }
 
+
+        }
+
+
+        void Dash()
+        {
+            if (state == State.Dashing)
+                return;
+
+            var oldState = state;
+            state = State.Dashing;
+            physics.Body.IgnoreGravity = true;
+            physics.SetVelocity(y: 0);
+            animations.Change("Running");
+            Invoke(() =>
+            {
+                state = oldState;
+                physics.Body.IgnoreGravity = false;
+
+            }, TimeSpan.FromSeconds(0.15));
         }
 
         void Stop() => physics.SetVelocity(x: 0);
