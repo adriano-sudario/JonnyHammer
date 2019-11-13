@@ -3,6 +3,7 @@ using JonnyHamer.Engine.Entities;
 using JonnyHamer.Engine.Entities.Sprites;
 using Microsoft.Xna.Framework;
 using System;
+using System.Reflection;
 
 namespace JonnyHammer.Engine.Entities.Components
 {
@@ -15,8 +16,11 @@ namespace JonnyHammer.Engine.Entities.Components
         private float _scale;
         private float _angle;
         private float _opacity;
+        private float _custom;
         private double elapsedTime;
         private SpriteComponent entitySprite;
+        private object reference;
+        private PropertyInfo customProperty;
 
         public Action OnStart;
         public Action OnFinish;
@@ -31,8 +35,8 @@ namespace JonnyHammer.Engine.Entities.Components
         {
             get
             {
-                if (Entity == null)
-                    return 0;
+                if (reference != null && customProperty != null)
+                    return (float)customProperty.GetValue(reference);
 
                 switch (Property)
                 {
@@ -61,8 +65,11 @@ namespace JonnyHammer.Engine.Entities.Components
             }
             private set
             {
-                if (Entity == null)
+                if (reference != null && customProperty != null)
+                {
+                    customProperty.SetValue(reference, Convert.ChangeType(MathHelper.Lerp(_custom, TargetValue, value), customProperty.PropertyType), null);
                     return;
+                }
 
                 switch (Property)
                 {
@@ -97,13 +104,12 @@ namespace JonnyHammer.Engine.Entities.Components
         public EaseFunction.Ease Ease;
         public float Percent { get; private set; }
 
-        public TweenComponent(TweenMode mode, TweenProperty property, float value, EaseFunction.Ease easer, float duration, Action onStart = null, Action onFinish = null)
+        private TweenComponent(TweenMode mode, float value, EaseFunction.Ease easer, float duration, Action onStart = null, Action onFinish = null)
         {
             OnStart = onStart;
             OnFinish = onFinish;
             Mode = mode;
             IsReverse = false;
-            Property = property;
             TargetValue = value;
             Ease = easer;
             Eased = Percent = 0;
@@ -116,14 +122,29 @@ namespace JonnyHammer.Engine.Entities.Components
                 throw new Exception($"[Tween]: Duration must be a positive integer. Setting from '{duration}'to 0 (zero).");
         }
 
+        public TweenComponent(TweenMode mode, object reference, string propertyName, float value, EaseFunction.Ease easer, float duration, Action onStart = null, Action onFinish = null) :
+            this(mode, value, easer, duration, onStart, onFinish)
+        {
+            this.reference = reference;
+            customProperty = reference.GetType().GetProperty(propertyName);
+        }
+
+        public TweenComponent(TweenMode mode, TweenProperty property, float value, EaseFunction.Ease easer, float duration, Action onStart = null, Action onFinish = null) :
+            this(mode, value, easer, duration, onStart, onFinish)
+        {
+            Property = property;
+        }
+
         public override void Start()
         {
             base.Start();
 
-            entitySprite = Entity.GetComponent<SpriteComponent>();
+            if ((reference == null || customProperty == null) && Entity == null)
+                throw new Exception($"[Tween]: Entity cannot be null if it's not a custom property.");
+            else if (Entity != null)
+                entitySprite = Entity.GetComponent<SpriteComponent>();
 
-            InitProperties();
-            StartTween();
+            Begin();
         }
 
         public override void Update(GameTime gameTime)
@@ -178,7 +199,7 @@ namespace JonnyHammer.Engine.Entities.Components
                     
                 case TweenMode.Loop:
                     TargetValue = InitialValue;
-                    Restart();
+                    Begin();
                     break;
                     
                 case TweenMode.Yoyo:
@@ -204,7 +225,7 @@ namespace JonnyHammer.Engine.Entities.Components
             Eased = Percent = 0;
         }
 
-        public void Restart()
+        public void Begin()
         {
             InitProperties();
             StartTween();
@@ -218,6 +239,7 @@ namespace JonnyHammer.Engine.Entities.Components
                 _position = Entity.Position;
                 _scale = Entity.Scale;
                 _angle = Entity.Rotation;
+                _custom = (float)customProperty.GetValue(reference);
 
                 if (entitySprite != null)
                     _opacity = entitySprite.Opacity;
