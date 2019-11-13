@@ -18,17 +18,19 @@ namespace JonnyHamer.Engine.Manipulators
             ViewMatrix = Matrix.CreateTranslation(position);
         }
 
-        public static void Update(Vector2 followPosition, int followWidth, int followHeight)
+        public static void CenterOn(Vector2 position)
         {
-            AdjustPosition(followPosition, followWidth, followHeight);
+            AdjustPosition(position, 1, 1);
             Update();
         }
 
-        public static void Update(Entity body)
+        public static void Follow(Entity body)
         {
             var sprite = body.GetComponent<SpriteComponent>();
+            int width = sprite?.Width ?? 1;
+            int height = sprite?.Height ?? 1;
             var spriteSource = (sprite?.Origin ?? Vector2.Zero) * (body.Scale * Screen.Scale);
-            AdjustPosition(body.Position - spriteSource, sprite.Width, sprite.Height);
+            AdjustPosition(body.Position - spriteSource, width, height);
             Update();
         }
 

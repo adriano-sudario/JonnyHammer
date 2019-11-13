@@ -7,7 +7,7 @@ using System.Linq;
 using JonnyHammer.Engine.Scenes;
 using JonnyHamer.Engine.Manipulators;
 
-namespace JonnyHamer.Engine.Helpers
+namespace JonnyHamer.Engine.Managers
 {
     public class SceneManager
     {

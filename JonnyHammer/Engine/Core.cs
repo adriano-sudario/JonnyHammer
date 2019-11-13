@@ -1,4 +1,5 @@
 ﻿using JonnyHamer.Engine.Helpers;
+using JonnyHamer.Engine.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;

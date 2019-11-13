@@ -74,11 +74,11 @@ namespace JonnyHammer.Engine.Entities.Components
                 switch (Property)
                 {
                     case TweenProperty.X:
-                        Entity.Position = new Vector2(MathHelper.Lerp(_position.X, TargetValue, value), 0);
+                        Entity.Position = new Vector2(MathHelper.Lerp(_position.X, TargetValue, value), Entity.Position.Y);
                         break;
 
                     case TweenProperty.Y:
-                        Entity.Position = new Vector2(0, MathHelper.Lerp(_position.Y, TargetValue, value));
+                        Entity.Position = new Vector2(Entity.Position.X, MathHelper.Lerp(_position.Y, TargetValue, value));
                         break;
 
                     case TweenProperty.Scale:
@@ -104,7 +104,7 @@ namespace JonnyHammer.Engine.Entities.Components
         public EaseFunction.Ease Ease;
         public float Percent { get; private set; }
 
-        private TweenComponent(TweenMode mode, float value, EaseFunction.Ease easer, float duration, Action onStart = null, Action onFinish = null)
+        private TweenComponent(TweenMode mode, float value, EaseFunction.Ease easer, float millisecondsDuration, Action onStart = null, Action onFinish = null)
         {
             OnStart = onStart;
             OnFinish = onFinish;
@@ -113,24 +113,27 @@ namespace JonnyHammer.Engine.Entities.Components
             TargetValue = value;
             Ease = easer;
             Eased = Percent = 0;
-            Duration = duration;
+            Duration = millisecondsDuration;
 
             if (Mode == TweenMode.Loop || Mode == TweenMode.Yoyo || Mode == TweenMode.Restart)
                 IsRepeating = true;
 
-            if (duration <= 0)
-                throw new Exception($"[Tween]: Duration must be a positive integer. Setting from '{duration}'to 0 (zero).");
+            if (millisecondsDuration <= 0)
+                throw new Exception($"[Tween]: Duration must be a positive integer. Setting from '{millisecondsDuration}'to 0 (zero).");
         }
 
-        public TweenComponent(TweenMode mode, object reference, string propertyName, float value, EaseFunction.Ease easer, float duration, Action onStart = null, Action onFinish = null) :
-            this(mode, value, easer, duration, onStart, onFinish)
+        public TweenComponent(TweenMode mode, object reference, string propertyName, float value, EaseFunction.Ease easer, float millisecondsDuration, Action onStart = null, Action onFinish = null) :
+            this(mode, value, easer, millisecondsDuration, onStart, onFinish)
         {
             this.reference = reference;
             customProperty = reference.GetType().GetProperty(propertyName);
+
+            if (customProperty.PropertyType != typeof(float))
+                throw new Exception("[Tween]: Property must be a float type.");
         }
 
-        public TweenComponent(TweenMode mode, TweenProperty property, float value, EaseFunction.Ease easer, float duration, Action onStart = null, Action onFinish = null) :
-            this(mode, value, easer, duration, onStart, onFinish)
+        public TweenComponent(TweenMode mode, TweenProperty property, float value, EaseFunction.Ease easer, float millisecondsDuration, Action onStart = null, Action onFinish = null) :
+            this(mode, value, easer, millisecondsDuration, onStart, onFinish)
         {
             Property = property;
         }
@@ -140,7 +143,7 @@ namespace JonnyHammer.Engine.Entities.Components
             base.Start();
 
             if ((reference == null || customProperty == null) && Entity == null)
-                throw new Exception($"[Tween]: Entity cannot be null if it's not a custom property.");
+                throw new Exception("[Tween]: Entity cannot be null if it's not a custom property.");
             else if (Entity != null)
                 entitySprite = Entity.GetComponent<SpriteComponent>();
 
@@ -239,7 +242,9 @@ namespace JonnyHammer.Engine.Entities.Components
                 _position = Entity.Position;
                 _scale = Entity.Scale;
                 _angle = Entity.Rotation;
-                _custom = (float)customProperty.GetValue(reference);
+
+                if (reference != null && customProperty != null)
+                    _custom = (float)customProperty.GetValue(reference);
 
                 if (entitySprite != null)
                     _opacity = entitySprite.Opacity;

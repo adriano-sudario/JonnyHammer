@@ -51,7 +51,7 @@ namespace JonnyHammer.Game.Characters
 
             var floorTrigger = AddComponent(new ColliderComponent(new Rectangle(5, animations.Height, animations.Width - 10, 10), autoCheck: true, isDebug: true, Color.Yellow));
             floorTrigger.IsTrigger = true;
-            AddComponent(new TweenComponent(TweenMode.Loop, TweenProperty.Scale, 2, EaseFunction.BigBackInOut, 1000));
+            //AddComponent(new TweenComponent(TweenMode.Loop, TweenProperty.Scale, 2, EaseFunction.BigBackInOut, 1000));
 
             collider.OnCollide += (e) => { Console.WriteLine($"colidiu com {e.Name} {DateTime.UtcNow.Millisecond}"); };
 

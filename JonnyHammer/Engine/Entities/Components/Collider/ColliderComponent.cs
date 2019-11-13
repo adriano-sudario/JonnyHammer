@@ -1,6 +1,6 @@
 ﻿using JonnyHamer.Engine.Entities;
 using JonnyHamer.Engine.Entities.Sprites;
-using JonnyHamer.Engine.Helpers;
+using JonnyHamer.Engine.Managers;
 using JonnyHammer.Engine.Entities.Components.Phisycs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

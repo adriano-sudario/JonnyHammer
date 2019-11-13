@@ -1,4 +1,4 @@
-﻿using JonnyHamer.Engine.Helpers;
+﻿using JonnyHamer.Engine.Managers;
 using JonnyHammer.Engine.Entities.Components.Collider;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;

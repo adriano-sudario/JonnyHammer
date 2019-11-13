@@ -25,6 +25,8 @@ namespace JonnyHammer.Game.Characters
         private SlimPhysicsComponent platform;
         AnimatedSpriteComponent animations;
 
+        public float Teste { get; set; }
+
         public BigNaruto()
         {
             keyboard = new KeyboardInput();
@@ -33,10 +35,18 @@ namespace JonnyHammer.Game.Characters
             var collider = AddComponent(new ColliderComponent(new Rectangle(0, 0, animations.Width, animations.Height), true));
             move = AddComponent<MoveComponent>();
             platform = AddComponent<SlimPhysicsComponent>();
-            AddComponent(new TweenComponent(TweenMode.Loop, TweenProperty.X, 10, EaseFunction.ElasticIn, 1000));
 
             collider.OnCollide += (e) => { Console.WriteLine($"colidiu com {e.Name} {DateTime.UtcNow.Millisecond}"); };
 
+        }
+
+        public override void Load()
+        {
+            base.Load();
+
+            Teste = Position.X;
+            //AddComponent(new TweenComponent(TweenMode.Loop, TweenProperty.X, Position.X + 200, EaseFunction.Linear, 1000));
+            AddComponent(new TweenComponent(TweenMode.Loop, this, "Teste", Teste + 200, EaseFunction.Linear, 1000));
         }
 
         IEnumerator ScaleNaruto()
@@ -99,8 +109,9 @@ namespace JonnyHammer.Game.Characters
             else if (keyboard.IsPressing(Keys.Left))
                 Run(Direction.Horizontal.Left);
             else
-                animations.Change("Idle");
+                animations.Change("Running");
 
+            move.MoveHorizontally((int)Teste);
 
             base.Update(gameTime);
         }

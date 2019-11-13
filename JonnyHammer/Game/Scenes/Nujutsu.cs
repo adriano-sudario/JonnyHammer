@@ -25,8 +25,8 @@ namespace JonnyHammer.Game.Scenes
             Camera.AreaWidth = background.Width * 2;
             Camera.AreaHeight = background.Height;
 
-            narutao = Spawn<BigNarutoFisica>("Narutao", new Vector2(100, 200));
-            //narutitos = Spawn<BigNaruto>("Narutao", new Vector2(100, 200));
+            //narutao = Spawn<BigNarutoFisica>("Narutao", new Vector2(100, 200));
+            narutitos = Spawn<BigNaruto>("Narutao", new Vector2(100, 200));
             //narutitos.AddComponent(new TweenComponent(TweenMode.Loop, TweenProperty.X, 100, EaseFunction.CubeInOut, 1000));
 
             Spawn<Floor>("Chao 1", new Vector2(0, 350), f => f.Width = 600);
@@ -42,7 +42,7 @@ namespace JonnyHammer.Game.Scenes
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            Camera.Update(narutao);
+            Camera.Follow(narutitos);
             //testFloor.Position = new Vector2(testFloor.Position.X + 1, testFloor.Position.Y);
         }
 
