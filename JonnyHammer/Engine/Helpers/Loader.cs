@@ -29,7 +29,7 @@ namespace JonnyHamer.Engine.Helpers
         public static void Initialize(ContentManager content) => Loader.content = content;
 
         public static Texture2D LoadTexture(string textureName) => content.Load<Texture2D>("Graphics/" + textureName);
-        public static IDictionary<string, Frame[]> LoadAnimation(string asepriteJsonFile)
+        public static IDictionary<string, Frame[]> LoadAsepriteFrames(string asepriteJsonFile)
         {
             dynamic data = LoadDeserializedJsonFile(asepriteJsonFile);
             return ParseAsepriteJson(data);

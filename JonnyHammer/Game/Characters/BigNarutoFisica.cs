@@ -102,7 +102,7 @@ namespace JonnyHammer.Game.Characters
         AnimatedSpriteComponent CreateNarutaoAnimations()
         {
             var spriteSheet = Loader.LoadTexture("narutao");
-            var animationFrames = Loader.LoadAnimation("narutao");
+            var animationFrames = Loader.LoadAsepriteFrames("narutao");
 
             return new AnimatedSpriteComponent(spriteSheet, animationFrames);
         }
