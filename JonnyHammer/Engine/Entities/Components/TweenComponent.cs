@@ -182,11 +182,9 @@ namespace JonnyHammer.Engine.Entities.Components
 
         private void Finish()
         {
-            Percent = 1;
+            Percent = IsReverse ? 0 : 1;
             
             Increment();
-            
-            OnFinish?.Invoke();
 
             switch (Mode)
             {
@@ -196,8 +194,7 @@ namespace JonnyHammer.Engine.Entities.Components
                     
                 case TweenMode.OneShot:
                     IsActive = false;
-                    if (Entity != null)
-                        Entity.Destroy();
+                    Entity?.Destroy();
                     break;
                     
                 case TweenMode.Loop:
@@ -206,9 +203,16 @@ namespace JonnyHammer.Engine.Entities.Components
                     break;
                     
                 case TweenMode.Yoyo:
-                    StartTween();
+                    if (!IsReverse)
+                        StartTween();
+                    else
+                        IsActive = false;
+
                     IsReverse = !IsReverse;
-                    break;
+
+                    if (!IsActive)
+                        OnFinish?.Invoke();
+                    return;
                     
                 case TweenMode.Restart:
                     StartTween();
@@ -217,6 +221,8 @@ namespace JonnyHammer.Engine.Entities.Components
                 default:
                     throw new Exception($"[Tween]: Invalid Tween Mode '{Mode}'.");
             }
+
+            OnFinish?.Invoke();
         }
 
         public void StartTween()

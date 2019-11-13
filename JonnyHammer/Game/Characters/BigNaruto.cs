@@ -46,7 +46,7 @@ namespace JonnyHammer.Game.Characters
 
             Teste = Position.X;
             //AddComponent(new TweenComponent(TweenMode.Loop, TweenProperty.X, Position.X + 200, EaseFunction.Linear, 1000));
-            AddComponent(new TweenComponent(TweenMode.Loop, this, "Teste", Teste + 200, EaseFunction.Linear, 1000));
+            AddComponent(new TweenComponent(TweenMode.Yoyo, this, "Teste", Teste + 200, EaseFunction.Linear, 1000));
         }
 
         IEnumerator ScaleNaruto()
