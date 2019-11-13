@@ -12,6 +12,7 @@ namespace JonnyHammer.Engine
         public Component() { }
 
         public Entity Entity { get; private set; }
+        public bool IsActive { get; set; }
 
         public Direction.Horizontal FacingDirection { get => Entity.FacingDirection; set => Entity.FacingDirection = value; }
 

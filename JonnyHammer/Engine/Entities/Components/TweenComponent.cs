@@ -3,8 +3,6 @@ using JonnyHamer.Engine.Entities;
 using JonnyHamer.Engine.Entities.Sprites;
 using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace JonnyHammer.Engine.Entities.Components
 {
@@ -16,7 +14,6 @@ namespace JonnyHammer.Engine.Entities.Components
         private Vector2 _position;
         private float _scale;
         private float _angle;
-        //private Vector2 _size;
         private float _opacity;
         private double elapsedTime;
         private SpriteComponent entitySprite;
@@ -57,8 +54,7 @@ namespace JonnyHammer.Engine.Entities.Components
                         break;
 
                     default:
-                        //Debug.ErrorLog("[Tween]: Invalid Tween Property '" + Property + "'.");
-                        break;
+                        throw new Exception($"[Tween]: Invalid Tween Property '{Property}'.");
                 }
 
                 return 0;
@@ -92,8 +88,7 @@ namespace JonnyHammer.Engine.Entities.Components
                         break;
 
                     default:
-                        //Debug.ErrorLog("[Tween]: Invalid Tween Property '" + Property + "'.");
-                        break;
+                        throw new Exception($"[Tween]: Invalid Tween Property '{Property}'.");
                 }
             }
         }
@@ -117,8 +112,8 @@ namespace JonnyHammer.Engine.Entities.Components
             if (Mode == TweenMode.Loop || Mode == TweenMode.Yoyo || Mode == TweenMode.Restart)
                 IsRepeating = true;
 
-            //if (duration <= 0)
-            //    Debug.Log("[Tween]: Duration must be a positive integer. Setting from '" + duration + "'to 0 (zero).");
+            if (duration <= 0)
+                throw new Exception($"[Tween]: Duration must be a positive integer. Setting from '{duration}'to 0 (zero).");
         }
 
         public override void Start()
@@ -127,15 +122,16 @@ namespace JonnyHammer.Engine.Entities.Components
 
             entitySprite = Entity.GetComponent<SpriteComponent>();
 
-            if (!InitProperties())
-                return;
-
+            InitProperties();
             StartTween();
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
+            if (!IsActive)
+                return;
 
             elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
             
@@ -171,20 +167,18 @@ namespace JonnyHammer.Engine.Entities.Components
             switch (Mode)
             {
                 case TweenMode.Persist:
-                    //IsActive = false;
+                    IsActive = false;
                     break;
                     
                 case TweenMode.OneShot:
-                    //IsActive = false;
-                    //if (Entity != null)
-                    //    Entity.Destroy();
+                    IsActive = false;
+                    if (Entity != null)
+                        Entity.Destroy();
                     break;
                     
                 case TweenMode.Loop:
                     TargetValue = InitialValue;
-                    if (!InitProperties())
-                        return;
-                    StartTween();
+                    Restart();
                     break;
                     
                 case TweenMode.Yoyo:
@@ -197,14 +191,14 @@ namespace JonnyHammer.Engine.Entities.Components
                     break;
 
                 default:
-                    //Debug.Log("[Tween]: Invalid Tween Mode '" + Mode + "'.");
-                    break;
+                    throw new Exception($"[Tween]: Invalid Tween Mode '{Mode}'.");
             }
         }
 
         public void StartTween()
         {
             base.Start();
+            IsActive = true;
             elapsedTime = 0;
             OnStart?.Invoke();
             Eased = Percent = 0;
@@ -212,15 +206,11 @@ namespace JonnyHammer.Engine.Entities.Components
 
         public void Restart()
         {
-            //IsActive = true;
-
-            if (!InitProperties())
-                return;
-
+            InitProperties();
             StartTween();
         }
 
-        public bool InitProperties()
+        public void InitProperties()
         {
             if (Entity != null)
             {
@@ -230,23 +220,12 @@ namespace JonnyHammer.Engine.Entities.Components
                 _angle = Entity.Rotation;
 
                 if (entitySprite != null)
-                {
-                    //_size = new Vector2(entitySprite.Width, entitySprite.Height);
                     _opacity = entitySprite.Opacity;
-                }
                 else if (Property == TweenProperty.Opacity)
-                {
-                    //Debug.ErrorLog("[Tween]: Couldn't start Tween property '" + Property + "'. Entity Sprite is null.");
-                    return false;
-                }
+                    throw new Exception($"[Tween]: Couldn't start Tween property '{Property}'. Entity Sprite is null.");
             }
             else
-            {
-                //Debug.ErrorLog("[Tween]: Couldn't start Tween property '" + Property + "'. Entity is null.");
-                return false;
-            }
-
-            return true;
+                throw new Exception($"[Tween]: Couldn't start Tween property '{Property}'. Entity is null.");
         }
     }
 }
