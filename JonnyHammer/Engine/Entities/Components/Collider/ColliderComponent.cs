@@ -71,17 +71,28 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
                 }
 
             entity = entityList.ToArray();
+
+            for (var i = 0; i < entity.Length; i++)
+            {
+
+                if (IsTrigger)
+                    OnTrigger(entity[i]);
+                else
+                    OnCollide(entity[i]);
+            }
+
+
             return entityList.Any();
         }
 
         public ColliderComponent(SpriteComponent spriteComponent)
-            : this(
-                new Rectangle(
-                    (int)spriteComponent.Entity.Position.X,
-                    (int)spriteComponent.Entity.Position.Y,
-                    spriteComponent.Width,
-                    spriteComponent.Height)
-            )
+        : this(
+            new Rectangle(
+                (int)spriteComponent.Entity.Position.X,
+                (int)spriteComponent.Entity.Position.Y,
+                spriteComponent.Width,
+                spriteComponent.Height)
+        )
         {
         }
 
@@ -132,14 +143,7 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
             if (!AutoCheck)
                 return;
 
-            if (CollideOrTriggersWithAnyEntity(out var collidedEntities))
-                for (var i = 0; i < collidedEntities.Length; i++)
-                {
-                    if (IsTrigger)
-                        OnTrigger(collidedEntities[i]);
-                    else
-                        OnCollide(collidedEntities[i]);
-                }
+            CollideOrTriggersWithAnyEntity(out var _);
 
             base.Update(gameTime);
         }

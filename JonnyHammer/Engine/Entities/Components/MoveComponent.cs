@@ -41,6 +41,7 @@ namespace JonnyHammer.Engine
             if ((Collider?.IsTrigger == false && Collider.CollideOrTriggersWithAnyEntity()) || (InEndOfScreen(position) && keepOnScreenBounds))
             {
                 Entity.Position = PreviousPosition;
+                
                 return false;
             }
             return true;
@@ -57,13 +58,13 @@ namespace JonnyHammer.Engine
         public bool MoveTo(int x, int y, bool setFacingDirection = true, bool keepOnScreenBounds = true) =>
             MoveTo(new Vector2(x, y), setFacingDirection, keepOnScreenBounds);
 
-        public void MoveHorizontally(int x, bool setFacingDirection = true, bool keepOnScreenBounds = true) =>
+        public bool MoveHorizontally(int x, bool setFacingDirection = true, bool keepOnScreenBounds = true) =>
             MoveTo(new Vector2(x, Entity.Position.Y), setFacingDirection, keepOnScreenBounds);
 
-        public void MoveVertically(int y, bool setFacingDirection = true, bool keepOnScreenBounds = true) =>
+        public bool MoveVertically(int y, bool setFacingDirection = true, bool keepOnScreenBounds = true) =>
             MoveTo(new Vector2(Entity.Position.X, y), setFacingDirection, keepOnScreenBounds);
 
-        public void MoveAndSlide(int x, int y, bool setFacingDirection = true, bool keepOnScreenBounds = true) =>
+        public bool MoveAndSlide(int x, int y, bool setFacingDirection = true, bool keepOnScreenBounds = true) =>
             MoveTo(new Vector2(Entity.Position.X + x, Entity.Position.Y + y), setFacingDirection, keepOnScreenBounds);
 
         public bool MoveAndSlide(Vector2 position, bool setFacingDirection = true, bool keepOnScreenBounds = true) =>

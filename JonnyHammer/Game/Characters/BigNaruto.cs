@@ -8,7 +8,6 @@ using JonnyHammer.Engine.Entities.Components;
 using JonnyHammer.Engine.Entities.Components.Collider;
 using JonnyHammer.Engine.Helpers;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections;
 
@@ -31,12 +30,18 @@ namespace JonnyHammer.Game.Characters
         {
             keyboard = new KeyboardInput();
 
-            animations = AddComponent(CreateNarutaoAnimations());
+            var sprites = CreateNarutaoAnimations();
+            sprites.Color = Color.Red;
+            animations = AddComponent(sprites);
             var collider = AddComponent(new ColliderComponent(new Rectangle(0, 0, animations.Width, animations.Height), true));
             move = AddComponent<MoveComponent>();
             platform = AddComponent<SlimPhysicsComponent>();
 
-            collider.OnCollide += (e) => { Console.WriteLine($"colidiu com {e.Name} {DateTime.UtcNow.Millisecond}"); };
+            collider.OnCollide += (e) =>
+            {
+                if (!e.Name.StartsWith("Chao"))
+                    Console.WriteLine($"colidiu com {e.Name} {DateTime.UtcNow.Millisecond}");
+            };
 
         }
 
@@ -45,9 +50,51 @@ namespace JonnyHammer.Game.Characters
             base.Load();
 
             Teste = Position.X;
-            //AddComponent(new TweenComponent(TweenMode.Loop, TweenProperty.X, Position.X + 200, EaseFunction.Linear, 1000));
-            AddComponent(new TweenComponent(TweenMode.Yoyo, this, "Teste", Teste + 200, EaseFunction.Linear, 1000));
+            AddComponent(new TweenComponent(TweenMode.Loop, this, nameof(Teste), Teste + 200, EaseFunction.Linear, 1000));
         }
+
+        AnimatedSpriteComponent CreateNarutaoAnimations()
+        {
+            var spriteSheet = Loader.LoadTexture("narutao");
+            var animationFrames = Loader.LoadAsepriteFrames("narutao");
+
+            return new AnimatedSpriteComponent(spriteSheet, animationFrames);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            keyboard.Update();
+
+            //if (keyboard.IsPressing(Keys.Space))
+            //    platform.AddForce(new Vector2(0, 4));
+
+            //if (keyboard.HasPressed(Keys.S))
+            //{
+            //    StartCoroutine(ScaleNaruto());
+            //}
+
+            //if (keyboard.HasPressed(Keys.A))
+            //    StartCoroutine(BlinkNaruto());
+
+            //if (keyboard.IsPressing(Keys.Right))
+            //    Run(Direction.Horizontal.Right);
+            //else if (keyboard.IsPressing(Keys.Left))
+            //    Run(Direction.Horizontal.Left);
+            //else
+            //    animations.Change("Running");
+
+            move.MoveHorizontally((int)Teste);
+
+            base.Update(gameTime);
+        }
+
+        public void Run(Direction.Horizontal direction)
+        {
+            animations.Change("Running");
+            move.MoveAndSlide(new Vector2(
+                direction == Direction.Horizontal.Left ? -speed : speed, 0));
+        }
+
 
         IEnumerator ScaleNaruto()
         {
@@ -81,48 +128,5 @@ namespace JonnyHammer.Game.Characters
 
             animations.IsVisible = true;
         }
-        AnimatedSpriteComponent CreateNarutaoAnimations()
-        {
-            var spriteSheet = Loader.LoadTexture("narutao");
-            var animationFrames = Loader.LoadAsepriteFrames("narutao");
-
-            return new AnimatedSpriteComponent(spriteSheet, animationFrames);
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            keyboard.Update();
-
-            if (keyboard.IsPressing(Keys.Space))
-                platform.AddForce(new Vector2(0, 4));
-
-            if (keyboard.HasPressed(Keys.S))
-            {
-                StartCoroutine(ScaleNaruto());
-            }
-
-            if (keyboard.HasPressed(Keys.A))
-                StartCoroutine(BlinkNaruto());
-
-            if (keyboard.IsPressing(Keys.Right))
-                Run(Direction.Horizontal.Right);
-            else if (keyboard.IsPressing(Keys.Left))
-                Run(Direction.Horizontal.Left);
-            else
-                animations.Change("Running");
-
-            move.MoveHorizontally((int)Teste);
-
-            base.Update(gameTime);
-        }
-
-        public void Run(Direction.Horizontal direction)
-        {
-            animations.Change("Running");
-            move.MoveAndSlide(new Vector2(
-                direction == Direction.Horizontal.Left ? -speed : speed, 0));
-        }
-
-
     }
 }
