@@ -98,9 +98,8 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
         public override void Update(GameTime gameTime)
         {
 
-            Entity.Position = (Body.Position - new Vector2(width, height) / 2) * PixelsPerMeter;
-            Entity.Rotation = Body.Rotation;
-
+            Entity.Transform.MoveTo((Body.Position - new Vector2(width, height) / 2) * PixelsPerMeter);
+            Entity.Transform.Rotation = Body.Rotation;
 
             if (MaxVelocity.Y > 0)
             {

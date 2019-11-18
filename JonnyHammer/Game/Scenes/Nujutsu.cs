@@ -23,7 +23,7 @@ namespace JonnyHammer.Game.Scenes
             Camera.AreaWidth = background.Width * 2;
             Camera.AreaHeight = background.Height;
 
-            narutao = Spawn<BigNarutoFisica>("Narutao", new Vector2(100, 200));
+            narutao = Spawn<Jonny>("Narutao", new Vector2(100, 200));
             narutitos = Spawn<BigNaruto>("NarutoRed", new Vector2(150, 200));
             //narutitos.AddComponent(new TweenComponent(TweenMode.Loop, TweenProperty.X, 100, EaseFunction.CubeInOut, 1000));
 

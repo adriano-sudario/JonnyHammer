@@ -14,7 +14,7 @@ namespace JonnyHammer.Engine
         public Entity Entity { get; private set; }
         public bool IsActive { get; set; }
 
-        public Direction.Horizontal FacingDirection { get => Entity.FacingDirection; set => Entity.FacingDirection = value; }
+        public Direction.Horizontal FacingDirection { get => Entity.Transform.FacingDirection; set => Entity.Transform.FacingDirection = value; }
 
         public virtual void Draw(SpriteBatch spriteBatch) { }
 

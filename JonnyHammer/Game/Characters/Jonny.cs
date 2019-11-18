@@ -14,7 +14,7 @@ using tainicom.Aether.Physics2D.Dynamics;
 
 namespace JonnyHammer.Game.Characters
 {
-    public class BigNarutoFisica : Entity
+    public class Jonny : Entity
     {
         enum State
         {
@@ -32,10 +32,7 @@ namespace JonnyHammer.Game.Characters
         PhysicsComponent physics;
         AnimatedSpriteComponent animations;
 
-
-
-        public BigNarutoFisica() { }
-
+        public Jonny() => Transform.Scale = 2;
 
         public override void Load()
         {
@@ -74,15 +71,15 @@ namespace JonnyHammer.Game.Characters
             yield return new WaitUntil(() => !isScaling);
             isScaling = true;
 
-            while (Scale < 3)
+            while (Transform.Scale < 3)
             {
-                Scale += 0.01f;
+                Transform.Scale += 0.01f;
                 yield return null; // wait 1 frame
             }
 
-            while (Scale > 1)
+            while (Transform.Scale > 1)
             {
-                Scale -= 0.01f;
+                Transform.Scale -= 0.01f;
                 yield return null;
             }
 
@@ -102,8 +99,8 @@ namespace JonnyHammer.Game.Characters
         }
         AnimatedSpriteComponent CreateNarutaoAnimations()
         {
-            var spriteSheet = Loader.LoadTexture("narutao");
-            var animationFrames = Loader.LoadAsepriteFrames("narutao");
+            var spriteSheet = Loader.LoadTexture("main_char_spritesheet");
+            var animationFrames = Loader.LoadAsepriteFrames("main_char_sprite_data");
 
             return new AnimatedSpriteComponent(spriteSheet, animationFrames);
         }
@@ -114,7 +111,7 @@ namespace JonnyHammer.Game.Characters
 
             if (state == State.Dashing)
             {
-                physics.ApplyForce(new Vector2((FacingDirection == Direction.Horizontal.Left ? -1 : 1) * 2.8f, 0)); //-SceneManager.CurrentScene.World.Gravity.Y));
+                physics.ApplyForce(new Vector2((Transform.FacingDirection == Direction.Horizontal.Left ? -1 : 1) * 2.8f, 0)); //-SceneManager.CurrentScene.World.Gravity.Y));
                 return;
             }
 
@@ -150,7 +147,6 @@ namespace JonnyHammer.Game.Characters
 
         }
 
-
         void Dash()
         {
             if (state == State.Dashing)
@@ -174,9 +170,9 @@ namespace JonnyHammer.Game.Characters
         public void Run(Direction.Horizontal direction)
         {
             animations.Change("Running");
-            FacingDirection = direction;
+            Transform.FacingDirection = direction;
 
-            if (FacingDirection != direction) Stop();
+            if (Transform.FacingDirection != direction) Stop();
 
             var m = direction == Direction.Horizontal.Left ? -speed : speed;
             physics.MoveForward(m);

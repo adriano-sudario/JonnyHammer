@@ -25,14 +25,12 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
 
         PhysicsComponent physics = null;
 
-
         public Rectangle Bounds
         {
             get
             {
-                var position = new Vector2(Entity.Position.X, Entity.Position.Y) + new Vector2(bounds.X, bounds.Y) * Entity.Scale;
-                return new Rectangle((int)position.X, (int)position.Y, (int)(bounds.Width * Entity.Scale),
-                    (int)(bounds.Height * Entity.Scale));
+                var position = new Vector2(Entity.Transform.X, Entity.Transform.Y) + new Vector2(bounds.X, bounds.Y);
+                return new Rectangle((int)position.X, (int)position.Y, bounds.Width, bounds.Height);
             }
             private set => bounds = value;
         }
@@ -81,21 +79,17 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
                     OnCollide(entity[i]);
             }
 
-
             return entityList.Any();
         }
 
         public ColliderComponent(SpriteComponent spriteComponent)
         : this(
             new Rectangle(
-                (int)spriteComponent.Entity.Position.X,
-                (int)spriteComponent.Entity.Position.Y,
+                (int)spriteComponent.Entity.Transform.X,
+                (int)spriteComponent.Entity.Transform.Y,
                 spriteComponent.Width,
                 spriteComponent.Height)
-        )
-        {
-        }
-
+        ) { }
 
         public bool CollidesWith(Rectangle rectangle) => Bounds.Intersects(rectangle);
 

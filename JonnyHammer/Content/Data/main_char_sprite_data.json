@@ -1,0 +1,132 @@
+{ "frames": {
+   "teste 0.aseprite": {
+    "frame": { "x": 0, "y": 0, "w": 37, "h": 33 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 37, "h": 33 },
+    "sourceSize": { "w": 37, "h": 33 },
+    "duration": 100
+   },
+   "teste 1.aseprite": {
+    "frame": { "x": 37, "y": 0, "w": 37, "h": 33 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 37, "h": 33 },
+    "sourceSize": { "w": 37, "h": 33 },
+    "duration": 100
+   },
+   "teste 2.aseprite": {
+    "frame": { "x": 74, "y": 0, "w": 37, "h": 33 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 37, "h": 33 },
+    "sourceSize": { "w": 37, "h": 33 },
+    "duration": 100
+   },
+   "teste 3.aseprite": {
+    "frame": { "x": 111, "y": 0, "w": 37, "h": 33 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 37, "h": 33 },
+    "sourceSize": { "w": 37, "h": 33 },
+    "duration": 100
+   },
+   "teste 4.aseprite": {
+    "frame": { "x": 148, "y": 0, "w": 37, "h": 33 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 37, "h": 33 },
+    "sourceSize": { "w": 37, "h": 33 },
+    "duration": 100
+   },
+   "teste 5.aseprite": {
+    "frame": { "x": 185, "y": 0, "w": 37, "h": 33 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 37, "h": 33 },
+    "sourceSize": { "w": 37, "h": 33 },
+    "duration": 100
+   },
+   "teste 6.aseprite": {
+    "frame": { "x": 222, "y": 0, "w": 37, "h": 33 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 37, "h": 33 },
+    "sourceSize": { "w": 37, "h": 33 },
+    "duration": 100
+   },
+   "teste 7.aseprite": {
+    "frame": { "x": 259, "y": 0, "w": 37, "h": 33 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 37, "h": 33 },
+    "sourceSize": { "w": 37, "h": 33 },
+    "duration": 100
+   },
+   "teste 8.aseprite": {
+    "frame": { "x": 296, "y": 0, "w": 37, "h": 33 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 37, "h": 33 },
+    "sourceSize": { "w": 37, "h": 33 },
+    "duration": 100
+   },
+   "teste 9.aseprite": {
+    "frame": { "x": 333, "y": 0, "w": 37, "h": 33 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 37, "h": 33 },
+    "sourceSize": { "w": 37, "h": 33 },
+    "duration": 100
+   },
+   "teste 10.aseprite": {
+    "frame": { "x": 370, "y": 0, "w": 37, "h": 33 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 37, "h": 33 },
+    "sourceSize": { "w": 37, "h": 33 },
+    "duration": 100
+   },
+   "teste 11.aseprite": {
+    "frame": { "x": 407, "y": 0, "w": 37, "h": 33 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 37, "h": 33 },
+    "sourceSize": { "w": 37, "h": 33 },
+    "duration": 100
+   },
+   "teste 12.aseprite": {
+    "frame": { "x": 444, "y": 0, "w": 37, "h": 33 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 37, "h": 33 },
+    "sourceSize": { "w": 37, "h": 33 },
+    "duration": 100
+   },
+   "teste 13.aseprite": {
+    "frame": { "x": 481, "y": 0, "w": 37, "h": 33 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 37, "h": 33 },
+    "sourceSize": { "w": 37, "h": 33 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.15-x64",
+  "image": "teste.png",
+  "format": "RGBA8888",
+  "size": { "w": 518, "h": 33 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "Idle", "from": 0, "to": 7, "direction": "forward" },
+   { "name": "Running", "from": 8, "to": 13, "direction": "forward" }
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

@@ -1,5 +1,6 @@
 ﻿using JonnyHamer.Engine.Managers;
 using JonnyHammer.Engine;
+using JonnyHammer.Engine.Entities;
 using JonnyHammer.Engine.Helpers;
 using JonnyHammer.Engine.Interfaces;
 using Microsoft.Xna.Framework;
@@ -17,36 +18,24 @@ namespace JonnyHamer.Engine.Entities
         private IList<CoroutineTask> coroutines = new List<CoroutineTask>();
         protected bool isActive = true;
         bool didStart = false;
-        private float scale = 1;
 
         public event Action OnSetScale = delegate { };
 
+        public Transform Transform { get; private set; } = new Transform();
+
         public string Name { get; set; }
-        public float Scale
-        {
-            get => scale; set
-            {
-                scale = value;
-                OnSetScale();
-            }
-        }
-        public Vector2 Position { get; set; }
-        public Direction.Horizontal FacingDirection { get; set; }
-        public float Rotation { get; internal set; }
+        public virtual int Width { get; set; } = 1;
+        public virtual int Height { get; set; } = 1;
 
         public Entity() { }
 
-
-        public virtual void Load()
-        {
-        }
+        public virtual void Load() { }
 
         void BaseLoad()
         {
             for (var i = 0; i < components.Count; i++)
                 components[i].Start();
         }
-
 
         public virtual void Update(GameTime gameTime) { }
 

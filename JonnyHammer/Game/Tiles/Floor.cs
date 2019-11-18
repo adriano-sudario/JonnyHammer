@@ -8,8 +8,8 @@ namespace JonnyHammer.Tiles
 {
     public class Floor : Entity
     {
-        public int Width = 1000;
-
+        private int width;
+        public override int Width { get => width; set => width = value; }
 
         public override void Load()
         {

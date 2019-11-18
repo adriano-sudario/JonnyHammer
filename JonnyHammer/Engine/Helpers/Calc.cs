@@ -5,7 +5,6 @@ namespace JonnyHammer.Engine.Helpers
 {
     public static class Calc
     {
-        // Floor Vector2 to explicit (int) cast Vector2
         public static Vector2 Floor(this Vector2 val)
         {
             return new Vector2((int)Math.Floor(val.X), (int)Math.Floor(val.Y));
@@ -88,7 +87,6 @@ namespace JonnyHammer.Engine.Helpers
 
         private static int _seed = Environment.TickCount;
         private static Random random = new Random(_seed);
-
 
         public static float RandomFloat()
         {

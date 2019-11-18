@@ -13,6 +13,9 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Data/main_char_sprite_data.json
+/copy:Data/main_char_sprite_data.json
+
 #begin Data/narutao.json
 /copy:Data/narutao.json
 
@@ -27,6 +30,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Graphics/bg.jpg
+
+#begin Graphics/main_char_spritesheet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Graphics/main_char_spritesheet.png
 
 #begin Graphics/narutao.png
 /importer:TextureImporter

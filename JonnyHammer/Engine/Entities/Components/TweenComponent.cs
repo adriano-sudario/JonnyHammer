@@ -41,16 +41,16 @@ namespace JonnyHammer.Engine.Entities.Components
                 switch (Property)
                 {
                     case TweenProperty.X:
-                        return Entity.Position.X;
+                        return Entity.Transform.X;
 
                     case TweenProperty.Y:
-                        return Entity.Position.Y;
+                        return Entity.Transform.Y;
 
                     case TweenProperty.Scale:
-                        return Entity.Scale;
+                        return Entity.Transform.Scale;
 
                     case TweenProperty.Angle:
-                        return Entity.Rotation;
+                        return Entity.Transform.Rotation;
 
                     case TweenProperty.Opacity:
                         if (entitySprite != null)
@@ -74,19 +74,19 @@ namespace JonnyHammer.Engine.Entities.Components
                 switch (Property)
                 {
                     case TweenProperty.X:
-                        Entity.Position = new Vector2(MathHelper.Lerp(_position.X, TargetValue, value), Entity.Position.Y);
+                        Entity.Transform.MoveAndSlideHorizontally(MathHelper.Lerp(_position.X, TargetValue, value));
                         break;
 
                     case TweenProperty.Y:
-                        Entity.Position = new Vector2(Entity.Position.X, MathHelper.Lerp(_position.Y, TargetValue, value));
+                        Entity.Transform.MoveAndSlideVertically(MathHelper.Lerp(_position.Y, TargetValue, value));
                         break;
 
                     case TweenProperty.Scale:
-                        Entity.Scale = MathHelper.Lerp(_scale, TargetValue, value); ;
+                        Entity.Transform.Scale = MathHelper.Lerp(_scale, TargetValue, value);
                         break;
 
                     case TweenProperty.Angle:
-                        Entity.Rotation = MathHelper.Lerp(_angle, MathHelper.ToRadians(TargetValue), value);
+                        Entity.Transform.Rotation = MathHelper.Lerp(_angle, MathHelper.ToRadians(TargetValue), value);
                         break;
 
                     case TweenProperty.Opacity:
@@ -245,9 +245,9 @@ namespace JonnyHammer.Engine.Entities.Components
             if (Entity != null)
             {
                 InitialValue = CurrentValue;
-                _position = Entity.Position;
-                _scale = Entity.Scale;
-                _angle = Entity.Rotation;
+                _position = Entity.Transform.Position;
+                _scale = Entity.Transform.Scale;
+                _angle = Entity.Transform.Rotation;
 
                 if (reference != null && customProperty != null)
                     _custom = (float)customProperty.GetValue(reference);
