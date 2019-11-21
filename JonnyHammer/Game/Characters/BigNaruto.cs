@@ -3,7 +3,6 @@ using JonnyHamer.Engine.Entities;
 using JonnyHamer.Engine.Entities.Sprites;
 using JonnyHamer.Engine.Helpers;
 using JonnyHamer.Engine.Inputs;
-using JonnyHammer.Engine;
 using JonnyHammer.Engine.Entities.Components;
 using JonnyHammer.Engine.Entities.Components.Collider;
 using JonnyHammer.Engine.Helpers;
@@ -14,18 +13,20 @@ namespace JonnyHammer.Game.Characters
 {
     public class BigNaruto : Entity
     {
-        private float speed = 3f;
+        private float speed = 2f;
 
         private KeyboardInput keyboard;
         private AnimatedSpriteComponent animatedSprite;
 
         public float HorizontalPosition { get; set; }
+        public float MoveAmount { get; set; }
 
         public override int Height { get => animatedSprite.Height; }
         public override int Width { get => animatedSprite.Width; }
 
         public BigNaruto()
         {
+            Transform.Scale = .6f;
             keyboard = new KeyboardInput();
 
             var animations = CreateNarutaoAnimations();
@@ -47,7 +48,8 @@ namespace JonnyHammer.Game.Characters
             base.Load();
 
             HorizontalPosition = Transform.X;
-            AddComponent(new TweenComponent(TweenMode.Loop, this, nameof(HorizontalPosition), HorizontalPosition + 200, EaseFunction.Linear, 1000));
+            AddComponent(new TweenComponent(TweenMode.Loop, this, nameof(HorizontalPosition), 
+                HorizontalPosition + MoveAmount, EaseFunction.Linear, 1000));
         }
 
         AnimatedSpriteComponent CreateNarutaoAnimations()

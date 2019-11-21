@@ -23,7 +23,7 @@ namespace JonnyHammer.Game.Characters
             Dashing,
         }
 
-        float speed = 3f;
+        float speed = 2f;
         bool isScaling = false;
         State state = State.Jumping;
 
@@ -32,13 +32,13 @@ namespace JonnyHammer.Game.Characters
         PhysicsComponent physics;
         AnimatedSpriteComponent animations;
 
-        public Jonny() => Transform.Scale = 2;
+        public Vector2 RespawnPosition { get; set; }
 
         public override void Load()
         {
             keyboard = new KeyboardInput();
 
-            animations = AddComponent(CreateNarutaoAnimations());
+            animations = AddComponent(CreateAnimations());
 
             var debugColor = Color.Green;
             debugColor.A = 90;
@@ -46,27 +46,22 @@ namespace JonnyHammer.Game.Characters
 
             var floorTrigger = AddComponent(new ColliderComponent(new Rectangle(5, animations.Height, animations.Width - 10, 10), autoCheck: true, isDebug: true, Color.Yellow));
             floorTrigger.IsTrigger = true;
-            //AddComponent(new TweenComponent(TweenMode.Loop, TweenProperty.Scale, 2, EaseFunction.BigBackInOut, 1000));
 
             collider.OnCollide += (e) =>
             {
                 Console.WriteLine($"colidiu com {e.Name} {DateTime.UtcNow.Millisecond}");
             };
 
-
             floorTrigger.OnTrigger += (e) =>
             {
-                //Console.WriteLine($"pisou no chao");
-
                 if (state != State.Dashing)
                     state = State.Grounded;
             };
 
-
             physics = AddComponent(new PhysicsComponent(BodyType.Dynamic, collider, mass: 1));
         }
 
-        IEnumerator ScaleNaruto()
+        IEnumerator Scale()
         {
             yield return new WaitUntil(() => !isScaling);
             isScaling = true;
@@ -86,9 +81,8 @@ namespace JonnyHammer.Game.Characters
             isScaling = false;
         }
 
-        IEnumerator BlinkNaruto()
+        IEnumerator Blink()
         {
-
             for (var i = 0; i < 30; i++)
             {
                 animations.IsVisible = !animations.IsVisible;
@@ -97,12 +91,20 @@ namespace JonnyHammer.Game.Characters
 
             animations.IsVisible = true;
         }
-        AnimatedSpriteComponent CreateNarutaoAnimations()
+
+        AnimatedSpriteComponent CreateAnimations()
         {
             var spriteSheet = Loader.LoadTexture("main_char_spritesheet");
             var animationFrames = Loader.LoadAsepriteFrames("main_char_sprite_data");
 
             return new AnimatedSpriteComponent(spriteSheet, animationFrames);
+        }
+
+        public void Respawn()
+        {
+            // TODO
+            Transform.MoveTo(RespawnPosition);
+            isActive = true;
         }
 
         public override void Update(GameTime gameTime)
@@ -117,19 +119,20 @@ namespace JonnyHammer.Game.Characters
 
             keyboard.Update();
 
+            if (keyboard.IsPressing(Keys.LeftControl))
+                return;
+
             if (keyboard.IsPressing(Keys.Space) && state != State.Jumping)
             {
                 physics.ApplyForce(new Vector2(0, -1f));
                 state = State.Jumping;
-                //Console.WriteLine("Pulou!!!!");
             }
 
             if (keyboard.HasPressed(Keys.S))
-                StartCoroutine(ScaleNaruto());
+                StartCoroutine(Scale());
 
             if (keyboard.HasPressed(Keys.A))
-                StartCoroutine(BlinkNaruto());
-
+                StartCoroutine(Blink());
 
             if (keyboard.IsPressing(Keys.Right))
                 Run(Direction.Horizontal.Right);
@@ -144,7 +147,6 @@ namespace JonnyHammer.Game.Characters
 
             if (keyboard.HasPressed(Keys.LeftShift))
                 Dash();
-
         }
 
         void Dash()
@@ -177,7 +179,5 @@ namespace JonnyHammer.Game.Characters
             var m = direction == Direction.Horizontal.Left ? -speed : speed;
             physics.MoveForward(m);
         }
-
-
     }
 }

@@ -6,14 +6,16 @@ using tainicom.Aether.Physics2D.Dynamics;
 
 namespace JonnyHammer.Tiles
 {
-    public class Floor : Entity
+    public class Block : Entity
     {
         private int width;
+        private int height = 30;
         public override int Width { get => width; set => width = value; }
+        public override int Height { get => height; set => height = value; }
 
         public override void Load()
         {
-            var collider = AddComponent(new ColliderComponent(new Rectangle(0, 0, Width, 30), false, true));
+            var collider = AddComponent(new ColliderComponent(new Rectangle(0, 0, Width, Height), false, true));
             AddComponent(new PhysicsComponent(BodyType.Static, collider));
 
             base.Load();

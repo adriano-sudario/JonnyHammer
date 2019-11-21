@@ -27,9 +27,9 @@ namespace JonnyHammer.Game.Scenes
             narutitos = Spawn<BigNaruto>("NarutoRed", new Vector2(150, 200));
             //narutitos.AddComponent(new TweenComponent(TweenMode.Loop, TweenProperty.X, 100, EaseFunction.CubeInOut, 1000));
 
-            Spawn<Floor>("Chao 1", new Vector2(0, 350), f => f.Width = 600);
-            Spawn<Floor>("Chao 2", new Vector2(700, 350), f => f.Width = 500);
-            Spawn<Floor>("Chao 2", new Vector2(1300, 300), f => f.Width = 400);
+            Spawn<Block>("Chao 1", new Vector2(0, 350), f => f.Width = 600);
+            Spawn<Block>("Chao 2", new Vector2(700, 350), f => f.Width = 500);
+            Spawn<Block>("Chao 2", new Vector2(1300, 300), f => f.Width = 400);
 
 
             Spawn<Box>("Box 1", new Vector2(800, 300));

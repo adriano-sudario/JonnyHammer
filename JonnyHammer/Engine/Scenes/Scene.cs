@@ -1,6 +1,5 @@
 ﻿using JonnyHamer.Engine.Entities;
 using JonnyHamer.Engine.Managers;
-using JonnyHammer.Engine.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;

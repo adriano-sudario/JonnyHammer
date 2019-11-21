@@ -31,6 +31,30 @@
 /processorParam:TextureFormat=Color
 /build:Graphics/bg.jpg
 
+#begin Graphics/cloud.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Graphics/cloud.png
+
+#begin Graphics/far-grounds.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Graphics/far-grounds.png
+
 #begin Graphics/main_char_spritesheet.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -54,4 +78,43 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Graphics/narutao.png
+
+#begin Graphics/sea.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Graphics/sea.png
+
+#begin Graphics/tileset.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Graphics/tileset.png
+
+#begin Maps/bg.tsx
+/copy:Maps/bg.tsx
+
+#begin Maps/cloud.tsx
+/copy:Maps/cloud.tsx
+
+#begin Maps/ground.tsx
+/copy:Maps/ground.tsx
+
+#begin Maps/tileset.tsx
+/copy:Maps/tileset.tsx
+
+#begin Maps/world_one.tmx
+/copy:Maps/world_one.tmx
 

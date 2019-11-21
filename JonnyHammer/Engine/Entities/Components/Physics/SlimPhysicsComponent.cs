@@ -21,7 +21,7 @@ namespace JonnyHammer.Engine.Entities.Components
             collider.IsTrigger = true;
             collider.OnTrigger += (collidedEntity) =>
             {
-                if (!collidedEntity.Name.StartsWith("Chao"))
+                if (!collidedEntity.Name.StartsWith("floor"))
                     return;
 
                 Vector2 fixedPosition = new Vector2(Entity.Transform.X, Entity.Transform.Y);

@@ -12,17 +12,25 @@ namespace JonnyHamer.Engine.Manipulators
         public static Matrix ViewMatrix { get; set; }
         public static int AreaWidth { get; set; }
         public static int AreaHeight { get; set; }
+        public static Vector2 Position => new Vector2(position.X, position.Y);
 
         public static void Update()
         {
             ViewMatrix = Matrix.CreateTranslation(position);
         }
 
-        public static void CenterOn(Vector2 position)
+        public static void GoTo(Vector2 position)
         {
-            AdjustPosition(position, 1, 1);
+            Camera.position.X = position.X;
+            Camera.position.Y = position.Y;
             Update();
         }
+
+        //public static void CenterOn(Vector2 position)
+        //{
+        //    AdjustPosition(position, 1, 1);
+        //    Update();
+        //}
 
         public static void Follow(Entity body)
         {
@@ -34,19 +42,19 @@ namespace JonnyHamer.Engine.Manipulators
             Update();
         }
 
-        public static void ScrollHorizontally(Vector2 followPosition, int followWidth, int scrollIncrement)
-        {
-            if (followPosition.X + (followWidth / 2) >= (Screen.Width / 2) &&
-                followPosition.X + (followWidth / 2) <= AreaWidth - (Screen.Width / 2))
-                position.X -= scrollIncrement;
-        }
+        //public static void ScrollHorizontally(Vector2 followPosition, int followWidth, int scrollIncrement)
+        //{
+        //    if (followPosition.X + (followWidth / 2) >= (Screen.Width / 2) &&
+        //        followPosition.X + (followWidth / 2) <= AreaWidth - (Screen.Width / 2))
+        //        position.X -= scrollIncrement;
+        //}
 
-        public static void ScrollVertically(Vector2 followPosition, int followHeight, int scrollIncrement)
-        {
-            if (followPosition.Y + (followHeight / 2) >= (Screen.Height / 2) &&
-                followPosition.Y + (followHeight / 2) <= AreaHeight - (Screen.Height / 2))
-                position.Y -= scrollIncrement;
-        }
+        //public static void ScrollVertically(Vector2 followPosition, int followHeight, int scrollIncrement)
+        //{
+        //    if (followPosition.Y + (followHeight / 2) >= (Screen.Height / 2) &&
+        //        followPosition.Y + (followHeight / 2) <= AreaHeight - (Screen.Height / 2))
+        //        position.Y -= scrollIncrement;
+        //}
 
         private static void AdjustPosition(Vector2 followPosition, int followWidth, int followHeight)
         {

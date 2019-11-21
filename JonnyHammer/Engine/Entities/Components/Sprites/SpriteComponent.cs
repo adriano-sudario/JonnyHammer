@@ -11,8 +11,8 @@ namespace JonnyHamer.Engine.Entities.Sprites
     public class SpriteComponent : Component
     {
         private Texture2D spriteStrip;
-        public bool IsVisible { get; set; }
 
+        public bool IsVisible { get; set; }
         public virtual Rectangle Source { get; set; }
         public virtual int SpriteWidth => spriteStrip.Width;
         public virtual int SpriteHeight => spriteStrip.Height;
@@ -21,10 +21,8 @@ namespace JonnyHamer.Engine.Entities.Sprites
         public Vector2 Origin { get; set; }
         public Color Color { get; set; } = Color.White;
         public float LayerDepth { get; set; }
-
         public int Width => (int)(SpriteWidth * (Entity.Transform.Scale * Screen.Scale));
         public int Height => (int)(SpriteHeight * (Entity.Transform.Scale * Screen.Scale));
-
 
         public SpriteComponent(Texture2D spriteStrip, Rectangle source = default, float opacity = 1f, Vector2 origin = default, float rotation = 0)
         {
@@ -35,8 +33,6 @@ namespace JonnyHamer.Engine.Entities.Sprites
             Rotation = rotation;
             IsVisible = true;
         }
-
-
 
         public override void Draw(SpriteBatch spriteBatch)
         {
