@@ -11,7 +11,7 @@ namespace JonnyHammer.Engine.Helpers
         public Vector2 Position { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
-        public float MoveAmount { get; internal set; }
+        public float MoveAmount { get; set; }
     }
     public class TileLayer
     {
@@ -42,13 +42,13 @@ namespace JonnyHammer.Engine.Helpers
         public static TiledData Load(string tmxFileName)
         {
             var map = new TmxMap($"Content/Maps/{tmxFileName}.tmx");
-            var objects = LoadTiledLayers(map);
-            var layers = LoadTiledObjects(map);
+            var objects = LoadTiledObjects(map);
+            var layers = LoadTiledLayers(map);
 
             return new TiledData(objects, layers);
         }
 
-        static Dictionary<string, TileLayer[]> LoadTiledObjects(TmxMap map)
+        static Dictionary<string, TileLayer[]> LoadTiledLayers(TmxMap map)
         {
             var ret = new Dictionary<string, TileLayer[]>();
 
@@ -69,11 +69,11 @@ namespace JonnyHammer.Engine.Helpers
                     var textureName = tileSet.Properties["TextureName"];
 
                     var amount = 0;
-                    if (tileSet.Properties.ContainsKey("Amount"))
+                    if (layer.Properties.ContainsKey("Amount"))
                         amount = int.Parse(layer.Properties["Amount"]);
 
                     var speed = 0f;
-                    if (tileSet.Properties.ContainsKey("Speed"))
+                    if (layer.Properties.ContainsKey("Speed"))
                         speed = float.Parse(layer.Properties["Speed"], CultureInfo.InvariantCulture);
 
                     var layerData = new TileLayer
@@ -100,7 +100,7 @@ namespace JonnyHammer.Engine.Helpers
             return ret;
         }
 
-        static Dictionary<string, TiledObject[]> LoadTiledLayers(TmxMap map)
+        static Dictionary<string, TiledObject[]> LoadTiledObjects(TmxMap map)
         {
             var ret = new Dictionary<string, TiledObject[]>();
 

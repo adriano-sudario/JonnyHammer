@@ -69,8 +69,8 @@ namespace JonnyHammer.Game.Scenes
                     tile.Position + new Vector2((i * tile.Width) - 1, 0),
                     c =>
                     {
-                        c.OnDisappear += () => c.Transform.MoveTo(cloudRespawn);
                         c.Speed = tile.Speed;
+                        c.Cloudrespawn = cloudRespawn;
                     });
             }
         }
