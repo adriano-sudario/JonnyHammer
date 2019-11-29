@@ -38,8 +38,7 @@ namespace JonnyHammer.Game.Characters
 
             collider.OnCollide += (e) =>
             {
-                if (!e.Name.StartsWith("Chao"))
-                    Console.WriteLine($"colidiu com {e.Name} {DateTime.UtcNow.Millisecond}");
+                Console.WriteLine($"colidiu com {e.Name} {DateTime.UtcNow.Millisecond}");
             };
         }
 
@@ -48,7 +47,7 @@ namespace JonnyHammer.Game.Characters
             base.Load();
 
             HorizontalPosition = Transform.X;
-            AddComponent(new TweenComponent(TweenMode.Loop, this, nameof(HorizontalPosition), 
+            AddComponent(new TweenComponent(TweenMode.Loop, this, nameof(HorizontalPosition),
                 HorizontalPosition + MoveAmount, EaseFunction.Linear, 1000));
         }
 

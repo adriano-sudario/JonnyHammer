@@ -15,7 +15,9 @@ namespace JonnyHammer.Tiles
 
         public override void Load()
         {
-            var collider = AddComponent(new ColliderComponent(new Rectangle(0, 0, Width, Height), false, true));
+            var debugCollor = Color.Red;
+            debugCollor.A = 50;
+            var collider = AddComponent(new ColliderComponent(new Rectangle(0, 0, Width, Height), false, true, debugCollor));
             AddComponent(new PhysicsComponent(BodyType.Static, collider));
 
             base.Load();

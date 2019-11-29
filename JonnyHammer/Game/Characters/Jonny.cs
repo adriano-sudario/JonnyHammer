@@ -23,6 +23,7 @@ namespace JonnyHammer.Game.Characters
             Dashing,
         }
 
+        const float JumpForce = 4f;
         float speed = 2f;
         bool isScaling = false;
         State state = State.Jumping;
@@ -50,7 +51,7 @@ namespace JonnyHammer.Game.Characters
 
             var floorTrigger = AddComponent(
                                 new ColliderComponent(
-                                    new Rectangle(5, animations.Height, animations.Width - 10, 10),
+                                    new Rectangle(5, animations.Height, animations.Width - 10, 5),
                                     autoCheck: true,
                                     isDebug: true,
                                     isTrigger: true,
@@ -68,6 +69,7 @@ namespace JonnyHammer.Game.Characters
             };
 
             physics = AddComponent(new PhysicsComponent(BodyType.Dynamic, collider, mass: 1));
+            physics.MaxVelocity = new Vector2(3, JumpForce);
         }
 
         IEnumerator Scale()
@@ -133,7 +135,7 @@ namespace JonnyHammer.Game.Characters
 
             if (keyboard.IsPressing(Keys.Space) && state != State.Jumping)
             {
-                physics.ApplyForce(new Vector2(0, -1f));
+                physics.ApplyForce(new Vector2(0, -JumpForce));
                 state = State.Jumping;
             }
 

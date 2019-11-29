@@ -46,6 +46,8 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
         {
             Configure();
             Entity.Transform.OnSetScale += Entity_OnSetScale;
+            Entity.Transform.SetPhysicsComponent(this);
+
         }
 
         public override void Dispose()
@@ -141,5 +143,13 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
 
         public void MoveForward(float addPosition) =>
             SetVelocity(addPosition, Body.LinearVelocity.Y, true);
+
+        public void MoveTo(Vector2 position)
+        {
+            var (x, y) = position;
+            Body.Position =
+                new Vector2(x / PixelsPerMeter, y / PixelsPerMeter)
+                + new Vector2(width / 2, height / 2);
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using JonnyHamer.Engine.Entities;
 using JonnyHamer.Engine.Helpers;
 using JonnyHamer.Engine.Manipulators;
+using JonnyHammer.Engine.Entities.Components.Phisycs;
 using JonnyHammer.Engine.Helpers;
 using Microsoft.Xna.Framework;
 using System;
@@ -9,7 +10,8 @@ namespace JonnyHammer.Engine.Entities
 {
     public class Transform
     {
-        private Vector2 position;
+        PhysicsComponent physicsComponent;
+        Vector2 position;
 
         public Vector2 PreviousPosition { get; private set; }
         public Direction.Horizontal FacingDirection { get; set; } = Direction.Horizontal.Right;
@@ -31,9 +33,16 @@ namespace JonnyHammer.Engine.Entities
         public float X => position.X;
         public float Y => position.Y;
 
+
+
         public void FixPosition(Vector2 position) => this.position = position;
 
         public event Action OnSetScale = delegate { };
+
+        public void SetPhysicsComponent(PhysicsComponent physicsComponent)
+        {
+            this.physicsComponent = physicsComponent;
+        }
 
         public void MoveTo(Vector2 position, bool setFacingDirection = true)
         {
@@ -48,6 +57,10 @@ namespace JonnyHammer.Engine.Entities
             }
 
             this.position = position;
+            if (physicsComponent == null)
+                this.position = position;
+            else
+                physicsComponent.MoveTo(position);
         }
 
         public void KeepOnCameraBounds(Entity entity)
@@ -99,5 +112,6 @@ namespace JonnyHammer.Engine.Entities
 
         public void Rotate(float degrees) => Rotation = MathHelper.ToRadians(degrees);
         public float GetRotationInDegrees() => MathHelper.ToDegrees(Rotation);
+
     }
 }
