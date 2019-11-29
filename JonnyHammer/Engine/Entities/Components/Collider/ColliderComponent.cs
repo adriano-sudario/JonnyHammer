@@ -29,18 +29,26 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
         {
             get
             {
-                var position = new Vector2(Entity.Transform.X, Entity.Transform.Y) + new Vector2(bounds.X, bounds.Y);
-                return new Rectangle((int)position.X, (int)position.Y, bounds.Width, bounds.Height);
+                var position = new Vector2(Entity.Transform.X, Entity.Transform.Y)
+                             + new Vector2(bounds.X, bounds.Y) * Entity.Transform.Scale;
+
+                return new Rectangle(
+                            (int)position.X,
+                            (int)position.Y,
+                            (int)(bounds.Width * Entity.Transform.Scale),
+                            (int)(bounds.Height * Entity.Transform.Scale)
+                          );
             }
             private set => bounds = value;
         }
 
-        public ColliderComponent(Rectangle rectangle, bool autoCheck = false, bool isDebug = false, Color? debugColor = null)
+        public ColliderComponent(Rectangle rectangle, bool autoCheck = false, bool isDebug = false, Color? debugColor = null, bool isTrigger = false)
         {
             IsDebug = isDebug && System.Diagnostics.Debugger.IsAttached;
             Bounds = rectangle;
             debugTexture = Core.GetDebugTexture(debugColor ?? Color.Red);
             AutoCheck = autoCheck;
+            IsTrigger = isTrigger;
         }
 
 
@@ -89,7 +97,8 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
                 (int)spriteComponent.Entity.Transform.Y,
                 spriteComponent.Width,
                 spriteComponent.Height)
-        ) { }
+        )
+        { }
 
         public bool CollidesWith(Rectangle rectangle) => Bounds.Intersects(rectangle);
 

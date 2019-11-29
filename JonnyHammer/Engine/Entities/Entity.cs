@@ -18,9 +18,6 @@ namespace JonnyHamer.Engine.Entities
         private IList<CoroutineTask> coroutines = new List<CoroutineTask>();
         protected bool isActive = true;
         bool didStart = false;
-
-        public event Action OnSetScale = delegate { };
-
         public Transform Transform { get; private set; } = new Transform();
 
         public string Name { get; set; }

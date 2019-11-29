@@ -13,7 +13,18 @@ namespace JonnyHammer.Engine.Entities
 
         public Vector2 PreviousPosition { get; private set; }
         public Direction.Horizontal FacingDirection { get; set; } = Direction.Horizontal.Right;
-        public float Scale { get; set; } = 1;
+
+        float _scale = 1;
+        public float Scale
+        {
+            get => _scale;
+            set
+            {
+                _scale = value;
+                OnSetScale();
+            }
+        }
+
         public float Rotation { get; set; }
         public Vector2 Origin { get; private set; }
         public Vector2 Position => position;
@@ -21,6 +32,8 @@ namespace JonnyHammer.Engine.Entities
         public float Y => position.Y;
 
         public void FixPosition(Vector2 position) => this.position = position;
+
+        public event Action OnSetScale = delegate { };
 
         public void MoveTo(Vector2 position, bool setFacingDirection = true)
         {

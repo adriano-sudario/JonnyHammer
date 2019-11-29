@@ -28,7 +28,6 @@ namespace JonnyHammer.Game.Characters
         State state = State.Jumping;
 
         KeyboardInput keyboard;
-
         PhysicsComponent physics;
         AnimatedSpriteComponent animations;
 
@@ -42,19 +41,29 @@ namespace JonnyHammer.Game.Characters
 
             var debugColor = Color.Green;
             debugColor.A = 90;
-            var collider = AddComponent(new ColliderComponent(new Rectangle(0, 0, animations.Width, animations.Height), autoCheck: true, isDebug: true, debugColor));
+            var collider = AddComponent(
+                            new ColliderComponent(
+                                   new Rectangle(0, 0, animations.Width, animations.Height),
+                                   autoCheck: true,
+                                   isDebug: true,
+                                   debugColor: debugColor));
 
-            var floorTrigger = AddComponent(new ColliderComponent(new Rectangle(5, animations.Height, animations.Width - 10, 10), autoCheck: true, isDebug: true, Color.Yellow));
-            floorTrigger.IsTrigger = true;
+            var floorTrigger = AddComponent(
+                                new ColliderComponent(
+                                    new Rectangle(5, animations.Height, animations.Width - 10, 10),
+                                    autoCheck: true,
+                                    isDebug: true,
+                                    isTrigger: true,
+                                    debugColor: Color.Yellow));
 
-            collider.OnCollide += (e) =>
+            collider.OnCollide += e =>
             {
                 Console.WriteLine($"colidiu com {e.Name} {DateTime.UtcNow.Millisecond}");
             };
 
-            floorTrigger.OnTrigger += (e) =>
+            floorTrigger.OnTrigger += e =>
             {
-                if (state != State.Dashing)
+                if (state != State.Dashing && e.Name.Contains("floor"))
                     state = State.Grounded;
             };
 

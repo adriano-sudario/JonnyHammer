@@ -11,11 +11,16 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
     public class PhysicsComponent : Component
     {
         readonly ColliderComponent collider;
-        private readonly float mass;
+        float mass;
+        float friction;
+        float restitution;
 
         public Body Body { get; private set; }
         public BodyType BodyType { get; private set; }
         public Vector2 MaxVelocity { get; set; } = new Vector2(3, 3);
+
+        public float Mass { get => mass; set => Body.Mass = mass = value; }
+
 
         public Vector2 Velocity
         {
@@ -28,22 +33,24 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
         public IList<Body> Collided { get; } = new List<Body>();
 
 
-        public PhysicsComponent(BodyType bodyType, ColliderComponent collider, float mass = 1)
+        public PhysicsComponent(BodyType bodyType, ColliderComponent collider, float mass = 1, float friction = 0, float restitution = 0)
         {
             BodyType = bodyType;
             this.collider = collider;
             this.mass = mass;
+            this.friction = friction;
+            this.restitution = restitution;
         }
 
         public override void Start()
         {
             Configure();
-            Entity.OnSetScale += Entity_OnSetScale;
+            Entity.Transform.OnSetScale += Entity_OnSetScale;
         }
 
         public override void Dispose()
         {
-            Entity.OnSetScale -= Entity_OnSetScale;
+            Entity.Transform.OnSetScale -= Entity_OnSetScale;
             Entity.Destroy();
             base.Dispose();
         }
@@ -67,9 +74,6 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
         void Configure()
         {
             Body = CreateBody();
-
-            //collider.IsTrigger = true;
-            //collider.AutoCheck = false;
         }
 
         private Body CreateBody()
@@ -79,8 +83,8 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
                 height,
                 1f, new Vector2(x + width / 2, y - height / 2));
 
-            //body.SetRestitution(0.5f);
-            ///body.SetFriction(0.3f);
+            body.SetRestitution(restitution);
+            body.SetFriction(friction);
             body.BodyType = BodyType;
             body.Tag = Entity.Name;
             body.OnCollision += Body_OnCollision;
