@@ -68,9 +68,13 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
         {
             var fixture = Body.FixtureList[0];
             var d = fixture.Shape.Density;
+            var mass = Body.Mass;
+
             Body.Remove(fixture);
             var rectangleVertices = PolygonTools.CreateRectangle(width / 2, height / 2);
             Body.CreatePolygon(rectangleVertices, d);
+
+            Body.Mass = mass;
         }
 
         void Configure()
@@ -103,15 +107,14 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
 
         public override void Update(GameTime gameTime)
         {
-
-            Entity.Transform.MoveTo((Body.Position - new Vector2(width, height) / 2) * PixelsPerMeter);
+            Entity.Transform.MoveTo((Body.Position - new Vector2(width, height) / 2) * PixelsPerMeter, ignorePhysics: true);
             Entity.Transform.Rotation = Body.Rotation;
+
 
             if (MaxVelocity.Y > 0)
             {
                 if (Body.LinearVelocity.Y > MaxVelocity.Y)
                     Body.LinearVelocity = new Vector2(Body.LinearVelocity.X, MaxVelocity.Y);
-
                 if (Body.LinearVelocity.Y < -MaxVelocity.Y)
                     Body.LinearVelocity = new Vector2(Body.LinearVelocity.X, -MaxVelocity.Y);
             }

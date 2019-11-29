@@ -26,7 +26,7 @@ namespace JonnyHammer.Engine.Entities.Components
         public Action OnFinish;
         public TweenMode Mode { get; private set; }
         public bool IsReverse { get; private set; }
-        public bool IsRepeating{ get; private set; }
+        public bool IsRepeating { get; private set; }
         public TweenProperty Property { get; private set; }
         public float Eased { get; private set; }
         public float Duration { get; private set; }
@@ -158,7 +158,7 @@ namespace JonnyHammer.Engine.Entities.Components
                 return;
 
             elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
-            
+
             Percent = MathHelper.Clamp(Math.Min((float)elapsedTime, Duration) / Duration, 0, 1);
 
             if (IsReverse)
@@ -183,7 +183,7 @@ namespace JonnyHammer.Engine.Entities.Components
         private void Finish()
         {
             Percent = IsReverse ? 0 : 1;
-            
+
             Increment();
 
             switch (Mode)
@@ -191,17 +191,17 @@ namespace JonnyHammer.Engine.Entities.Components
                 case TweenMode.Persist:
                     IsActive = false;
                     break;
-                    
+
                 case TweenMode.OneShot:
                     IsActive = false;
                     Entity?.Destroy();
                     break;
-                    
+
                 case TweenMode.Loop:
                     TargetValue = InitialValue;
                     Begin();
                     break;
-                    
+
                 case TweenMode.Yoyo:
                     if (!IsReverse)
                         StartTween();
@@ -213,7 +213,7 @@ namespace JonnyHammer.Engine.Entities.Components
                     if (!IsActive)
                         OnFinish?.Invoke();
                     return;
-                    
+
                 case TweenMode.Restart:
                     StartTween();
                     break;

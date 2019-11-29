@@ -90,13 +90,14 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
             return entityList.Any();
         }
 
-        public ColliderComponent(SpriteComponent spriteComponent)
+        public ColliderComponent(SpriteComponent spriteComponent, bool autoCheck = false, bool isDebug = false, Color? debugColor = null, bool isTrigger = false)
         : this(
             new Rectangle(
                 (int)spriteComponent.Entity.Transform.X,
                 (int)spriteComponent.Entity.Transform.Y,
                 spriteComponent.Width,
-                spriteComponent.Height)
+                spriteComponent.Height),
+            autoCheck, isDebug, debugColor, isTrigger
         )
         { }
 

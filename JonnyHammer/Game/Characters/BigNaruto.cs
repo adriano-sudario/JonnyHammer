@@ -7,7 +7,6 @@ using JonnyHammer.Engine.Entities.Components;
 using JonnyHammer.Engine.Entities.Components.Collider;
 using JonnyHammer.Engine.Helpers;
 using Microsoft.Xna.Framework;
-using System;
 
 namespace JonnyHammer.Game.Characters
 {
@@ -26,20 +25,17 @@ namespace JonnyHammer.Game.Characters
 
         public BigNaruto()
         {
-            Transform.Scale = .6f;
             keyboard = new KeyboardInput();
 
             var animations = CreateNarutaoAnimations();
             animations.Color = Color.Red;
             animatedSprite = AddComponent(animations);
 
-            var collider = AddComponent(new ColliderComponent(new Rectangle(0, 0, animatedSprite.Width, animatedSprite.Height), true));
+            var collider = AddComponent(new ColliderComponent(animatedSprite, true, true, Color.Purple));
+            //AddComponent(new PhysicsComponent(BodyType.Dynamic, collider, mass: 10, friction: 0.2f)); ;
             AddComponent<SlimPhysicsComponent>();
 
-            collider.OnCollide += (e) =>
-            {
-                Console.WriteLine($"colidiu com {e.Name} {DateTime.UtcNow.Millisecond}");
-            };
+            Transform.Scale = 0.6f;
         }
 
         public override void Load()
@@ -62,9 +58,7 @@ namespace JonnyHammer.Game.Characters
         public override void Update(GameTime gameTime)
         {
             keyboard.Update();
-
             Transform.MoveHorizontally((int)HorizontalPosition);
-
             base.Update(gameTime);
         }
 

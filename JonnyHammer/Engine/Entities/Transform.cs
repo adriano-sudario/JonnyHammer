@@ -44,7 +44,7 @@ namespace JonnyHammer.Engine.Entities
             this.physicsComponent = physicsComponent;
         }
 
-        public void MoveTo(Vector2 position, bool setFacingDirection = true)
+        public void MoveTo(Vector2 position, bool setFacingDirection = true, bool ignorePhysics = false)
         {
             PreviousPosition = this.position;
 
@@ -57,7 +57,7 @@ namespace JonnyHammer.Engine.Entities
             }
 
             this.position = position;
-            if (physicsComponent == null)
+            if (physicsComponent == null || ignorePhysics)
                 this.position = position;
             else
                 physicsComponent.MoveTo(position);

@@ -26,6 +26,7 @@ namespace JonnyHammer.Game.Characters
         const float JumpForce = 4f;
         float speed = 2f;
         bool isScaling = false;
+        bool canDash = true;
         State state = State.Jumping;
 
         KeyboardInput keyboard;
@@ -59,13 +60,16 @@ namespace JonnyHammer.Game.Characters
 
             collider.OnCollide += e =>
             {
-                Console.WriteLine($"colidiu com {e.Name} {DateTime.UtcNow.Millisecond}");
+                //Console.WriteLine($"colidiu com {e.Name} {DateTime.UtcNow.Millisecond}");
             };
 
             floorTrigger.OnTrigger += e =>
             {
                 if (state != State.Dashing && e.Name.Contains("floor"))
+                {
                     state = State.Grounded;
+                    canDash = true;
+                }
             };
 
             physics = AddComponent(new PhysicsComponent(BodyType.Dynamic, collider, mass: 1));
@@ -142,6 +146,9 @@ namespace JonnyHammer.Game.Characters
             if (keyboard.HasPressed(Keys.S))
                 StartCoroutine(Scale());
 
+            if (keyboard.HasPressed(Keys.Escape))
+                Respawn();
+
             if (keyboard.HasPressed(Keys.A))
                 StartCoroutine(Blink());
 
@@ -162,9 +169,10 @@ namespace JonnyHammer.Game.Characters
 
         void Dash()
         {
-            if (state == State.Dashing)
+            if (state == State.Dashing || !canDash)
                 return;
 
+            canDash = false;
             var oldState = state;
             state = State.Dashing;
             physics.Body.IgnoreGravity = true;
