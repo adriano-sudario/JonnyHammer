@@ -8,117 +8,103 @@ using JonnyHammer.Tiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Globalization;
-using TiledSharp;
+using System.Collections.Generic;
 
 namespace JonnyHammer.Game.Scenes
 {
     public class WorldOne : Scene
     {
-        private TmxMap map;
         private Jonny player;
         private KeyboardInput keyboard = new KeyboardInput();
 
         public WorldOne()
         {
-            map = new TmxMap("Content/Maps/world_one.tmx");
-
-            SpawnTiledLayers(map);
-            SpawnTiledObjects(map);
+            var map = TiledLoader.Load("world_one");
+            SpawnTiledLayers(map.Layers);
+            SpawnTiledObjects(map.Objects);
         }
 
-        private void SpawnTiledLayers(TmxMap map)
+        void SpawnTiledLayers(Dictionary<string, TileLayer[]> layers)
         {
-            foreach (var layer in map.TileLayers)
-            {
-                int index = 0;
-
-                foreach (var tile in layer.Tiles)
-                {
-                    if (tile.Gid == 0)
-                        continue;
-
-                    TmxTileset tileSet = null;
-                    var info = map.GetTileSetAditionalInfo(tile, out tileSet);
-                    var position = info.MapPosition;
-                    var source = info.ImageSource;
-
-                    switch (tileSet.Name)
+            foreach (var (layer, tiles) in layers)
+                foreach (var (index, tile) in tiles.AsIndexed())
+                    switch (tile.Name)
                     {
                         case "bg":
-                            Spawn<MainBackground>($"{layer.Name}_{++index}", position,
-                                s => s.TextureName = tileSet.Properties["TextureName"]);
+                            Spawn<MainBackground>($"{layer}_bg_{index}", tile.Position,
+                                s => s.TextureName = tile.TextureName);
                             break;
 
                         case "cloud":
-                            int amount = int.Parse(layer.Properties["Amount"]);
-                            int multiplier = amount - 1;
-                            Vector2 cloudRespawn =
-                                new Vector2((tileSet.TileWidth * multiplier) - multiplier, position.Y);
-                            Cloud lastCloud = null;
-
-                            for (int i = 0; i < amount; i++)
-                            {
-                                Vector2 cloudPosition = i == 0 ? position :
-                                    new Vector2(lastCloud.Transform.Position.X + tileSet.TileWidth - 1, position.Y);
-
-                                lastCloud = Spawn<Cloud>($"{layer.Name}_{++index}",
-                                    position + new Vector2((i * tileSet.TileWidth) - 1, 0),
-                                    c =>
-                                    {
-                                        c.OnDisappear += () => c.Transform.MoveTo(cloudRespawn);
-                                        c.Speed = float.Parse(layer.Properties["Speed"], CultureInfo.InvariantCulture);
-                                    });
-                            }
+                            SpawnClouds(layer, tile);
                             break;
 
                         default:
-                            Spawn<Scenery>($"{layer.Name}_{++index}", position,
+                            Spawn<Scenery>($"{layer}_sc_{index}", tile.Position,
                                 s =>
                                 {
-                                    s.TextureName = tileSet.Properties["TextureName"];
-                                    s.Source = source;
-                                    s.Width = tileSet.TileWidth;
-                                    s.Height = tileSet.TileHeight;
+                                    s.TextureName = tile.TextureName;
+                                    s.Source = tile.Source;
+                                    s.Width = tile.Width;
+                                    s.Height = tile.Height;
                                 });
                             break;
+
                     }
-                }
+        }
+
+        void SpawnClouds(string layer, TileLayer tile)
+        {
+            var multiplier = tile.Amount - 1;
+            var cloudRespawn = new Vector2((tile.Width * multiplier) - multiplier, tile.Position.Y);
+            Cloud lastCloud = null;
+
+            for (var i = 0; i < tile.Amount; i++)
+            {
+                var cloudPosition = i == 0
+                    ? tile.Position :
+                    new Vector2(lastCloud.Transform.Position.X + tile.Width - 1, tile.Position.Y);
+
+                lastCloud = Spawn<Cloud>($"{layer}_cloud_{i}",
+                    tile.Position + new Vector2((i * tile.Width) - 1, 0),
+                    c =>
+                    {
+                        c.OnDisappear += () => c.Transform.MoveTo(cloudRespawn);
+                        c.Speed = tile.Speed;
+                    });
             }
         }
 
-        private void SpawnTiledObjects(TmxMap map)
+        private void SpawnTiledObjects(Dictionary<string, TiledObject[]> objects)
         {
-            foreach (var layer in map.ObjectGroups)
-            {
-                int index = 0;
-
-                foreach (var item in layer.Objects)
-                {
-                    switch (layer.Name)
+            foreach (var (layer, tiles) in objects)
+                foreach (var (index, tile) in tiles.AsIndexed())
+                    switch (layer)
                     {
                         case "one_way_blocks":
                         case "blocks":
-                            Spawn<Block>($"floor_{++index}", new Vector2((float)item.X, (float)(item.Y + item.Height)),
-                                f =>
-                                {
-                                    f.Width = (int)item.Width;
-                                    f.Height = (int)item.Height;
-                                });
+                            Spawn<Block>(
+                               $"floor_{layer}_{index}",
+                               new Vector2(tile.Position.X, tile.Position.Y + tile.Height),
+                               f =>
+                               {
+                                   f.Width = tile.Width;
+                                   f.Height = (int)tile.Height;
+                               });
                             break;
 
                         case "player_spawn":
-                            player = Spawn<Jonny>("Narutao", new Vector2((float)item.X, (float)item.Y),
-                                j => j.RespawnPosition = new Vector2((float)item.X, (float)item.Y));
+                            player = Spawn<Jonny>(
+                                "Jonny",
+                                tile.Position,
+                                j => j.RespawnPosition = tile.Position);
                             break;
 
                         case "big_narutos":
-                            Spawn<BigNaruto>("NarutoRed", new Vector2((float)item.X, (float)item.Y),
-                                bg => bg.MoveAmount = float.Parse(item.Properties["MoveAmount"], CultureInfo.InvariantCulture));
+                            Spawn<BigNaruto>("NarutoRed", tile.Position,
+                                bg => bg.MoveAmount = tile.MoveAmount);
                             break;
                     }
-                }
-            }
         }
 
         public override void Update(GameTime gameTime)
@@ -146,7 +132,7 @@ namespace JonnyHammer.Game.Scenes
                 player.Respawn();
                 return;
             }
-            
+
             Camera.Follow(player);
         }
 
