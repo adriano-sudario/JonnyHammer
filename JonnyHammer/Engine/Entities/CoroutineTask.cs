@@ -49,11 +49,28 @@ namespace JonnyHammer.Engine
             {
                 ICoroutineWaitable x => x,
                 TimeSpan t => new WaitTime(t),
+                IEnumerator c => new WaitCoroutine(c),
                 int n => new WaitFrames(n),
                 _ => null,
             };
 
 
+    }
+    public class WaitCoroutine : ICoroutineWaitable
+    {
+        CoroutineTask manager;
+
+        public WaitCoroutine(IEnumerator coroutine)
+        {
+            this.manager = new CoroutineTask(coroutine);
+        }
+
+        public bool ShouldWait() => !manager.Done;
+
+        public void Update(GameTime gameTime)
+        {
+            manager.Update(gameTime);
+        }
     }
     public class WaitTime : ICoroutineWaitable
     {

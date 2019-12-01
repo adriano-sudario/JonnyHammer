@@ -3,9 +3,11 @@ using JonnyHamer.Engine.Entities.Sprites;
 using JonnyHamer.Engine.Helpers;
 using JonnyHamer.Engine.Inputs;
 using JonnyHammer.Engine;
+using JonnyHammer.Engine.Entities;
 using JonnyHammer.Engine.Entities.Components.Collider;
 using JonnyHammer.Engine.Entities.Components.Phisycs;
 using JonnyHammer.Engine.Helpers;
+using JonnyHammer.Game.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -38,7 +40,8 @@ namespace JonnyHammer.Game.Characters
 
         KeyboardInput keyboard;
         PhysicsComponent physics;
-        AnimatedSpriteComponent animations;
+        AnimatedSpriteComponent spriteRenderer;
+        Lifebar lifebar;
 
         public Vector2 RespawnPosition { get; set; }
 
@@ -47,29 +50,27 @@ namespace JonnyHammer.Game.Characters
             life = totalLife;
             keyboard = new KeyboardInput();
 
-            animations = AddComponent(CreateAnimations());
+            spriteRenderer = AddComponent(CreateAnimations());
+
+            lifebar = AddComponent(new Lifebar(totalLife));
 
             var debugColor = Color.Green;
             debugColor.A = 90;
             var collider = AddComponent(
                             new ColliderComponent(
-                                   new Rectangle(0, 0, animations.Width, animations.Height),
+                                   new Rectangle(0, 0, spriteRenderer.Width, spriteRenderer.Height),
                                    autoCheck: true,
                                    isDebug: true,
                                    debugColor: debugColor));
 
             var floorTrigger = AddComponent(
                                 new ColliderComponent(
-                                    new Rectangle(5, animations.Height, animations.Width - 10, 5),
+                                    new Rectangle(5, spriteRenderer.Height, spriteRenderer.Width - 10, 5),
                                     autoCheck: true,
                                     isDebug: true,
                                     isTrigger: true,
                                     debugColor: Color.Yellow));
 
-            collider.OnCollide += e =>
-            {
-                //Console.WriteLine($"colidiu com {e.Name} {DateTime.UtcNow.Millisecond}");
-            };
 
             floorTrigger.OnTrigger += e =>
             {
@@ -90,6 +91,7 @@ namespace JonnyHammer.Game.Characters
                 return;
 
             life -= amount;
+            lifebar.UpdateLife(life);
             physics.ResetVelocity();
 
             StartCoroutine(Blink());
@@ -135,11 +137,11 @@ namespace JonnyHammer.Game.Characters
             invulnerable = true;
             for (var i = 0; i < 7; i++)
             {
-                animations.IsVisible = !animations.IsVisible;
+                spriteRenderer.IsVisible = !spriteRenderer.IsVisible;
                 yield return 5;
             }
 
-            animations.IsVisible = true;
+            spriteRenderer.IsVisible = true;
             invulnerable = false;
         }
 
@@ -206,7 +208,7 @@ namespace JonnyHammer.Game.Characters
                 Run(Direction.Horizontal.Left);
             else
             {
-                animations.Change("Idle");
+                spriteRenderer.Change("Idle");
                 if (physics.Velocity.X != 0)
                     physics.SetVelocity(x: physics.Velocity.X * .8f, noconvert: true);
             }
@@ -225,7 +227,7 @@ namespace JonnyHammer.Game.Characters
             state = State.Dashing;
             physics.Body.IgnoreGravity = true;
             physics.SetVelocity(y: 0);
-            animations.Change("Running");
+            spriteRenderer.Change("Running");
             Invoke(() =>
             {
                 state = oldState;
@@ -238,7 +240,7 @@ namespace JonnyHammer.Game.Characters
 
         public void Run(Direction.Horizontal direction)
         {
-            animations.Change("Running");
+            spriteRenderer.Change("Running");
             Transform.FacingDirection = direction;
 
             if (Transform.FacingDirection != direction) Stop();
@@ -246,5 +248,7 @@ namespace JonnyHammer.Game.Characters
             var m = direction == Direction.Horizontal.Left ? -speed : speed;
             physics.MoveForward(m);
         }
+
+
     }
 }
