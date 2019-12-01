@@ -47,6 +47,7 @@ namespace JonnyHammer.Game.UI
 
             lifebar.Opacity = 1;
             lifebarBack.Opacity = 1;
+            yield return new WaitUntil(() => !desapearing);
             yield return Desapear();
 
         }
@@ -54,6 +55,8 @@ namespace JonnyHammer.Game.UI
 
         IEnumerator Desapear()
         {
+            yield return TimeSpan.FromSeconds(3);
+
             if (desapearing)
                 yield break;
 
@@ -61,9 +64,7 @@ namespace JonnyHammer.Game.UI
             var opacity = lifebar.Opacity;
             var step = 0.2f;
 
-            yield return TimeSpan.FromSeconds(3);
-
-            while (opacity > 0)
+            while (opacity > 0 && desapearing)
             {
                 opacity -= step;
 
@@ -72,17 +73,16 @@ namespace JonnyHammer.Game.UI
 
                 yield return TimeSpan.FromMilliseconds(50);
 
-                if (!desapearing)
-                    yield break;
             }
             desapearing = false;
         }
 
         public override void Update(GameTime gameTime)
         {
+            base.Update(gameTime);
             bounds = new Rectangle(
             (int)Entity.Transform.Position.X,
-            (int)Entity.Transform.Position.Y - 7,
+            (int)Entity.Transform.Position.Y - 5,
             renderer.Width, 4);
 
             var currentLife = bounds.Width * CurrentLife / TotalLife;
@@ -91,16 +91,15 @@ namespace JonnyHammer.Game.UI
                 bounds.X, bounds.Y,
                 currentLife, bounds.Height);
 
-            base.Update(gameTime);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            base.Draw(spriteBatch);
             lifebarBack.Draw(spriteBatch, bounds);
             lifebar.Draw(spriteBatch, lifeBounds);
 
 
-            base.Draw(spriteBatch);
         }
 
     }
