@@ -64,7 +64,7 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
             var entities = SceneManager.CurrentScene.Entities;
             var entityList = new List<Entity>();
 
-            for (int i = 0; i < entities.Count; i++)
+            for (var i = 0; i < entities.Count; i++)
                 if (!IsTrigger && CollidesWith(entities[i]) || (IsTrigger && TriggerWith(entities[i])))
                 {
                     if (stopOnFirst)

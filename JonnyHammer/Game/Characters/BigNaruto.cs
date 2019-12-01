@@ -36,6 +36,16 @@ namespace JonnyHammer.Game.Characters
             AddComponent<SlimPhysicsComponent>();
 
             Transform.Scale = 0.6f;
+
+            collider.OnTrigger += Collider_OnCollide;
+        }
+
+        private void Collider_OnCollide(Entity obj)
+        {
+            if (obj is Jonny jonnny)
+            {
+                jonnny.TakeDamage(10);
+            }
         }
 
         public override void Load()

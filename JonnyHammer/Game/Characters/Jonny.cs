@@ -21,9 +21,15 @@ namespace JonnyHammer.Game.Characters
             Grounded,
             Jumping,
             Dashing,
+            HitStun,
         }
 
-        const float JumpForce = 4f;
+        int life = 100;
+        bool locked = false;
+        bool invulnerable = false;
+
+
+        const float JumpForce = 2.5f;
         float speed = 2f;
         bool isScaling = false;
         bool canDash = true;
@@ -65,7 +71,7 @@ namespace JonnyHammer.Game.Characters
 
             floorTrigger.OnTrigger += e =>
             {
-                if (state != State.Dashing && e.Name.Contains("floor"))
+                if (state != State.Dashing && e.Name.Contains("floor") && !locked)
                 {
                     state = State.Grounded;
                     canDash = true;
@@ -74,6 +80,19 @@ namespace JonnyHammer.Game.Characters
 
             physics = AddComponent(new PhysicsComponent(BodyType.Dynamic, collider, mass: 1));
             physics.MaxVelocity = new Vector2(3, JumpForce);
+        }
+
+        public void TakeDamage(int amount)
+        {
+            if (state == State.HitStun || invulnerable)
+                return;
+
+            life -= amount;
+            StartCoroutine(Blink());
+            StartCoroutine(HitStun());
+
+            physics.ResetVelocity();
+            physics.ApplyForce(new Vector2(-3f, -1f));
         }
 
         IEnumerator Scale()
@@ -96,15 +115,28 @@ namespace JonnyHammer.Game.Characters
             isScaling = false;
         }
 
+        IEnumerator HitStun()
+        {
+            var oldState = state;
+            locked = true;
+            state = State.HitStun;
+
+            yield return 10;
+
+            state = oldState;
+            locked = false;
+        }
         IEnumerator Blink()
         {
-            for (var i = 0; i < 30; i++)
+            invulnerable = true;
+            for (var i = 0; i < 5; i++)
             {
                 animations.IsVisible = !animations.IsVisible;
-                yield return 5; // wait 5 frames
+                yield return 5;
             }
 
             animations.IsVisible = true;
+            invulnerable = false;
         }
 
         AnimatedSpriteComponent CreateAnimations()
@@ -117,7 +149,6 @@ namespace JonnyHammer.Game.Characters
 
         public void Respawn()
         {
-            // TODO
             Transform.MoveTo(RespawnPosition);
             isActive = true;
         }
@@ -126,18 +157,27 @@ namespace JonnyHammer.Game.Characters
         {
             base.Update(gameTime);
 
+
             if (state == State.Dashing)
             {
-                physics.ApplyForce(new Vector2((Transform.FacingDirection == Direction.Horizontal.Left ? -1 : 1) * 2.8f, 0)); //-SceneManager.CurrentScene.World.Gravity.Y));
+                physics.ApplyForce(new Vector2((Transform.FacingDirection == Direction.Horizontal.Left ? -.5f : .5f) * 2.8f, 0)); //-SceneManager.CurrentScene.World.Gravity.Y));
                 return;
             }
+
+            HandleInput();
+        }
+
+        private void HandleInput()
+        {
+            if (locked)
+                return;
 
             keyboard.Update();
 
             if (keyboard.IsPressing(Keys.LeftControl))
                 return;
 
-            if (keyboard.IsPressing(Keys.Space) && state != State.Jumping)
+            if (keyboard.IsPressing(Keys.Space) && state == State.Grounded)
             {
                 physics.ApplyForce(new Vector2(0, -JumpForce));
                 state = State.Jumping;
@@ -149,8 +189,6 @@ namespace JonnyHammer.Game.Characters
             if (keyboard.HasPressed(Keys.Escape))
                 Respawn();
 
-            if (keyboard.HasPressed(Keys.A))
-                StartCoroutine(Blink());
 
             if (keyboard.IsPressing(Keys.Right))
                 Run(Direction.Horizontal.Right);

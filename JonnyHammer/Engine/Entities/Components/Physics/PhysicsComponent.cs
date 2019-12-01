@@ -20,7 +20,8 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
         public Vector2 MaxVelocity { get; set; } = new Vector2(3, 3);
 
         public float Mass { get => mass; set => Body.Mass = mass = value; }
-
+        public bool UseMaxVelocityX { get; set; } = false;
+        public bool UseMaxVelocityY { get; set; } = false;
 
         public Vector2 Velocity
         {
@@ -111,15 +112,14 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
             Entity.Transform.Rotation = Body.Rotation;
 
 
-            if (MaxVelocity.Y > 0)
+            if (UseMaxVelocityY && MaxVelocity.Y > 0)
             {
                 if (Body.LinearVelocity.Y > MaxVelocity.Y)
                     Body.LinearVelocity = new Vector2(Body.LinearVelocity.X, MaxVelocity.Y);
                 if (Body.LinearVelocity.Y < -MaxVelocity.Y)
                     Body.LinearVelocity = new Vector2(Body.LinearVelocity.X, -MaxVelocity.Y);
             }
-
-            if (MaxVelocity.X > 0)
+            if (UseMaxVelocityX && MaxVelocity.X > 0)
             {
                 if (Body.LinearVelocity.X > MaxVelocity.X)
                     Body.LinearVelocity = new Vector2(MaxVelocity.X, Body.LinearVelocity.Y);
@@ -138,6 +138,7 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
             var newY = y.HasValue ? y.Value / convertFactor : Body.LinearVelocity.Y;
             Velocity = new Vector2(newX, newY);
         }
+        public void ResetVelocity() => SetVelocity(x: 0, y: 0);
 
         public void ApplyForce(Vector2 force) => Body.ApplyLinearImpulse(force);
 
