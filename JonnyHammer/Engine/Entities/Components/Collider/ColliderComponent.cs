@@ -46,11 +46,18 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
         {
             IsDebug = isDebug && System.Diagnostics.Debugger.IsAttached;
             Bounds = rectangle;
-            debugTexture = Core.GetDebugTexture(debugColor ?? Color.Red);
+            debugTexture = GetDebugTexture(debugColor ?? Color.Red);
             AutoCheck = autoCheck;
             IsTrigger = isTrigger;
         }
 
+        public static Texture2D GetDebugTexture(Color color)
+        {
+            var texture = new Texture2D(Core.Instance.GraphicsDevice, 1, 1);
+            if (color.A > 150) color.A = 150;
+            texture.SetData(new[] { color });
+            return texture;
+        }
 
         public bool CollideOrTriggersWithAnyEntity(bool stopOnFirst = false) => CollideOrTriggersWithAnyEntity(out var _, stopOnFirst);
         public bool CollideOrTriggersWithAnyEntity(out Entity[] entity, bool stopOnFirst = false)

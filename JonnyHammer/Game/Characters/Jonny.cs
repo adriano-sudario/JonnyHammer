@@ -90,13 +90,14 @@ namespace JonnyHammer.Game.Characters
                 return;
 
             life -= amount;
+            physics.ResetVelocity();
+
             StartCoroutine(Blink());
             StartCoroutine(HitStun());
 
-            physics.ResetVelocity();
 
             var sideModifier = Transform.X <= reference.X ? -1 : 1;
-            physics.ApplyForce(new Vector2(3f, 1f) * sideModifier);
+            physics.ApplyForce(new Vector2(5f, 1f) * sideModifier);
         }
 
         IEnumerator Scale()
@@ -121,13 +122,12 @@ namespace JonnyHammer.Game.Characters
 
         IEnumerator HitStun()
         {
-            var oldState = state;
             locked = true;
             state = State.HitStun;
 
             yield return 10;
 
-            state = oldState;
+            state = State.Jumping;
             locked = false;
         }
         IEnumerator Blink()
@@ -155,6 +155,7 @@ namespace JonnyHammer.Game.Characters
         {
             life = totalLife;
             Transform.MoveTo(RespawnPosition);
+            physics.ResetVelocity();
             isActive = true;
         }
 
@@ -177,6 +178,9 @@ namespace JonnyHammer.Game.Characters
 
         private void HandleInput()
         {
+            if (keyboard.HasPressed(Keys.Escape))
+                Respawn();
+
             if (locked)
                 return;
 
@@ -194,8 +198,6 @@ namespace JonnyHammer.Game.Characters
             if (keyboard.HasPressed(Keys.S))
                 StartCoroutine(Scale());
 
-            if (keyboard.HasPressed(Keys.Escape))
-                Respawn();
 
 
             if (keyboard.IsPressing(Keys.Right))

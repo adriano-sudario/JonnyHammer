@@ -11,14 +11,9 @@ namespace JonnyHammer.Engine
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         static bool isFullScreen;
-        private static Texture2D debugTexture;
-        public static Texture2D GetDebugTexture(Color color)
-        {
-            var texture = new Texture2D(debugTexture.GraphicsDevice, 1, 1);
-            if (color.A > 150) color.A = 150;
-            texture.SetData(new[] { color });
-            return texture;
-        }
+
+        public static Core Instance { get; private set; }
+
 
 
         public static Color Color { get; set; }
@@ -47,6 +42,7 @@ namespace JonnyHammer.Engine
 
         protected override void Initialize()
         {
+            Instance = this;
             base.Initialize();
             Quit = Exit;
         }
@@ -57,7 +53,6 @@ namespace JonnyHammer.Engine
             Loader.Initialize(Content);
             Screen.Initialize(graphics, GraphicsDevice);
             IsFullScreen = isFullScreen;
-            debugTexture = new Texture2D(GraphicsDevice, 1, 1);
         }
 
         protected override void UnloadContent() { }
