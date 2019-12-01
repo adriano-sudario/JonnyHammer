@@ -24,7 +24,8 @@ namespace JonnyHammer.Game.Characters
             HitStun,
         }
 
-        int life = 100;
+        int totalLife = 100;
+        int life = 0;
         bool locked = false;
         bool invulnerable = false;
 
@@ -43,6 +44,7 @@ namespace JonnyHammer.Game.Characters
 
         public override void Load()
         {
+            life = totalLife;
             keyboard = new KeyboardInput();
 
             animations = AddComponent(CreateAnimations());
@@ -82,7 +84,7 @@ namespace JonnyHammer.Game.Characters
             physics.MaxVelocity = new Vector2(3, JumpForce);
         }
 
-        public void TakeDamage(int amount)
+        public void TakeDamage(int amount, Vector2 reference)
         {
             if (state == State.HitStun || invulnerable)
                 return;
@@ -92,7 +94,9 @@ namespace JonnyHammer.Game.Characters
             StartCoroutine(HitStun());
 
             physics.ResetVelocity();
-            physics.ApplyForce(new Vector2(-3f, -1f));
+
+            var sideModifier = Transform.X <= reference.X ? -1 : 1;
+            physics.ApplyForce(new Vector2(3f, 1f) * sideModifier);
         }
 
         IEnumerator Scale()
@@ -129,7 +133,7 @@ namespace JonnyHammer.Game.Characters
         IEnumerator Blink()
         {
             invulnerable = true;
-            for (var i = 0; i < 5; i++)
+            for (var i = 0; i < 7; i++)
             {
                 animations.IsVisible = !animations.IsVisible;
                 yield return 5;
@@ -149,6 +153,7 @@ namespace JonnyHammer.Game.Characters
 
         public void Respawn()
         {
+            life = totalLife;
             Transform.MoveTo(RespawnPosition);
             isActive = true;
         }
@@ -157,6 +162,9 @@ namespace JonnyHammer.Game.Characters
         {
             base.Update(gameTime);
 
+
+            if (life == 0)
+                Respawn();
 
             if (state == State.Dashing)
             {

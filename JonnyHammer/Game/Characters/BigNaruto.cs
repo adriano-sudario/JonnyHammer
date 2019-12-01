@@ -44,7 +44,7 @@ namespace JonnyHammer.Game.Characters
         {
             if (obj is Jonny jonnny)
             {
-                jonnny.TakeDamage(10);
+                jonnny.TakeDamage(50, Transform.Position);
             }
         }
 
