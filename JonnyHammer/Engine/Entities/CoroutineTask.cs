@@ -1,13 +1,57 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace JonnyHammer.Engine
 {
+    public class CoroutineManager
+    {
+        public bool Done => !coroutines.Any();
+
+        IList<CoroutineTask> coroutines = new List<CoroutineTask>();
+        public void UpdateCoroutines(GameTime gameTime)
+        {
+            for (var i = 0; i < coroutines.Count; i++)
+            {
+                var coroutine = coroutines[i];
+                if (coroutine.Done)
+                {
+                    coroutines.Remove(coroutine);
+                    continue;
+                }
+
+                coroutine.Update(gameTime);
+            }
+        }
+
+        public void StartCoroutine(IEnumerator coroutine)
+        {
+            var c = new CoroutineTask(coroutine, null);
+            coroutines.Add(c);
+        }
+
+        public void StartCoroutine(IEnumerator coroutine, TimeSpan wait)
+        {
+            var c = new CoroutineTask(coroutine, new WaitTime(wait));
+            coroutines.Add(c);
+        }
+
+        public void StartCoroutine(IEnumerator coroutine, int numberOfFrames)
+        {
+            var c = new CoroutineTask(coroutine, new WaitFrames(numberOfFrames));
+            coroutines.Add(c);
+        }
+
+        public void StopCoroutines() => coroutines.Clear();
+        public void StopCoroutine(IEnumerator coroutine) => coroutines.Where(x => x.Routine != coroutine);
+
+    }
 
     public class CoroutineTask
     {
-        IEnumerator Routine { get; }
+        public IEnumerator Routine { get; }
         ICoroutineWaitable Return { get; set; }
 
         public bool Done { get; private set; }
@@ -58,18 +102,19 @@ namespace JonnyHammer.Engine
     }
     public class WaitCoroutine : ICoroutineWaitable
     {
-        CoroutineTask manager;
+        CoroutineManager manager;
 
         public WaitCoroutine(IEnumerator coroutine)
         {
-            this.manager = new CoroutineTask(coroutine);
+            manager = new CoroutineManager();
+            manager.StartCoroutine(coroutine);
         }
 
         public bool ShouldWait() => !manager.Done;
 
         public void Update(GameTime gameTime)
         {
-            manager.Update(gameTime);
+            manager.UpdateCoroutines(gameTime);
         }
     }
     public class WaitTime : ICoroutineWaitable

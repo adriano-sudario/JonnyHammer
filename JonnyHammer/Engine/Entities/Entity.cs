@@ -1,7 +1,6 @@
 ﻿using JonnyHamer.Engine.Managers;
 using JonnyHammer.Engine;
 using JonnyHammer.Engine.Entities;
-using JonnyHammer.Engine.Helpers;
 using JonnyHammer.Engine.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,10 +14,10 @@ namespace JonnyHamer.Engine.Entities
     public class Entity : IDraw, IUpdate, IDisposable
     {
         private IList<IComponent> components = new List<IComponent>();
-        private IList<CoroutineTask> coroutines = new List<CoroutineTask>();
         protected bool isActive = true;
         bool didStart = false;
         public Transform Transform { get; private set; } = new Transform();
+        CoroutineManager coroutineManager = new CoroutineManager();
 
         public string Name { get; set; }
         public virtual int Width { get; set; } = 1;
@@ -59,7 +58,7 @@ namespace JonnyHamer.Engine.Entities
             for (var i = 0; i < components.Count; i++)
                 components[i].Update(gameTime);
 
-            UpdateCoroutines(gameTime);
+            coroutineManager.UpdateCoroutines(gameTime);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
@@ -84,40 +83,18 @@ namespace JonnyHamer.Engine.Entities
         public T[] GetComponents<T>() where T : IComponent => components.OfType<T>().ToArray();
 
 
-        void UpdateCoroutines(GameTime gameTime)
-        {
-            for (var i = 0; i < coroutines.Count; i++)
-            {
-                var coroutine = coroutines[i];
-                if (coroutine.Done)
-                {
-                    coroutines.Remove(coroutine);
-                    continue;
-                }
 
-                coroutine.Update(gameTime);
-            }
-        }
+        public void StartCoroutine(IEnumerator coroutine) =>
+            coroutineManager.StartCoroutine(coroutine);
+        public void StartCoroutine(IEnumerator coroutine, TimeSpan wait) =>
+            coroutineManager.StartCoroutine(coroutine, wait);
+        public void StartCoroutine(IEnumerator coroutine, int numberOfFrames) =>
+            coroutineManager.StartCoroutine(coroutine, numberOfFrames);
+        public void StopCoroutines() =>
+            coroutineManager.StopCoroutines();
+        public void StopCoroutine(IEnumerator coroutine) =>
+            coroutineManager.StopCoroutine(coroutine);
 
-        public void StartCoroutine(IEnumerator coroutine)
-        {
-            var c = new CoroutineTask(coroutine, null);
-            coroutines.Add(c);
-        }
-
-        public void StartCoroutine(IEnumerator coroutine, TimeSpan wait)
-        {
-            var c = new CoroutineTask(coroutine, new WaitTime(wait));
-            coroutines.Add(c);
-        }
-
-        public void StartCoroutine(IEnumerator coroutine, int numberOfFrames)
-        {
-            var c = new CoroutineTask(coroutine, new WaitFrames(numberOfFrames));
-            coroutines.Add(c);
-        }
-
-        public void StopCoroutines() => coroutines.Clear();
         public void Invoke(Action action, TimeSpan waitFor) => StartCoroutine(waitAndRun(action, waitFor));
         IEnumerator waitAndRun(Action action, TimeSpan time)
         {

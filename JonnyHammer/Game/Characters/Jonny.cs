@@ -32,7 +32,7 @@ namespace JonnyHammer.Game.Characters
         bool invulnerable = false;
 
 
-        const float JumpForce = 2.5f;
+        const float JumpForce = 4f;
         float speed = 2f;
         bool isScaling = false;
         bool canDash = true;
@@ -65,7 +65,7 @@ namespace JonnyHammer.Game.Characters
 
             var floorTrigger = AddComponent(
                                 new ColliderComponent(
-                                    new Rectangle(5, spriteRenderer.Height, spriteRenderer.Width - 10, 5),
+                                    new Rectangle(10, spriteRenderer.Height, spriteRenderer.Width - 20, 5),
                                     autoCheck: true,
                                     isDebug: true,
                                     isTrigger: true,
@@ -78,11 +78,13 @@ namespace JonnyHammer.Game.Characters
                 {
                     state = State.Grounded;
                     canDash = true;
+                    physics.SetVelocity(y: 0);
                 }
             };
 
             physics = AddComponent(new PhysicsComponent(BodyType.Dynamic, collider, mass: 1));
             physics.MaxVelocity = new Vector2(3, JumpForce);
+            physics.UseMaxVelocityY = true;
         }
 
         public void TakeDamage(int amount, Vector2 reference)
@@ -156,6 +158,7 @@ namespace JonnyHammer.Game.Characters
         public void Respawn()
         {
             life = totalLife;
+            lifebar.UpdateLife(life);
             Transform.MoveTo(RespawnPosition);
             physics.ResetVelocity();
             isActive = true;
@@ -169,9 +172,10 @@ namespace JonnyHammer.Game.Characters
             if (life == 0)
                 Respawn();
 
+
             if (state == State.Dashing)
             {
-                physics.ApplyForce(new Vector2((Transform.FacingDirection == Direction.Horizontal.Left ? -.5f : .5f) * 2.8f, 0)); //-SceneManager.CurrentScene.World.Gravity.Y));
+                physics.ApplyForce(new Vector2((Transform.FacingDirection == Direction.Horizontal.Left ? -1f : 1f) * 0.8f, 0));
                 return;
             }
 

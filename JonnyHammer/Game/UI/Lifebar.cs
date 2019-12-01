@@ -19,6 +19,8 @@ namespace JonnyHammer.Game.UI
         public int TotalLife { get; }
         public int CurrentLife { get; private set; }
 
+        public bool desapearing;
+
         public Lifebar(int totalLife) => CurrentLife = TotalLife = totalLife;
 
         public override void Start()
@@ -36,43 +38,44 @@ namespace JonnyHammer.Game.UI
 
             CurrentLife = currentLife;
             StartCoroutine(ShowBars());
+            desapearing = false;
         }
 
 
         public IEnumerator ShowBars()
         {
-            var color = lifebar.Color;
-            var back = lifebarBack.Color;
 
-            color.A = 255;
-            back.A = 255;
-
-            lifebar.Color = color;
-            lifebarBack.Color = back;
-
-
-            yield return TimeSpan.FromSeconds(2);
-
+            lifebar.Opacity = 1;
+            lifebarBack.Opacity = 1;
             yield return Desapear();
 
         }
 
+
         IEnumerator Desapear()
         {
-            var color = lifebar.Color;
-            var back = lifebarBack.Color;
-            byte step = 15;
+            if (desapearing)
+                yield break;
 
-            while (lifebar.Color.A > 0)
+            desapearing = true;
+            var opacity = lifebar.Opacity;
+            var step = 0.2f;
+
+            yield return TimeSpan.FromSeconds(3);
+
+            while (opacity > 0)
             {
-                color.A -= step;
-                back.A -= step;
+                opacity -= step;
 
-                lifebar.Color = color;
-                lifebarBack.Color = back;
+                lifebar.Opacity = opacity;
+                lifebarBack.Opacity = opacity;
 
-                yield return TimeSpan.FromMilliseconds(100);
+                yield return TimeSpan.FromMilliseconds(50);
+
+                if (!desapearing)
+                    yield break;
             }
+            desapearing = false;
         }
 
         public override void Update(GameTime gameTime)

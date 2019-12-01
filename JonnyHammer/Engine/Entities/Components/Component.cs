@@ -26,6 +26,7 @@ namespace JonnyHammer.Engine
         public T GetComponent<T>() where T : IComponent => Entity.GetComponent<T>();
         public T[] GetComponents<T>() where T : IComponent => Entity.GetComponents<T>();
         public void StartCoroutine(IEnumerator coroutine) => Entity.StartCoroutine(coroutine);
+        public void StopCoroutine(IEnumerator coroutine) => Entity.StopCoroutine(coroutine);
         public void StopCoroutines() => Entity.StopCoroutines();
         public void Invoke(Action action, TimeSpan waitFor) => Entity.Invoke(action, waitFor);
 
