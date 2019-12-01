@@ -10,7 +10,7 @@ namespace JonnyHammer
     /// </summary>
     public class Main : Core
     {
-        public Main()
+        public Main() : base()
         {
         }
 
