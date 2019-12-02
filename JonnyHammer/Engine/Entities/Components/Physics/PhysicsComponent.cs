@@ -91,10 +91,10 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
                 height,
                 1f, new Vector2(x + width / 2, y - height / 2));
 
+            //body.FixedRotation = true;
             body.SetRestitution(restitution);
             body.SetFriction(friction);
             body.BodyType = BodyType;
-            body.Tag = Entity.Name;
             body.OnCollision += Body_OnCollision;
             body.Tag = Entity;
             body.Mass = mass;

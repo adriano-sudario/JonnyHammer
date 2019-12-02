@@ -32,7 +32,7 @@ namespace JonnyHammer.Game.Scenes
                     switch (tile.Name)
                     {
                         case "bg":
-                            Spawn<MainBackground>($"{layer}_bg_{index}", tile.Position * Screen.Scale,
+                            Spawn<MainBackground>($"{layer}_bg_{index}", tile.Position,
                                 s => s.TextureName = tile.TextureName);
                             break;
 
@@ -41,7 +41,7 @@ namespace JonnyHammer.Game.Scenes
                             break;
 
                         default:
-                            Spawn<Scenery>($"{layer}_sc_{index}", tile.Position * Screen.Scale,
+                            Spawn<Scenery>($"{layer}_sc_{index}", tile.Position,
                                 s =>
                                 {
                                     s.TextureName = tile.TextureName;
@@ -64,7 +64,7 @@ namespace JonnyHammer.Game.Scenes
             {
 
                 lastCloud = Spawn<Cloud>($"{layer}_cloud_{i}",
-                    (tile.Position + new Vector2((i * tile.Width) - 1, 0)) * Screen.Scale,
+                    (tile.Position + new Vector2((i * tile.Width) - 1, 0)),
                     c =>
                     {
                         c.Speed = tile.Speed;
@@ -83,7 +83,7 @@ namespace JonnyHammer.Game.Scenes
                         case "blocks":
                             Spawn<Block>(
                                $"floor_{layer}_{index}",
-                               new Vector2(tile.Position.X, tile.Position.Y + tile.Height) * Screen.Scale,
+                               new Vector2(tile.Position.X, tile.Position.Y + tile.Height),
                                f =>
                                {
                                    f.Width = (int)(tile.Width * Screen.Scale);
@@ -94,12 +94,12 @@ namespace JonnyHammer.Game.Scenes
                         case "player_spawn":
                             player = Spawn<Jonny>(
                                 "Jonny",
-                                tile.Position * Screen.Scale,
+                                tile.Position,
                                 j => j.RespawnPosition = tile.Position);
                             break;
 
                         case "big_narutos":
-                            Spawn<BigNaruto>("NarutoRed", tile.Position * Screen.Scale,
+                            Spawn<BigNaruto>("NarutoRed", tile.Position,
                                 bg => bg.MoveAmount = tile.MoveAmount);
                             break;
                     }

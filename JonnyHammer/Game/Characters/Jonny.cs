@@ -42,6 +42,8 @@ namespace JonnyHammer.Game.Characters
         PhysicsComponent physics;
         AnimatedSpriteComponent spriteRenderer;
         Lifebar lifebar;
+        private ColliderComponent collider;
+        private ColliderComponent floorTrigger;
 
         public Vector2 RespawnPosition { get; set; }
 
@@ -56,20 +58,20 @@ namespace JonnyHammer.Game.Characters
 
             var debugColor = Color.Green;
             debugColor.A = 90;
-            var collider = AddComponent(
+            collider = AddComponent(
                             new ColliderComponent(
                                    new Rectangle(0, 0, spriteRenderer.Width, spriteRenderer.Height),
                                    autoCheck: true,
                                    isDebug: true,
                                    debugColor: debugColor));
 
-            var floorTrigger = AddComponent(
-                                new ColliderComponent(
-                                    new Rectangle(10, spriteRenderer.Height, spriteRenderer.Width - 20, 8),
-                                    autoCheck: true,
-                                    isDebug: true,
-                                    isTrigger: true,
-                                    debugColor: Color.Yellow));
+            floorTrigger = AddComponent(
+                               new ColliderComponent(
+                                   new Rectangle(10, spriteRenderer.Height, spriteRenderer.Width - 20, 8),
+                                   autoCheck: true,
+                                   isDebug: true,
+                                   isTrigger: true,
+                                   debugColor: Color.Yellow));
 
 
             floorTrigger.OnTrigger += e =>
@@ -101,7 +103,7 @@ namespace JonnyHammer.Game.Characters
 
 
             var sideModifier = Transform.X <= reference.X ? -1 : 1;
-            physics.ApplyForce(new Vector2(5f, 1f) * sideModifier);
+            physics.ApplyForce(new Vector2(5f * sideModifier, (state != State.Jumping ? -1f : -2f)));
         }
 
         IEnumerator Scale()
@@ -158,9 +160,11 @@ namespace JonnyHammer.Game.Characters
         public void Respawn()
         {
             state = State.Jumping;
+            locked = false;
             life = totalLife;
             lifebar.UpdateLife(life);
             Transform.MoveTo(RespawnPosition);
+            physics.Body.IgnoreGravity = false;
             physics.ResetVelocity();
             isActive = true;
         }
@@ -253,6 +257,7 @@ namespace JonnyHammer.Game.Characters
             var m = direction == Direction.Horizontal.Left ? -speed : speed;
             physics.MoveForward(m);
         }
+
 
 
     }

@@ -1,4 +1,5 @@
 ﻿using JonnyHamer.Engine.Entities;
+using JonnyHamer.Engine.Helpers;
 using JonnyHamer.Engine.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -33,7 +34,7 @@ namespace JonnyHammer.Engine.Scenes
         public T Spawn<T>(string name = "no name", Vector2? position = null, Action<T> configure = null) where T : Entity, new()
         {
             var entity = new T { Name = name };
-            entity.Transform.MoveTo(position ?? Vector2.Zero);
+            entity.Transform.MoveTo((position ?? Vector2.Zero) * Screen.Scale);
             entities.Add(entity);
             configure?.Invoke(entity);
             return entity;
