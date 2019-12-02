@@ -97,8 +97,8 @@ namespace JonnyHammer.Game.UI
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-            lifebarBack.Draw(spriteBatch, bounds.Scale());
-            lifebar.Draw(spriteBatch, lifeBounds.Scale());
+            lifebarBack.Draw(spriteBatch, bounds.ScaleScreen());
+            lifebar.Draw(spriteBatch, lifeBounds.ScaleScreen());
 
 
         }

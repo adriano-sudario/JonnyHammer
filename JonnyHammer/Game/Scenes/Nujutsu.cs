@@ -40,7 +40,7 @@ namespace JonnyHammer.Game.Scenes
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            Camera.Follow(narutao);
+            //Camera.Follow(narutao);
         }
 
         public override void Draw(SpriteBatch spriteBatch)

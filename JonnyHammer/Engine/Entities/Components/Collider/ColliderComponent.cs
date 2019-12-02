@@ -183,7 +183,7 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
 
             spriteBatch.Draw(
                 debugTexture,
-                Bounds.Scale(),
+                Bounds.ScaleScreen(),
                 Color.White);
         }
     }
