@@ -20,8 +20,6 @@ namespace JonnyHamer.Engine.Entities
         CoroutineManager coroutineManager = new CoroutineManager();
 
         public string Name { get; set; }
-        public virtual int Width { get; set; } = 1;
-        public virtual int Height { get; set; } = 1;
 
         public Entity() { }
 
@@ -80,6 +78,12 @@ namespace JonnyHamer.Engine.Entities
         public T AddComponent<T>() where T : IComponent, new() => AddComponent(new T());
         public T RequireComponent<T>() where T : IComponent, new() => GetComponent<T>() ?? AddComponent<T>();
         public T GetComponent<T>() where T : IComponent => components.OfType<T>().SingleOrDefault();
+        public bool TryGetComponent<T>(out T component) where T : IComponent
+        {
+            component = components.OfType<T>().SingleOrDefault();
+            return component != null;
+        }
+
         public T[] GetComponents<T>() where T : IComponent => components.OfType<T>().ToArray();
 
 

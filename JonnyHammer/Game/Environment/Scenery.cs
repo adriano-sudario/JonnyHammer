@@ -7,15 +7,12 @@ namespace JonnyHammer.Game.Environment
 {
     public class Scenery : Entity
     {
-        int width;
-        int height;
-
         protected SpriteComponent sprite;
 
         public string TextureName { get; set; }
         public Vector2 Source { get; set; }
-        public override int Width { get => width; set => width = value; }
-        public override int Height { get => height; set => height = value; }
+        public int Width { get; set; }
+        public int Height { get; set; }
 
         public override void Load()
         {

@@ -86,8 +86,8 @@ namespace JonnyHammer.Game.Scenes
                                new Vector2(tile.Position.X, tile.Position.Y + tile.Height),
                                f =>
                                {
-                                   f.Width = (int)(tile.Width * Screen.Scale);
-                                   f.Height = (int)(tile.Height * Screen.Scale);
+                                   f.Width = (int)(tile.Width);
+                                   f.Height = (int)(tile.Height);
                                });
                             break;
 

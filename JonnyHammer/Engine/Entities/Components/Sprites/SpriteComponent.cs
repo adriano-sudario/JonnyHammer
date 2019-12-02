@@ -1,5 +1,4 @@
-﻿using JonnyHamer.Engine.Helpers;
-using JonnyHammer.Engine;
+﻿using JonnyHammer.Engine;
 using JonnyHammer.Engine.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -19,8 +18,8 @@ namespace JonnyHamer.Engine.Entities.Sprites
         public Vector2 RotateOrigin { get; set; }
         public Color Color { get; set; } = Color.White;
         public float LayerDepth { get; set; }
-        public int Width => (int)(SpriteWidth * (Entity.Transform.Scale * Screen.Scale));
-        public int Height => (int)(SpriteHeight * (Entity.Transform.Scale * Screen.Scale));
+        public int Width => (int)(SpriteWidth * Entity.Transform.Scale);
+        public int Height => (int)(SpriteHeight * Entity.Transform.Scale);
 
         public SpriteComponent(Texture2D spriteStrip, Rectangle source = default, float opacity = 1f, Vector2 origin = default)
         {
@@ -31,13 +30,6 @@ namespace JonnyHamer.Engine.Entities.Sprites
             IsVisible = true;
         }
 
-        public override void Start()
-        {
-            Entity.Width = Width;
-            Entity.Height = Height;
-            base.Start();
-        }
-
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (!IsVisible) return;
@@ -46,12 +38,12 @@ namespace JonnyHamer.Engine.Entities.Sprites
             var effect = FacingDirection == Direction.Horizontal.Left ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             spriteBatch.Draw(
                 spriteStrip,
-                Entity.Transform.Position + (origin * Entity.Transform.Scale * Screen.Scale),
+                Entity.Transform.Position + (origin * Entity.Transform.Scale),
                 Source,
                 Color * Opacity,
                 Entity.Transform.Rotation,
                 origin,
-                Entity.Transform.Scale * Screen.Scale,
+                Entity.Transform.Scale,
                 effect, LayerDepth);
         }
     }

@@ -20,8 +20,8 @@ namespace JonnyHammer.Game.Characters
         public float HorizontalPosition { get; set; }
         public float MoveAmount { get; set; }
 
-        public override int Height { get => animatedSprite.Height; }
-        public override int Width { get => animatedSprite.Width; }
+        public int Height => animatedSprite.Height;
+        public int Width => animatedSprite.Width;
 
         public BigNaruto()
         {

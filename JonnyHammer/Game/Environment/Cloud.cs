@@ -12,8 +12,8 @@ namespace JonnyHammer.Game.Environment
 
         public Vector2 Spawn { get; set; }
         public float Speed { get; set; }
-        public override int Height { get => sprite.Height; }
-        public override int Width { get => sprite.Width; }
+        public int Height { get => sprite.Height; }
+        public int Width { get => sprite.Width; }
         public Vector2 Cloudrespawn { get; set; }
 
         public override void Load()

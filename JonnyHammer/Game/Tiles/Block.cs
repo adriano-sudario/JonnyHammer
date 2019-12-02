@@ -9,6 +9,9 @@ namespace JonnyHammer.Tiles
     public class Block : Entity
     {
 
+        public int Width { get; set; }
+        public int Height { get; set; }
+
         public override void Load()
         {
             var debugCollor = Color.Red;

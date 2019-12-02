@@ -67,7 +67,7 @@ namespace JonnyHammer.Game.Characters
 
             floorTrigger = AddComponent(
                                new ColliderComponent(
-                                   new Rectangle(10.Scale(), spriteRenderer.Height, spriteRenderer.Width - 20.Scale(), 5.Scale()),
+                                   new Rectangle(10, spriteRenderer.Height, spriteRenderer.Width - 20, 5),
                                    autoCheck: true,
                                    isDebug: true,
                                    isTrigger: true,

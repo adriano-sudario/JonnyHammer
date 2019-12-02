@@ -1,5 +1,5 @@
 ﻿using JonnyHamer.Engine.Entities;
-using JonnyHamer.Engine.Helpers;
+using JonnyHamer.Engine.Entities.Sprites;
 using JonnyHamer.Engine.Manipulators;
 using JonnyHammer.Engine.Entities.Components.Phisycs;
 using JonnyHammer.Engine.Helpers;
@@ -65,8 +65,17 @@ namespace JonnyHammer.Engine.Entities
 
         public void KeepOnCameraBounds(Entity entity)
         {
-            position.X = MathHelper.Clamp(position.X, 0, Camera.AreaWidth - entity.Width);
-            position.Y = MathHelper.Clamp(position.Y, 0, Camera.AreaHeight - entity.Height);
+            int width = 1, height = 1;
+
+            if (entity.TryGetComponent<SpriteComponent>(out var renderer))
+            {
+                width = renderer.Width;
+                height = renderer.Height;
+            }
+
+
+            position.X = MathHelper.Clamp(position.X, 0, Camera.AreaWidth - width);
+            position.Y = MathHelper.Clamp(position.Y, 0, Camera.AreaHeight - height);
         }
 
         public void MoveTo(float x, float y, bool setFacingDirection = true) =>
@@ -90,25 +99,25 @@ namespace JonnyHammer.Engine.Entities
         public void MoveAndSlide(Vector2 position, bool setFacingDirection = true) =>
             MoveTo(this.position + position, setFacingDirection);
 
-        public void SetOrigin(float origin, Entity entity, bool keepInPlace = true)
-        {
-            float totalScale = (Scale * Screen.Scale);
-            Vector2 updatedOrigin = origin == 0 ? Vector2.Zero : new Vector2((entity.Width * origin) / totalScale, (entity.Height * origin) / totalScale);
+        //public void SetOrigin(float origin, Entity entity, bool keepInPlace = true)
+        //{
+        //    float totalScale = (Scale);
+        //    Vector2 updatedOrigin = origin == 0 ? Vector2.Zero : new Vector2((entity.Width * origin) / totalScale, (entity.Height * origin) / totalScale);
 
-            if (keepInPlace)
-                MoveAndSlide((updatedOrigin * totalScale) - (Origin * totalScale), false);
+        //    if (keepInPlace)
+        //        MoveAndSlide((updatedOrigin * totalScale) - (Origin * totalScale), false);
 
-            Origin = updatedOrigin;
-        }
+        //    Origin = updatedOrigin;
+        //}
 
-        public void SetOrigin(Vector2 origin, Entity entity, bool keepInPlace = true)
-        {
-            float totalScale = (Scale * Screen.Scale);
-            Origin = new Vector2((entity.Width * origin.X) / totalScale, (entity.Height * origin.Y) / totalScale) * -1;
+        //public void SetOrigin(Vector2 origin, Entity entity, bool keepInPlace = true)
+        //{
+        //    float totalScale = (Scale);
+        //    Origin = new Vector2((entity.Width * origin.X) / totalScale, (entity.Height * origin.Y) / totalScale) * -1;
 
-            if (keepInPlace)
-                MoveAndSlide(Origin * totalScale);
-        }
+        //    if (keepInPlace)
+        //        MoveAndSlide(Origin * totalScale);
+        //}
 
         public void Rotate(float degrees) => Rotation = MathHelper.ToRadians(degrees);
         public float GetRotationInDegrees() => MathHelper.ToDegrees(Rotation);

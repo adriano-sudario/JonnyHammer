@@ -1,5 +1,4 @@
-﻿using JonnyHamer.Engine.Helpers;
-using JonnyHamer.Engine.Managers;
+﻿using JonnyHamer.Engine.Managers;
 using JonnyHammer.Engine.Entities.Components.Collider;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
@@ -30,7 +29,7 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
             set => Body.LinearVelocity = value;
         }
 
-        public static float PixelsPerMeter => 100 * Screen.Scale;
+        public static float PixelsPerMeter => 100;
 
         public IList<Body> Collided { get; } = new List<Body>();
 
