@@ -1,4 +1,5 @@
-﻿using JonnyHammer.Engine;
+﻿using JonnyHamer.Engine.Helpers;
+using JonnyHammer.Engine;
 using JonnyHammer.Engine.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -38,12 +39,12 @@ namespace JonnyHamer.Engine.Entities.Sprites
             var effect = FacingDirection == Direction.Horizontal.Left ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             spriteBatch.Draw(
                 spriteStrip,
-                Entity.Transform.Position + (origin * Entity.Transform.Scale),
+                (Entity.Transform.Position + origin) * Screen.Scale,
                 Source,
                 Color * Opacity,
                 Entity.Transform.Rotation,
                 origin,
-                Entity.Transform.Scale,
+                Screen.Scale * Entity.Transform.Scale,
                 effect, LayerDepth);
         }
     }

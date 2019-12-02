@@ -1,5 +1,6 @@
 ﻿using JonnyHamer.Engine.Entities;
 using JonnyHamer.Engine.Entities.Sprites;
+using JonnyHamer.Engine.Helpers;
 using JonnyHamer.Engine.Managers;
 using JonnyHammer.Engine.Entities.Components.Phisycs;
 using Microsoft.Xna.Framework;
@@ -182,7 +183,7 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
 
             spriteBatch.Draw(
                 debugTexture,
-                Bounds,
+                Bounds.Scale(),
                 Color.White);
         }
     }
