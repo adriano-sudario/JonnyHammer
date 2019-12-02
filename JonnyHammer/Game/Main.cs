@@ -1,4 +1,5 @@
-﻿using JonnyHamer.Engine.Managers;
+﻿using JonnyHamer.Engine.Helpers;
+using JonnyHamer.Engine.Managers;
 using JonnyHammer.Engine;
 using JonnyHammer.Game.Scenes;
 using Microsoft.Xna.Framework;
@@ -10,8 +11,9 @@ namespace JonnyHammer
     /// </summary>
     public class Main : Core
     {
-        public Main() : base(true)
+        public Main() : base(false)
         {
+
         }
 
         /// <summary>
@@ -23,6 +25,8 @@ namespace JonnyHammer
         protected override void Initialize()
         {
             base.Initialize();
+
+            Screen.ChangeResolution(1920, 1080);
         }
 
         /// <summary>

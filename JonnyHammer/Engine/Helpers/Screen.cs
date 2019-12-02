@@ -19,6 +19,13 @@ namespace JonnyHamer.Engine.Helpers
             Screen.graphicsDevice = graphicsDevice;
         }
 
+        public static void ChangeResolution(int width, int height)
+        {
+            graphics.PreferredBackBufferWidth = width;
+            graphics.PreferredBackBufferHeight = height;
+            graphics.ApplyChanges();
+        }
+
         public static void ToggleFullScreen(Action afterToggle = null)
         {
             graphics.IsFullScreen = !graphics.IsFullScreen;
@@ -52,7 +59,7 @@ namespace JonnyHamer.Engine.Helpers
             {
                 Width = GraphicsDeviceManager.DefaultBackBufferWidth;
                 Height = GraphicsDeviceManager.DefaultBackBufferHeight;
-                Scale = 1f;
+                Scale = 2f;
             }
         }
     }

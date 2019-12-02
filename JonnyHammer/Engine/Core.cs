@@ -8,7 +8,7 @@ namespace JonnyHammer.Engine
 {
     public class Core : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
+        protected GraphicsDeviceManager Graphics;
         SpriteBatch spriteBatch;
         static bool isFullScreen;
 
@@ -30,7 +30,7 @@ namespace JonnyHammer.Engine
 
         public Core(bool startOnFullScreen = false, Color? color = null)
         {
-            graphics = new GraphicsDeviceManager(this);
+            Graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             isFullScreen = startOnFullScreen;
 
@@ -51,7 +51,7 @@ namespace JonnyHammer.Engine
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Loader.Initialize(Content);
-            Screen.Initialize(graphics, GraphicsDevice);
+            Screen.Initialize(Graphics, GraphicsDevice);
             IsFullScreen = isFullScreen;
         }
 
