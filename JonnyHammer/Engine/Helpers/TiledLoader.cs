@@ -103,7 +103,7 @@ namespace JonnyHammer.Engine.Helpers
                         TextureName = textureName,
                         Name = tileSet.Name,
                         Width = tileSet.TileWidth,
-                        Height = tileSet.TileWidth,
+                        Height = tileSet.TileHeight,
                     };
                     tiles.Add(layerData);
                 }

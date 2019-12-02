@@ -46,8 +46,8 @@ namespace JonnyHammer.Game.Scenes
                                 {
                                     s.TextureName = tile.TextureName;
                                     s.Source = tile.Source;
-                                    s.Width = (int)tile.Width;
-                                    s.Height = (int)tile.Height;
+                                    s.Width = tile.Width;
+                                    s.Height = tile.Height;
                                 });
                             break;
 
@@ -86,8 +86,8 @@ namespace JonnyHammer.Game.Scenes
                                new Vector2(tile.Position.X, tile.Position.Y + tile.Height),
                                f =>
                                {
-                                   f.Width = (int)(tile.Width);
-                                   f.Height = (int)(tile.Height);
+                                   f.Width = tile.Width;
+                                   f.Height = tile.Height;
                                });
                             break;
 
