@@ -7,7 +7,7 @@ namespace JonnyHammer.Engine.Helpers
     public class TileSetAditionalInfo
     {
         public Vector2 MapPosition { get; set; }
-        public Vector2 ImageSource{ get; set; }
+        public Vector2 ImageSource { get; set; }
         public int Columns { get; set; }
         public int Rows { get; set; }
         public int Width { get; set; }
@@ -16,7 +16,7 @@ namespace JonnyHammer.Engine.Helpers
 
     public static class Tiled
     {
-        public static TileSetAditionalInfo GetTileSetAditionalInfo(this TmxMap map, TmxLayerTile tile, 
+        public static TileSetAditionalInfo GetTileSetAditionalInfo(this TmxMap map, TmxLayerTile tile,
             out TmxTileset tileSet)
         {
             tileSet = map.GetTileSet(tile);
@@ -34,13 +34,13 @@ namespace JonnyHammer.Engine.Helpers
                 ((tile.Y + 1) * map.TileHeight) - tileSet.TileHeight);
 
             int frame = tile.Gid - tileSet.FirstGid;
-            int column = frame <= tileSetColumns ? frame : frame % tileSetColumns;
+            var column = frame <= tileSetColumns ? frame : frame % (float)tileSetColumns;
             int row = (int)Math.Floor((float)frame / tileSetColumns);
 
             Vector2 source = new Vector2(column * tileSet.TileWidth,
                 row * tileSet.TileHeight);
 
-            return new TileSetAditionalInfo()
+            return new TileSetAditionalInfo
             {
                 MapPosition = position,
                 ImageSource = source,

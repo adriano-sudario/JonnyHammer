@@ -8,10 +8,20 @@ namespace JonnyHammer.Engine.Helpers
 
     public class TiledObject
     {
+
         public Vector2 Position { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
         public float MoveAmount { get; set; }
+        //public Vector2 LocalPosition { get; set; }
+        //public int LocalWidth { get; set; }
+        //public int LocalHeight { get; set; }
+        //public float MoveAmount { get; set; }
+
+        //public Vector2 Position => LocalPosition * Screen.Scale;
+        //public float Width => LocalWidth * Screen.Scale;
+        //public float Height => LocalHeight * Screen.Scale;
+
     }
     public class TileLayer
     {
@@ -20,11 +30,18 @@ namespace JonnyHammer.Engine.Helpers
         public int Index { get; set; }
         public TileSetAditionalInfo Info { get; set; }
         public Vector2 Source { get; set; }
-        public Vector2 Position { get; set; }
         public string TextureName { get; set; }
         public string Name { get; set; }
+        public Vector2 Position { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
+        //public Vector2 LocalPosition { get; set; }
+        //public int LocalWidth { get; set; }
+        //public int LocalHeight { get; set; }
+
+        //public Vector2 Position => LocalPosition * Screen.Scale;
+        //public float Width => LocalWidth * Screen.Scale;
+        //public float Height => LocalHeight * Screen.Scale;
     }
 
     public class TiledData
@@ -42,8 +59,8 @@ namespace JonnyHammer.Engine.Helpers
         public static TiledData Load(string tmxFileName)
         {
             var map = new TmxMap($"Content/Maps/{tmxFileName}.tmx");
-            var objects = LoadTiledObjects(map);
             var layers = LoadTiledLayers(map);
+            var objects = LoadTiledObjects(map);
 
             return new TiledData(objects, layers);
         }
@@ -52,9 +69,8 @@ namespace JonnyHammer.Engine.Helpers
         {
             var ret = new Dictionary<string, TileLayer[]>();
 
-            foreach (var layer in map.TileLayers)
+            foreach (var (index, layer) in map.TileLayers.AsIndexed())
             {
-                int index = 1;
                 var tiles = new List<TileLayer>();
 
                 foreach (var tile in layer.Tiles)
@@ -87,10 +103,8 @@ namespace JonnyHammer.Engine.Helpers
                         TextureName = textureName,
                         Name = tileSet.Name,
                         Width = tileSet.TileWidth,
-                        Height = tileSet.TileHeight,
+                        Height = tileSet.TileWidth,
                     };
-
-                    index++;
                     tiles.Add(layerData);
                 }
 
@@ -118,8 +132,8 @@ namespace JonnyHammer.Engine.Helpers
                     var obj = new TiledObject
                     {
                         Position = new Vector2((float)item.X, (float)item.Y),
-                        Width = (int)item.Width,
-                        Height = (int)item.Height,
+                        Width = (int)(item.Width),
+                        Height = (int)(item.Height),
                         MoveAmount = moveAmount,
                     };
 

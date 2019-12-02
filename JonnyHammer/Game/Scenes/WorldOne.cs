@@ -1,4 +1,5 @@
-﻿using JonnyHamer.Engine.Inputs;
+﻿using JonnyHamer.Engine.Helpers;
+using JonnyHamer.Engine.Inputs;
 using JonnyHamer.Engine.Manipulators;
 using JonnyHammer.Engine.Helpers;
 using JonnyHammer.Engine.Scenes;
@@ -31,7 +32,7 @@ namespace JonnyHammer.Game.Scenes
                     switch (tile.Name)
                     {
                         case "bg":
-                            Spawn<MainBackground>($"{layer}_bg_{index}", tile.Position,
+                            Spawn<MainBackground>($"{layer}_bg_{index}", tile.Position * Screen.Scale,
                                 s => s.TextureName = tile.TextureName);
                             break;
 
@@ -40,13 +41,13 @@ namespace JonnyHammer.Game.Scenes
                             break;
 
                         default:
-                            Spawn<Scenery>($"{layer}_sc_{index}", tile.Position,
+                            Spawn<Scenery>($"{layer}_sc_{index}", tile.Position * Screen.Scale,
                                 s =>
                                 {
                                     s.TextureName = tile.TextureName;
                                     s.Source = tile.Source;
-                                    s.Width = tile.Width;
-                                    s.Height = tile.Height;
+                                    s.Width = (int)tile.Width;
+                                    s.Height = (int)tile.Height;
                                 });
                             break;
 
@@ -61,12 +62,9 @@ namespace JonnyHammer.Game.Scenes
 
             for (var i = 0; i < tile.Amount; i++)
             {
-                var cloudPosition = i == 0
-                    ? tile.Position :
-                    new Vector2(lastCloud.Transform.Position.X + tile.Width - 1, tile.Position.Y);
 
                 lastCloud = Spawn<Cloud>($"{layer}_cloud_{i}",
-                    tile.Position + new Vector2((i * tile.Width) - 1, 0),
+                    (tile.Position + new Vector2((i * tile.Width) - 1, 0)) * Screen.Scale,
                     c =>
                     {
                         c.Speed = tile.Speed;
@@ -85,23 +83,23 @@ namespace JonnyHammer.Game.Scenes
                         case "blocks":
                             Spawn<Block>(
                                $"floor_{layer}_{index}",
-                               new Vector2(tile.Position.X, tile.Position.Y + tile.Height),
+                               new Vector2(tile.Position.X, tile.Position.Y + tile.Height) * Screen.Scale,
                                f =>
                                {
-                                   f.Width = tile.Width;
-                                   f.Height = (int)tile.Height;
+                                   f.Width = (int)(tile.Width * Screen.Scale);
+                                   f.Height = (int)(tile.Height * Screen.Scale);
                                });
                             break;
 
                         case "player_spawn":
                             player = Spawn<Jonny>(
                                 "Jonny",
-                                tile.Position,
+                                tile.Position * Screen.Scale,
                                 j => j.RespawnPosition = tile.Position);
                             break;
 
                         case "big_narutos":
-                            Spawn<BigNaruto>("NarutoRed", tile.Position,
+                            Spawn<BigNaruto>("NarutoRed", tile.Position * Screen.Scale,
                                 bg => bg.MoveAmount = tile.MoveAmount);
                             break;
                     }
@@ -127,11 +125,15 @@ namespace JonnyHammer.Game.Scenes
 
                 return;
             }
-            else if (keyboard.HasPressed(Keys.Back))
+            else if (keyboard.HasPressed(Keys.F11))
             {
-                player.Respawn();
+                Screen.ToggleFullScreen();
                 return;
             }
+            else if (keyboard.HasPressed(Keys.OemPlus))
+                Screen.Scale += 0.1f;
+            else if (keyboard.HasPressed(Keys.OemMinus))
+                Screen.Scale -= 0.1f;
 
             Camera.Follow(player);
         }

@@ -29,7 +29,7 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
         {
             get
             {
-                var position = new Vector2(Entity.Transform.X, Entity.Transform.Y)
+                var position = (new Vector2(Entity.Transform.X, Entity.Transform.Y))
                              + new Vector2(bounds.X, bounds.Y) * Entity.Transform.Scale;
 
                 return new Rectangle(

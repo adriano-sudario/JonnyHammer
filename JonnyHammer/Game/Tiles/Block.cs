@@ -8,10 +8,6 @@ namespace JonnyHammer.Tiles
 {
     public class Block : Entity
     {
-        private int width;
-        private int height = 30;
-        public override int Width { get => width; set => width = value; }
-        public override int Height { get => height; set => height = value; }
 
         public override void Load()
         {

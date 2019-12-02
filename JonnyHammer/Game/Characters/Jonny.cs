@@ -65,7 +65,7 @@ namespace JonnyHammer.Game.Characters
 
             var floorTrigger = AddComponent(
                                 new ColliderComponent(
-                                    new Rectangle(10, spriteRenderer.Height, spriteRenderer.Width - 20, 5),
+                                    new Rectangle(10, spriteRenderer.Height, spriteRenderer.Width - 20, 8),
                                     autoCheck: true,
                                     isDebug: true,
                                     isTrigger: true,
@@ -157,6 +157,7 @@ namespace JonnyHammer.Game.Characters
 
         public void Respawn()
         {
+            state = State.Jumping;
             life = totalLife;
             lifebar.UpdateLife(life);
             Transform.MoveTo(RespawnPosition);

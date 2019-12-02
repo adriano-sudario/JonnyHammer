@@ -17,10 +17,5 @@ namespace JonnyHammer.Game.Tiles
         }
 
 
-        public override void Update(GameTime gameTime)
-        {
-            physics.Body.Mass = 0.2f;
-        }
-
     }
 }

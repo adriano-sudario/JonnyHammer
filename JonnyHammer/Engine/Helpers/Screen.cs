@@ -52,7 +52,7 @@ namespace JonnyHamer.Engine.Helpers
             {
                 Width = GraphicsDeviceManager.DefaultBackBufferWidth;
                 Height = GraphicsDeviceManager.DefaultBackBufferHeight;
-                Scale = 1f;
+                Scale = 2f;
             }
         }
     }

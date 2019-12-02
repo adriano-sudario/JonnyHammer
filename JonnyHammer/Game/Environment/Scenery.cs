@@ -7,11 +7,11 @@ namespace JonnyHammer.Game.Environment
 {
     public class Scenery : Entity
     {
-        private int width;
-        private int height;
+        int width;
+        int height;
 
         protected SpriteComponent sprite;
-        
+
         public string TextureName { get; set; }
         public Vector2 Source { get; set; }
         public override int Width { get => width; set => width = value; }
@@ -21,9 +21,10 @@ namespace JonnyHammer.Game.Environment
         {
             base.Load();
 
-            sprite = new SpriteComponent(Loader.LoadTexture(TextureName), 
+            sprite = new SpriteComponent(Loader.LoadTexture(TextureName),
                 source: new Rectangle((int)Source.X, (int)Source.Y, Width, Height));
             AddComponent(sprite);
         }
+
     }
 }
