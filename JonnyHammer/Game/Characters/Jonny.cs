@@ -35,6 +35,7 @@ namespace JonnyHammer.Game.Characters
         const float JumpForce = 4f;
         float speed = 2f;
         bool isScaling = false;
+        bool touchGround = true;
         bool canDash = true;
         State state = State.Jumping;
 
@@ -79,7 +80,7 @@ namespace JonnyHammer.Game.Characters
                 if (state != State.Dashing && e.Name.Contains("floor") && !locked)
                 {
                     state = State.Grounded;
-                    canDash = true;
+                    touchGround = true;
                     physics.SetVelocity(y: 0);
                 }
             };
@@ -230,10 +231,10 @@ namespace JonnyHammer.Game.Characters
 
         void Dash()
         {
-            if (state == State.Dashing || !canDash)
+            if (state == State.Dashing || !touchGround || !canDash)
                 return;
 
-            canDash = false;
+            touchGround = canDash = false;
             var oldState = state;
             state = State.Dashing;
             physics.Body.IgnoreGravity = true;
@@ -245,6 +246,7 @@ namespace JonnyHammer.Game.Characters
                 physics.Body.IgnoreGravity = false;
 
             }, TimeSpan.FromSeconds(0.15));
+            Invoke(() => canDash = true, TimeSpan.FromMilliseconds(300));
         }
 
         void Stop() => physics.SetVelocity(x: 0);
