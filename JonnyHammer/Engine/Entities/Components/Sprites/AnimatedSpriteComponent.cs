@@ -46,7 +46,7 @@ namespace JonnyHamer.Engine.Entities.Sprites
 
         public AnimatedSpriteComponent(Texture2D spriteStrip, IDictionary<string, Frame[]> sequences, bool isLooping = true, bool autoPlay = true,
             EventHandler<FrameChangeEventArgs> onFrameChange = null, Rectangle source = default,
-            float opacity = 1f, Vector2 origin = default) : base(spriteStrip, source: source, opacity: opacity, origin: origin)
+            float opacity = 1f, Vector2? origin = null) : base(spriteStrip, source: source, opacity: opacity, origin: origin)
         {
             if (spriteStrip == null)
                 throw new Exception("spriteStrip não pode ser nulo");

@@ -103,8 +103,8 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
             new Rectangle(
                 (int)spriteComponent.Entity.Transform.X,
                 (int)spriteComponent.Entity.Transform.Y,
-                spriteComponent.Width,
-                spriteComponent.Height),
+                spriteComponent.SpriteWidth,
+                spriteComponent.SpriteHeight),
             autoCheck, isDebug, debugColor, isTrigger
         )
         { }

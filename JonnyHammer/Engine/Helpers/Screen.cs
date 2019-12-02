@@ -51,15 +51,15 @@ namespace JonnyHamer.Engine.Helpers
                 graphics.PreferredBackBufferHeight = Height;
                 graphics.ApplyChanges();
 
-                decimal scaleX = (decimal)Width / GraphicsDeviceManager.DefaultBackBufferWidth;
-                decimal scaleY = (decimal)Height / GraphicsDeviceManager.DefaultBackBufferHeight;
+                var scaleX = (decimal)Width / GraphicsDeviceManager.DefaultBackBufferWidth;
+                var scaleY = (decimal)Height / GraphicsDeviceManager.DefaultBackBufferHeight;
                 Scale = (int)Math.Ceiling(scaleX > scaleY ? scaleX : scaleY);
             }
             else
             {
                 Width = GraphicsDeviceManager.DefaultBackBufferWidth;
                 Height = GraphicsDeviceManager.DefaultBackBufferHeight;
-                Scale = 2f;
+                Scale = 1f;
             }
         }
     }
