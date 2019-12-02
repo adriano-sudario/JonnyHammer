@@ -31,6 +31,13 @@ namespace JonnyHamer.Engine.Entities.Sprites
             IsVisible = true;
         }
 
+        public override void Start()
+        {
+            Entity.Width = Width;
+            Entity.Height = Height;
+            base.Start();
+        }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (!IsVisible) return;

@@ -161,19 +161,29 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (!IsDebug) return;
-            var origin = new Vector2(Bounds.Width / 2, Bounds.Height / 2);
-            var position = new Vector2(Bounds.X, Bounds.Y);
+
+            //var origin =
+            //     new Vector2(
+            //        (Entity.Width / 2),
+            //         (Entity.Height / 2));
+
+            //var position = new Vector2(Bounds.X, Bounds.Y);
+
+            //spriteBatch.Draw(
+            //    debugTexture,
+            //    position + origin,
+            //    Bounds,
+            //    Color.White,
+            //    Entity.Transform.Rotation,
+            //    origin,
+            //    1,
+            //    SpriteEffects.None, 0
+            //    );
 
             spriteBatch.Draw(
                 debugTexture,
-                position + origin,
                 Bounds,
-                Color.White,
-                Entity.Transform.Rotation,
-                origin,
-                1,
-                SpriteEffects.None, 0
-                );
+                Color.White);
         }
     }
 }

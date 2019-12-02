@@ -52,8 +52,20 @@ namespace JonnyHamer.Engine.Helpers
             {
                 Width = GraphicsDeviceManager.DefaultBackBufferWidth;
                 Height = GraphicsDeviceManager.DefaultBackBufferHeight;
-                Scale = 2f;
+                Scale = 1f;
             }
         }
+    }
+
+    public static class Extensions
+    {
+        public static Rectangle ScaleScreen(this Rectangle rectangle) =>
+            new Rectangle(
+                (int)(rectangle.X * Screen.Scale),
+                (int)(rectangle.Y * Screen.Scale),
+                (int)(rectangle.Width * Screen.Scale),
+                (int)(rectangle.Height * Screen.Scale));
+        public static int Scale(this int value) =>
+            (int)(value * Screen.Scale);
     }
 }
