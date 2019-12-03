@@ -10,8 +10,8 @@ namespace JonnyHamer.Engine.Helpers
         private static GraphicsDevice graphicsDevice;
 
         public static float Scale { get; set; }
-        public static int Width { get; set; }
-        public static int Height { get; set; }
+        public static int Width => graphics.PreferredBackBufferWidth;
+        public static int Height => graphics.PreferredBackBufferHeight;
 
         public static void Initialize(GraphicsDeviceManager graphics, GraphicsDevice graphicsDevice)
         {
@@ -23,8 +23,6 @@ namespace JonnyHamer.Engine.Helpers
         {
             graphics.PreferredBackBufferWidth = width;
             graphics.PreferredBackBufferHeight = height;
-            Width = width;
-            Height = height;
             graphics.ApplyChanges();
         }
 
@@ -42,7 +40,7 @@ namespace JonnyHamer.Engine.Helpers
             afterAdjustment?.Invoke();
         }
 
-        private static void AdjustScreen()
+        static void AdjustScreen()
         {
             if (graphics.IsFullScreen)
             {
@@ -51,16 +49,22 @@ namespace JonnyHamer.Engine.Helpers
 
                 ChangeResolution(width, height);
 
-                var scaleX = (decimal)Width / GraphicsDeviceManager.DefaultBackBufferWidth;
-                var scaleY = (decimal)Height / GraphicsDeviceManager.DefaultBackBufferHeight;
-                Scale = (int)Math.Ceiling(scaleX > scaleY ? scaleX : scaleY);
+                AdjustScale();
             }
             else
             {
-                Width = GraphicsDeviceManager.DefaultBackBufferWidth;
-                Height = GraphicsDeviceManager.DefaultBackBufferHeight;
+                var width = GraphicsDeviceManager.DefaultBackBufferWidth;
+                var height = GraphicsDeviceManager.DefaultBackBufferHeight;
+                ChangeResolution(width, height);
                 Scale = 1f;
             }
+        }
+
+        public static void AdjustScale()
+        {
+            var scaleX = (decimal)Width / GraphicsDeviceManager.DefaultBackBufferWidth;
+            var scaleY = (decimal)Height / GraphicsDeviceManager.DefaultBackBufferHeight;
+            Scale = (int)Math.Ceiling(scaleX > scaleY ? scaleX : scaleY);
         }
     }
 
