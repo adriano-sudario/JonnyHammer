@@ -27,11 +27,11 @@ namespace JonnyHamer.Engine.Manipulators
             Update();
         }
 
-        //public static void CenterOn(Vector2 position)
-        //{
-        //    AdjustPosition(position, 1, 1);
-        //    Update();
-        //}
+        public static void CenterOn(Vector2 position)
+        {
+            AdjustPosition(position, 1, 1);
+            Update();
+        }
 
         public static void Follow(Entity body)
         {
@@ -48,27 +48,28 @@ namespace JonnyHamer.Engine.Manipulators
             Update();
         }
 
-        //public static void ScrollHorizontally(Vector2 followPosition, int followWidth, int scrollIncrement)
-        //{
-        //    if (followPosition.X + (followWidth / 2) >= (Screen.Width / 2) &&
-        //        followPosition.X + (followWidth / 2) <= AreaWidth - (Screen.Width / 2))
-        //        position.X -= scrollIncrement;
-        //}
+        public static void ScrollHorizontally(Vector2 followPosition, int followWidth, int scrollIncrement)
+        {
+            if (followPosition.X + (followWidth / 2) >= (Screen.Width / 2) &&
+                followPosition.X + (followWidth / 2) <= AreaWidth - (Screen.Width / 2))
+                position.X -= scrollIncrement;
+        }
 
-        //public static void ScrollVertically(Vector2 followPosition, int followHeight, int scrollIncrement)
-        //{
-        //    if (followPosition.Y + (followHeight / 2) >= (Screen.Height / 2) &&
-        //        followPosition.Y + (followHeight / 2) <= AreaHeight - (Screen.Height / 2))
-        //        position.Y -= scrollIncrement;
-        //}
+        public static void ScrollVertically(Vector2 followPosition, int followHeight, int scrollIncrement)
+        {
+            if (followPosition.Y + (followHeight / 2) >= (Screen.Height / 2) &&
+                followPosition.Y + (followHeight / 2) <= AreaHeight - (Screen.Height / 2))
+                position.Y -= scrollIncrement;
+        }
 
         static void AdjustPosition(Vector2 followPosition, int followWidth = 0, int followHeight = 0)
         {
             float positionHorizontal = -(followPosition.X.ScaleScreen() - (Screen.Width / 2) + (followWidth.ScaleScreen() / 2));
-            float minWidth = AreaWidth.ScaleScreen() - Screen.RenderWidth.ScaleScreen();
+            float minWidth = AreaWidth.ScaleScreen() - Screen.Width;
             float maxWidth = 0;
+
             float positionVertical = -(followPosition.Y.ScaleScreen() - (Screen.Height / 2) + (followHeight.ScaleScreen() / 2));
-            float minHeight = AreaHeight.ScaleScreen() - Screen.RenderHeight.ScaleScreen();
+            float minHeight = AreaHeight.ScaleScreen() - Screen.Height;
             float maxHeight = 0;
             position.X = MathHelper.Clamp(positionHorizontal, -minWidth, maxWidth);
             position.Y = MathHelper.Clamp(positionVertical, -minHeight, maxHeight);

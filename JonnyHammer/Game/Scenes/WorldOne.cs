@@ -131,10 +131,10 @@ namespace JonnyHammer.Game.Scenes
                 Screen.ToggleFullScreen();
                 return;
             }
-            else if (keyboard.HasPressed(Keys.OemPlus))
-                Screen.Scale += 0.1f;
-            else if (keyboard.HasPressed(Keys.OemMinus))
-                Screen.Scale -= 0.1f;
+            else if (keyboard.IsPressing(Keys.OemPlus))
+                Screen.Scale += 0.05f;
+            else if (keyboard.IsPressing(Keys.OemMinus))
+                Screen.Scale -= 0.05f;
 
             Camera.Follow(player);
         }
