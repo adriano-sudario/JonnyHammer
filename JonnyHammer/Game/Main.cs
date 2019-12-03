@@ -24,8 +24,9 @@ namespace JonnyHammer
         protected override void Initialize()
         {
             base.Initialize();
-            //Screen.Scale = 2;
             //Screen.ChangeResolution(1920, 1080);
+            //Screen.ChangeResolution(1280, 720);
+            //Screen.Scale = 2;
         }
 
         /// <summary>

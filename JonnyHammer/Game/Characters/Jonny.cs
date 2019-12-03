@@ -1,21 +1,22 @@
-﻿using JonnyHamer.Engine.Entities;
-using JonnyHamer.Engine.Entities.Sprites;
-using JonnyHamer.Engine.Helpers;
-using JonnyHamer.Engine.Inputs;
-using JonnyHammer.Engine;
-using JonnyHammer.Engine.Entities;
-using JonnyHammer.Engine.Entities.Components.Collider;
-using JonnyHammer.Engine.Entities.Components.Phisycs;
-using JonnyHammer.Engine.Helpers;
-using JonnyHammer.Game.UI;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections;
-using tainicom.Aether.Physics2D.Dynamics;
-
+﻿
 namespace JonnyHammer.Game.Characters
 {
+    using JonnyHamer.Engine.Entities;
+    using JonnyHamer.Engine.Entities.Sprites;
+    using JonnyHamer.Engine.Helpers;
+    using JonnyHamer.Engine.Inputs;
+    using JonnyHammer.Engine;
+    using JonnyHammer.Engine.Entities;
+    using JonnyHammer.Engine.Entities.Components.Collider;
+    using JonnyHammer.Engine.Entities.Components.Phisycs;
+    using JonnyHammer.Engine.Helpers;
+    using JonnyHammer.Game.UI;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Input;
+    using System;
+    using System.Collections;
+    using tainicom.Aether.Physics2D.Dynamics;
+
     public class Jonny : Entity
     {
         enum State

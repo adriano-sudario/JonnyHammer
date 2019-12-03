@@ -23,6 +23,8 @@ namespace JonnyHamer.Engine.Helpers
         {
             graphics.PreferredBackBufferWidth = width;
             graphics.PreferredBackBufferHeight = height;
+            Width = width;
+            Height = height;
             graphics.ApplyChanges();
         }
 
@@ -44,12 +46,10 @@ namespace JonnyHamer.Engine.Helpers
         {
             if (graphics.IsFullScreen)
             {
-                Width = graphicsDevice.DisplayMode.Width;
-                Height = graphicsDevice.DisplayMode.Height;
+                var width = graphicsDevice.DisplayMode.Width;
+                var height = graphicsDevice.DisplayMode.Height;
 
-                graphics.PreferredBackBufferWidth = Width;
-                graphics.PreferredBackBufferHeight = Height;
-                graphics.ApplyChanges();
+                ChangeResolution(width, height);
 
                 var scaleX = (decimal)Width / GraphicsDeviceManager.DefaultBackBufferWidth;
                 var scaleY = (decimal)Height / GraphicsDeviceManager.DefaultBackBufferHeight;

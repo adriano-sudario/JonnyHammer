@@ -39,7 +39,11 @@ namespace JonnyHamer.Engine.Manipulators
             int height = sprite?.Height ?? 1;
 
             var spriteSource = (sprite?.Origin ?? Vector2.Zero) * (body.Transform.Scale);
-            AdjustPosition(body.Transform.Position - spriteSource, width, height);
+            AdjustPosition(
+                (body.Transform.Position - spriteSource).ScaleScreen(),
+                width.ScaleScreen(),
+                height.ScaleScreen()
+                );
             Update();
         }
 
@@ -57,12 +61,12 @@ namespace JonnyHamer.Engine.Manipulators
         //        position.Y -= scrollIncrement;
         //}
 
-        private static void AdjustPosition(Vector2 followPosition, int followWidth, int followHeight)
+        static void AdjustPosition(Vector2 followPosition, int followWidth, int followHeight)
         {
-            float positionHorizontal = -(followPosition.X.ScaleScreen() - (Screen.Width / 2) + (followWidth.ScaleScreen() / 2));
+            float positionHorizontal = -(followPosition.X - (Screen.Width / 2) + (followWidth / 2));
             float minWidth = -(AreaWidth.ScaleScreen() - Screen.Width);
             float maxWidth = 0;
-            float positionVertical = -(followPosition.Y.ScaleScreen() - (Screen.Height / 2) + (followHeight.ScaleScreen() / 2));
+            float positionVertical = -(followPosition.Y - (Screen.Height / 2) + (followHeight / 2));
             float minHeight = -(AreaHeight.ScaleScreen() - Screen.Height);
             float maxHeight = 0;
             position.X = MathHelper.Clamp(positionHorizontal, minWidth, maxWidth);
