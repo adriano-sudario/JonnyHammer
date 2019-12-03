@@ -146,17 +146,4 @@ namespace JonnyHammer.Engine.Helpers
         }
     }
 
-    public static class Extensions
-    {
-        public static void Deconstruct<K, V>(this KeyValuePair<K, V> pair, out K key, out V value) =>
-            (key, value) = (pair.Key, pair.Value);
-
-
-        public static IEnumerable<(int, T)> AsIndexed<T>(this IEnumerable<T> @this)
-        {
-            var index = 0;
-            foreach (var item in @this)
-                yield return (index++, item);
-        }
-    }
 }

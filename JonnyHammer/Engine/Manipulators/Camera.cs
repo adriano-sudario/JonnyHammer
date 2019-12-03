@@ -1,6 +1,7 @@
 ﻿using JonnyHamer.Engine.Entities;
 using JonnyHamer.Engine.Entities.Sprites;
 using JonnyHamer.Engine.Helpers;
+using JonnyHammer.Engine;
 using Microsoft.Xna.Framework;
 
 namespace JonnyHamer.Engine.Manipulators
