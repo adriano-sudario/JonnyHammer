@@ -13,6 +13,9 @@ namespace JonnyHamer.Engine.Helpers
         public static int Width => graphics.PreferredBackBufferWidth;
         public static int Height => graphics.PreferredBackBufferHeight;
 
+        public static int RenderWidth => GraphicsDeviceManager.DefaultBackBufferWidth;
+        public static int RenderHeight => GraphicsDeviceManager.DefaultBackBufferHeight;
+
         public static void Initialize(GraphicsDeviceManager graphics, GraphicsDevice graphicsDevice)
         {
             Screen.graphics = graphics;
@@ -53,17 +56,15 @@ namespace JonnyHamer.Engine.Helpers
             }
             else
             {
-                var width = GraphicsDeviceManager.DefaultBackBufferWidth;
-                var height = GraphicsDeviceManager.DefaultBackBufferHeight;
-                ChangeResolution(width, height);
+                ChangeResolution(RenderWidth, RenderHeight);
                 Scale = 1f;
             }
         }
 
         public static void AdjustScale()
         {
-            var scaleX = (decimal)Width / GraphicsDeviceManager.DefaultBackBufferWidth;
-            var scaleY = (decimal)Height / GraphicsDeviceManager.DefaultBackBufferHeight;
+            var scaleX = (double)Width / RenderWidth;
+            var scaleY = (double)Height / RenderHeight;
             Scale = (int)Math.Ceiling(scaleX > scaleY ? scaleX : scaleY);
         }
     }

@@ -35,15 +35,15 @@ namespace JonnyHamer.Engine.Manipulators
         public static void Follow(Entity body)
         {
             var sprite = body.GetComponent<SpriteComponent>();
-            int width = sprite?.Width ?? 1;
-            int height = sprite?.Height ?? 1;
+            int width = sprite?.Width ?? 0;
+            int height = sprite?.Height ?? 0;
 
             var spriteSource = (sprite?.Origin ?? Vector2.Zero) * (body.Transform.Scale);
             AdjustPosition(
-                (body.Transform.Position - spriteSource).ScaleScreen(),
-                width.ScaleScreen(),
-                height.ScaleScreen()
-                );
+                (body.Transform.Position) - spriteSource,
+                width,
+                height
+            );
             Update();
         }
 
@@ -61,16 +61,16 @@ namespace JonnyHamer.Engine.Manipulators
         //        position.Y -= scrollIncrement;
         //}
 
-        static void AdjustPosition(Vector2 followPosition, int followWidth, int followHeight)
+        static void AdjustPosition(Vector2 followPosition, int followWidth = 0, int followHeight = 0)
         {
-            float positionHorizontal = -(followPosition.X - (Screen.Width / 2) + (followWidth / 2));
-            float minWidth = -(AreaWidth.ScaleScreen() - Screen.Width);
+            float positionHorizontal = -(followPosition.X.ScaleScreen() - (Screen.Width / 2) + (followWidth.ScaleScreen() / 2));
+            float minWidth = AreaWidth.ScaleScreen() - Screen.RenderWidth.ScaleScreen();
             float maxWidth = 0;
-            float positionVertical = -(followPosition.Y - (Screen.Height / 2) + (followHeight / 2));
-            float minHeight = -(AreaHeight.ScaleScreen() - Screen.Height);
+            float positionVertical = -(followPosition.Y.ScaleScreen() - (Screen.Height / 2) + (followHeight.ScaleScreen() / 2));
+            float minHeight = AreaHeight.ScaleScreen() - Screen.RenderHeight.ScaleScreen();
             float maxHeight = 0;
-            position.X = MathHelper.Clamp(positionHorizontal, minWidth, maxWidth);
-            position.Y = MathHelper.Clamp(positionVertical, minHeight, maxHeight);
+            position.X = MathHelper.Clamp(positionHorizontal, -minWidth, maxWidth);
+            position.Y = MathHelper.Clamp(positionVertical, -minHeight, maxHeight);
         }
     }
 }
