@@ -1,5 +1,4 @@
-﻿using JonnyHamer.Engine.Helpers;
-using JonnyHammer.Engine;
+﻿using JonnyHammer.Engine;
 using JonnyHammer.Engine.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,14 +14,14 @@ namespace JonnyHamer.Engine.Entities.Sprites
         public virtual int SpriteWidth => spriteStrip.Width;
         public virtual int SpriteHeight => spriteStrip.Height;
         public float Opacity { get; set; }
-        public Vector2? Origin { get; set; }
+        public Vector2 Origin { get; set; }
         public Vector2 RotateOrigin { get; set; }
         public Color Color { get; set; } = Color.White;
         public float LayerDepth { get; set; }
         public int Width => (int)(SpriteWidth * Entity.Transform.Scale);
         public int Height => (int)(SpriteHeight * Entity.Transform.Scale);
 
-        public SpriteRenderer(Texture2D spriteStrip, Rectangle source = default, float opacity = 1f, Vector2? origin = null)
+        public SpriteRenderer(Texture2D spriteStrip, Rectangle source = default, float opacity = 1f, Vector2 origin = default)
         {
             this.spriteStrip = spriteStrip;
             Source = source == default ? new Rectangle(0, 0, SpriteWidth, SpriteHeight) : source;
@@ -36,17 +35,16 @@ namespace JonnyHamer.Engine.Entities.Sprites
             if (!IsVisible) return;
 
             var effect = FacingDirection == Direction.Horizontal.Left ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            var origin = Origin ?? new Vector2(Width / 2f, Height / 2f);
 
-            spriteBatch.Draw(
+            spriteBatch.DrawScaled(
                 spriteStrip,
-                (Entity.Transform.Position + (origin * Entity.Transform.Scale)) * Screen.Scale,
+                Entity.Transform,
                 Source,
                 Color * Opacity,
-                Entity.Transform.Rotation,
-                origin,
-                Screen.Scale * Entity.Transform.Scale,
-                effect, LayerDepth);
+                Origin,
+                effect,
+                LayerDepth);
+
         }
     }
 }

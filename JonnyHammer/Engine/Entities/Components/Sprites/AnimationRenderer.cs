@@ -20,7 +20,7 @@ namespace JonnyHamer.Engine.Entities.Sprites
         public int Duration { get; set; }
     }
 
-    public class AnimatedSpriteComponent : SpriteComponent
+    public class AnimationRenderer : SpriteRenderer
     {
         private int elapsedTime;
         private IDictionary<string, Frame[]> sequences;
@@ -44,9 +44,9 @@ namespace JonnyHamer.Engine.Entities.Sprites
 
         public event EventHandler<FrameChangeEventArgs> OnFrameChange;
 
-        public AnimatedSpriteComponent(Texture2D spriteStrip, IDictionary<string, Frame[]> sequences, bool isLooping = true, bool autoPlay = true,
+        public AnimationRenderer(Texture2D spriteStrip, IDictionary<string, Frame[]> sequences, bool isLooping = true, bool autoPlay = true,
             EventHandler<FrameChangeEventArgs> onFrameChange = null, Rectangle source = default,
-            float opacity = 1f, Vector2? origin = null) : base(spriteStrip, source: source, opacity: opacity, origin: origin)
+            float opacity = 1f, Vector2 origin = default) : base(spriteStrip, source: source, opacity: opacity, origin: origin)
         {
             if (spriteStrip == null)
                 throw new Exception("spriteStrip não pode ser nulo");

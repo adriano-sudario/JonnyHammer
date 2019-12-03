@@ -10,7 +10,7 @@ namespace JonnyHammer.Engine.Entities.Components
     public enum TweenMode { Persist, OneShot, Loop, Yoyo, Restart };
     public enum TweenProperty { X, Y, Scale, Angle, Opacity };
 
-    public class TweenComponent : Component
+    public class Tween : Component
     {
         private Vector2 _position;
         private float _scale;
@@ -104,7 +104,7 @@ namespace JonnyHammer.Engine.Entities.Components
         public EaseFunction.Ease Ease;
         public float Percent { get; private set; }
 
-        private TweenComponent(TweenMode mode, float value, EaseFunction.Ease easer, float millisecondsDuration, Action onStart = null, Action onFinish = null)
+        private Tween(TweenMode mode, float value, EaseFunction.Ease easer, float millisecondsDuration, Action onStart = null, Action onFinish = null)
         {
             OnStart = onStart;
             OnFinish = onFinish;
@@ -122,7 +122,7 @@ namespace JonnyHammer.Engine.Entities.Components
                 throw new Exception($"[Tween]: Duration must be a positive integer. Setting from '{millisecondsDuration}'to 0 (zero).");
         }
 
-        public TweenComponent(TweenMode mode, object reference, string propertyName, float value, EaseFunction.Ease easer, float millisecondsDuration, Action onStart = null, Action onFinish = null) :
+        public Tween(TweenMode mode, object reference, string propertyName, float value, EaseFunction.Ease easer, float millisecondsDuration, Action onStart = null, Action onFinish = null) :
             this(mode, value, easer, millisecondsDuration, onStart, onFinish)
         {
             this.reference = reference;
@@ -132,7 +132,7 @@ namespace JonnyHammer.Engine.Entities.Components
                 throw new Exception("[Tween]: Property must be a float type.");
         }
 
-        public TweenComponent(TweenMode mode, TweenProperty property, float value, EaseFunction.Ease easer, float millisecondsDuration, Action onStart = null, Action onFinish = null) :
+        public Tween(TweenMode mode, TweenProperty property, float value, EaseFunction.Ease easer, float millisecondsDuration, Action onStart = null, Action onFinish = null) :
             this(mode, value, easer, millisecondsDuration, onStart, onFinish)
         {
             Property = property;

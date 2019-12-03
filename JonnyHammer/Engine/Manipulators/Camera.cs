@@ -35,7 +35,7 @@ namespace JonnyHamer.Engine.Manipulators
 
         public static void Follow(Entity body)
         {
-            var sprite = body.GetComponent<SpriteComponent>();
+            var sprite = body.GetComponent<SpriteRenderer>();
             int width = sprite?.Width ?? 0;
             int height = sprite?.Height ?? 0;
 

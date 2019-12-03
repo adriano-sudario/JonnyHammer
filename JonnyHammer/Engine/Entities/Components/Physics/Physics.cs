@@ -8,9 +8,9 @@ using tainicom.Aether.Physics2D.Dynamics.Contacts;
 
 namespace JonnyHammer.Engine.Entities.Components.Phisycs
 {
-    public class PhysicsComponent : Component
+    public class Physics : Component
     {
-        readonly ColliderComponent collider;
+        readonly Collider.Collider collider;
         float mass;
         float friction;
         float restitution;
@@ -34,7 +34,7 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
         public IList<Body> Collided { get; } = new List<Body>();
 
 
-        public PhysicsComponent(BodyType bodyType, ColliderComponent collider, float mass = 1, float friction = 0, float restitution = 0)
+        public Physics(BodyType bodyType, Collider.Collider collider, float mass = 1, float friction = 0, float restitution = 0)
         {
             BodyType = bodyType;
             this.collider = collider;

@@ -4,9 +4,9 @@ using Microsoft.Xna.Framework;
 
 namespace JonnyHammer.Engine.Entities.Components
 {
-    public class SlimPhysicsComponent : Component
+    public class SlimPhysics : Component
     {
-        private ColliderComponent collider;
+        private Collider.Collider collider;
         private SpriteRenderer renderer;
         private bool applyGravity = true;
         private float gravityForce = 0;
@@ -19,7 +19,7 @@ namespace JonnyHammer.Engine.Entities.Components
 
         public override void Start()
         {
-            collider = GetComponent<ColliderComponent>();
+            collider = GetComponent<Collider.Collider>();
             renderer = GetComponent<SpriteRenderer>();
 
             collider.IsTrigger = true;
