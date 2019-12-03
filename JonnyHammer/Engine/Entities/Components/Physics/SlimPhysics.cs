@@ -7,7 +7,7 @@ namespace JonnyHammer.Engine.Entities.Components
     public class SlimPhysicsComponent : Component
     {
         private ColliderComponent collider;
-        private SpriteComponent renderer;
+        private SpriteRenderer renderer;
         private bool applyGravity = true;
         private float gravityForce = 0;
         private Vector2 velocity;
@@ -20,7 +20,7 @@ namespace JonnyHammer.Engine.Entities.Components
         public override void Start()
         {
             collider = GetComponent<ColliderComponent>();
-            renderer = GetComponent<SpriteComponent>();
+            renderer = GetComponent<SpriteRenderer>();
 
             collider.IsTrigger = true;
             collider.OnTrigger += (collidedEntity) =>
@@ -30,7 +30,7 @@ namespace JonnyHammer.Engine.Entities.Components
 
                 var fixedPosition = new Vector2(Entity.Transform.X, Entity.Transform.Y);
 
-                var collidedEntityRenderer = collidedEntity.GetComponent<SpriteComponent>();
+                var collidedEntityRenderer = collidedEntity.GetComponent<SpriteRenderer>();
                 bool collidedOnBottom = previousPosition.Y < Entity.Transform.Y && Entity.Transform.Y + renderer?.Height > collidedEntity.Transform.Y;
                 bool collidedOnTop = previousPosition.Y > Entity.Transform.Y && Entity.Transform.Y < collidedEntity.Transform.Y + collidedEntityRenderer?.Height;
 

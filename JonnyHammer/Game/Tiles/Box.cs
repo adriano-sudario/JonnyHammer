@@ -8,12 +8,12 @@ namespace JonnyHammer.Game.Tiles
 {
     public class Box : Entity
     {
-        private PhysicsComponent physics;
+        private Physics physics;
 
         public override void Load()
         {
-            var collider = AddComponent(new ColliderComponent(new Rectangle(0, 0, 20, 20), false, true, Color.Blue));
-            physics = AddComponent(new PhysicsComponent(BodyType.Dynamic, collider));
+            var collider = AddComponent(new Collider(new Rectangle(0, 0, 20, 20), false, true, Color.Blue));
+            physics = AddComponent(new Physics(BodyType.Dynamic, collider));
         }
 
 

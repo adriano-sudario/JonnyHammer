@@ -16,8 +16,8 @@ namespace JonnyHammer.Tiles
         {
             var debugCollor = Color.Red;
             debugCollor.A = 50;
-            var collider = AddComponent(new ColliderComponent(new Rectangle(0, 0, Width, Height), false, true, debugCollor));
-            AddComponent(new PhysicsComponent(BodyType.Static, collider));
+            var collider = AddComponent(new Collider(new Rectangle(0, 0, Width, Height), false, true, debugCollor));
+            AddComponent(new Physics(BodyType.Static, collider));
 
             base.Load();
         }

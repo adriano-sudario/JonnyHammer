@@ -41,11 +41,11 @@ namespace JonnyHammer.Game.Characters
         State state = State.Jumping;
 
         KeyboardInput keyboard;
-        PhysicsComponent physics;
-        AnimatedSpriteComponent spriteRenderer;
+        Physics physics;
+        AnimationRenderer spriteRenderer;
         Lifebar lifebar;
-        private ColliderComponent collider;
-        private ColliderComponent floorTrigger;
+        private Collider collider;
+        private Collider floorTrigger;
 
         public Vector2 RespawnPosition { get; set; }
 
@@ -61,14 +61,14 @@ namespace JonnyHammer.Game.Characters
             var debugColor = Color.Green;
             debugColor.A = 90;
             collider = AddComponent(
-                            new ColliderComponent(
+                            new Collider(
                                    new Rectangle(0, 0, spriteRenderer.Width, spriteRenderer.Height),
                                    autoCheck: true,
                                    isDebug: true,
                                    debugColor: debugColor));
 
             floorTrigger = AddComponent(
-                               new ColliderComponent(
+                               new Collider(
                                    new Rectangle(10, spriteRenderer.Height, spriteRenderer.Width - 20, 5),
                                    autoCheck: true,
                                    isDebug: true,
@@ -86,7 +86,7 @@ namespace JonnyHammer.Game.Characters
                 }
             };
 
-            physics = AddComponent(new PhysicsComponent(BodyType.Dynamic, collider, mass: 1));
+            physics = AddComponent(new Physics(BodyType.Dynamic, collider, mass: 1));
             physics.MaxVelocity = new Vector2(3, JumpForce);
             physics.UseMaxVelocityY = true;
         }
@@ -151,12 +151,12 @@ namespace JonnyHammer.Game.Characters
             invulnerable = false;
         }
 
-        AnimatedSpriteComponent CreateAnimations()
+        AnimationRenderer CreateAnimations()
         {
             var spriteSheet = Loader.LoadTexture("main_char_spritesheet");
             var animationFrames = Loader.LoadAsepriteFrames("main_char_sprite_data");
 
-            return new AnimatedSpriteComponent(spriteSheet, animationFrames);
+            return new AnimationRenderer(spriteSheet, animationFrames);
         }
 
         public void Respawn()

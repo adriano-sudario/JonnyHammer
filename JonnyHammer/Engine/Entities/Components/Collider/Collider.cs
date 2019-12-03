@@ -1,6 +1,5 @@
 ﻿using JonnyHamer.Engine.Entities;
 using JonnyHamer.Engine.Entities.Sprites;
-using JonnyHamer.Engine.Helpers;
 using JonnyHamer.Engine.Managers;
 using JonnyHammer.Engine.Entities.Components.Phisycs;
 using Microsoft.Xna.Framework;
@@ -11,7 +10,7 @@ using System.Linq;
 
 namespace JonnyHammer.Engine.Entities.Components.Collider
 {
-    public class ColliderComponent : Component
+    public class Collider : Component
     {
         public bool IsDebug { get; set; }
         public bool AutoCheck { get; set; }
@@ -24,7 +23,7 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
         public event Action<Entity> OnCollide = delegate { };
         public event Action<Entity> OnTrigger = delegate { };
 
-        PhysicsComponent physics = null;
+        Physics physics = null;
 
         public Rectangle Bounds
         {
@@ -43,7 +42,7 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
             private set => bounds = value;
         }
 
-        public ColliderComponent(Rectangle rectangle, bool autoCheck = false, bool isDebug = false, Color? debugColor = null, bool isTrigger = false)
+        public Collider(Rectangle rectangle, bool autoCheck = false, bool isDebug = false, Color? debugColor = null, bool isTrigger = false)
         {
             IsDebug = isDebug && System.Diagnostics.Debugger.IsAttached;
             Bounds = rectangle;
@@ -98,7 +97,7 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
             return entityList.Any();
         }
 
-        public ColliderComponent(SpriteComponent spriteComponent, bool autoCheck = false, bool isDebug = false, Color? debugColor = null, bool isTrigger = false)
+        public Collider(SpriteRenderer spriteComponent, bool autoCheck = false, bool isDebug = false, Color? debugColor = null, bool isTrigger = false)
         : this(
             new Rectangle(
                 (int)spriteComponent.Entity.Transform.X,
@@ -111,7 +110,7 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
 
         public bool CollidesWith(Rectangle rectangle) => Bounds.Intersects(rectangle);
 
-        public bool CollidesWith(ColliderComponent collider) => CollidesWith(collider.Bounds);
+        public bool CollidesWith(Collider collider) => CollidesWith(collider.Bounds);
 
         public bool CollidesWith(Entity entity)
         {
@@ -121,7 +120,7 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
             if (physics?.Collided.Count > 0 && physics.Collided.Any(x => x.Tag == entity))
                 return true;
 
-            var colliders = entity.GetComponents<ColliderComponent>();
+            var colliders = entity.GetComponents<Collider>();
             for (var i = 0; i < colliders.Length; i++)
                 if (CollidesWith(colliders[i]))
                     return true;
@@ -130,14 +129,14 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
         }
         public bool TriggerWith(Rectangle rectangle) => Bounds.Intersects(rectangle);
 
-        public bool TriggerWith(ColliderComponent collider) => CollidesWith(collider.Bounds);
+        public bool TriggerWith(Collider collider) => CollidesWith(collider.Bounds);
 
         public bool TriggerWith(Entity entity)
         {
             if (Entity == entity || !IsTrigger)
                 return false;
 
-            var colliders = entity.GetComponents<ColliderComponent>();
+            var colliders = entity.GetComponents<Collider>();
             for (var i = 0; i < colliders.Length; i++)
                 if (CollidesWith(colliders[i]))
                     return true;
@@ -147,7 +146,7 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
 
         public override void Start()
         {
-            physics = Entity.GetComponent<PhysicsComponent>();
+            physics = Entity.GetComponent<Physics>();
         }
 
         public override void Update(GameTime gameTime)

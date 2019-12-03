@@ -8,7 +8,7 @@ namespace JonnyHammer
     {
         public static void MoveAndSlide(this Body body, Vector2 addPosition)
         {
-            body.SetTransform(body.Position + (addPosition / PhysicsComponent.PixelsPerMeter), 0);
+            body.SetTransform(body.Position + (addPosition / Physics.PixelsPerMeter), 0);
         }
     }
 }

@@ -6,9 +6,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace JonnyHamer.Engine.Entities.Sprites
 {
-    public class SpriteComponent : Component
+    public class SpriteRenderer : Component
     {
-        public Texture2D spriteStrip;
+        protected Texture2D spriteStrip;
 
         public bool IsVisible { get; set; }
         public virtual Rectangle Source { get; set; }
@@ -22,7 +22,7 @@ namespace JonnyHamer.Engine.Entities.Sprites
         public int Width => (int)(SpriteWidth * Entity.Transform.Scale);
         public int Height => (int)(SpriteHeight * Entity.Transform.Scale);
 
-        public SpriteComponent(Texture2D spriteStrip, Rectangle source = default, float opacity = 1f, Vector2? origin = null)
+        public SpriteRenderer(Texture2D spriteStrip, Rectangle source = default, float opacity = 1f, Vector2? origin = null)
         {
             this.spriteStrip = spriteStrip;
             Source = source == default ? new Rectangle(0, 0, SpriteWidth, SpriteHeight) : source;

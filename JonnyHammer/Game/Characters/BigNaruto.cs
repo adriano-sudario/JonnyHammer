@@ -15,7 +15,7 @@ namespace JonnyHammer.Game.Characters
         private float speed = 2f;
 
         private KeyboardInput keyboard;
-        private AnimatedSpriteComponent animatedSprite;
+        private AnimationRenderer animatedSprite;
 
         public float HorizontalPosition { get; set; }
         public float MoveAmount { get; set; }
@@ -31,9 +31,9 @@ namespace JonnyHammer.Game.Characters
             animations.Color = Color.Red;
             animatedSprite = AddComponent(animations);
 
-            var collider = AddComponent(new ColliderComponent(animatedSprite, true, true, Color.Purple));
+            var collider = AddComponent(new Collider(animatedSprite, true, true, Color.Purple));
             //AddComponent(new PhysicsComponent(BodyType.Dynamic, collider, mass: 10, friction: 0.2f)); ;
-            AddComponent<SlimPhysicsComponent>();
+            AddComponent<SlimPhysics>();
 
             Transform.Scale = 0.6f;
 
@@ -53,16 +53,16 @@ namespace JonnyHammer.Game.Characters
             base.Load();
 
             HorizontalPosition = Transform.X;
-            AddComponent(new TweenComponent(TweenMode.Loop, this, nameof(HorizontalPosition),
+            AddComponent(new Tween(TweenMode.Loop, this, nameof(HorizontalPosition),
                 HorizontalPosition + MoveAmount, EaseFunction.Linear, 1000));
         }
 
-        AnimatedSpriteComponent CreateNarutaoAnimations()
+        AnimationRenderer CreateNarutaoAnimations()
         {
             var spriteSheet = Loader.LoadTexture("narutao");
             var animationFrames = Loader.LoadAsepriteFrames("narutao");
 
-            return new AnimatedSpriteComponent(spriteSheet, animationFrames);
+            return new AnimationRenderer(spriteSheet, animationFrames);
         }
 
         public override void Update(GameTime gameTime)

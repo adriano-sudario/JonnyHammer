@@ -10,7 +10,7 @@ namespace JonnyHammer.Engine.Entities
 {
     public class Transform
     {
-        PhysicsComponent physicsComponent;
+        Physics physicsComponent;
         Vector2 position;
 
         public Vector2 PreviousPosition { get; private set; }
@@ -39,7 +39,7 @@ namespace JonnyHammer.Engine.Entities
 
         public event Action OnSetScale = delegate { };
 
-        public void SetPhysicsComponent(PhysicsComponent physicsComponent)
+        public void SetPhysicsComponent(Physics physicsComponent)
         {
             this.physicsComponent = physicsComponent;
         }
@@ -67,7 +67,7 @@ namespace JonnyHammer.Engine.Entities
         {
             int width = 1, height = 1;
 
-            if (entity.TryGetComponent<SpriteComponent>(out var renderer))
+            if (entity.TryGetComponent<SpriteRenderer>(out var renderer))
             {
                 width = renderer.Width;
                 height = renderer.Height;

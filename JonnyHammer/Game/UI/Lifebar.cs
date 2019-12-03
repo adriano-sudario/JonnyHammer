@@ -13,7 +13,7 @@ namespace JonnyHammer.Game.UI
     {
         SolidColorTexture lifebar;
         SolidColorTexture lifebarBack;
-        SpriteComponent renderer;
+        SpriteRenderer renderer;
         private Rectangle bounds;
         private Rectangle lifeBounds;
 
@@ -28,7 +28,7 @@ namespace JonnyHammer.Game.UI
         {
             lifebar = new SolidColorTexture(Color.ForestGreen);
             lifebarBack = new SolidColorTexture(Color.Red);
-            renderer = GetComponent<SpriteComponent>();
+            renderer = GetComponent<SpriteRenderer>();
 
             StartCoroutine(Desapear());
 

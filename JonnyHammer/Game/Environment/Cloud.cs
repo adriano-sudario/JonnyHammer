@@ -8,7 +8,7 @@ namespace JonnyHammer.Game.Environment
 {
     public class Cloud : Entity
     {
-        private SpriteComponent sprite;
+        private SpriteRenderer sprite;
 
         public Vector2 Spawn { get; set; }
         public float Speed { get; set; }
@@ -20,7 +20,7 @@ namespace JonnyHammer.Game.Environment
         {
             base.Load();
 
-            sprite = new SpriteComponent(Loader.LoadTexture("cloud"));
+            sprite = new SpriteRenderer(Loader.LoadTexture("cloud"));
             AddComponent(sprite);
         }
 

@@ -18,7 +18,7 @@ namespace JonnyHammer.Engine.Entities.Components
         private float _opacity;
         private float _custom;
         private double elapsedTime;
-        private SpriteComponent entitySprite;
+        private SpriteRenderer entitySprite;
         private object reference;
         private PropertyInfo customProperty;
 
@@ -145,7 +145,7 @@ namespace JonnyHammer.Engine.Entities.Components
             if ((reference == null || customProperty == null) && Entity == null)
                 throw new Exception("[Tween]: Entity cannot be null if it's not a custom property.");
             else if (Entity != null)
-                entitySprite = Entity.GetComponent<SpriteComponent>();
+                entitySprite = Entity.GetComponent<SpriteRenderer>();
 
             Begin();
         }
