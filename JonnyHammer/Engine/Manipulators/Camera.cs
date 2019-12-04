@@ -64,15 +64,19 @@ namespace JonnyHamer.Engine.Manipulators
 
         static void AdjustPosition(Vector2 followPosition, int followWidth = 0, int followHeight = 0)
         {
-            float positionHorizontal = -(followPosition.X.ScaleScreen() - (Screen.Width / 2) + (followWidth.ScaleScreen() / 2));
-            float minWidth = AreaWidth.ScaleScreen() - Screen.Width;
+            var positionHorizontal = -(followPosition.X.ScaleScreen() - (Screen.Width / 2) + (followWidth.ScaleScreen() / 2));
+            var minWidth = AreaWidth.ScaleScreen() - Screen.Width;
+            minWidth -= (minWidth - (AreaWidth.ScaleScreen() - Screen.RenderWidth.ScaleScreen()));
             float maxWidth = 0;
 
             float positionVertical = -(followPosition.Y.ScaleScreen() - (Screen.Height / 2) + (followHeight.ScaleScreen() / 2));
             float minHeight = AreaHeight.ScaleScreen() - Screen.Height;
+            minHeight -= (minHeight - (AreaHeight.ScaleScreen() - Screen.RenderHeight.ScaleScreen()));
             float maxHeight = 0;
+
             position.X = MathHelper.Clamp(positionHorizontal, -minWidth, maxWidth);
             position.Y = MathHelper.Clamp(positionVertical, -minHeight, maxHeight);
+
         }
     }
 }
