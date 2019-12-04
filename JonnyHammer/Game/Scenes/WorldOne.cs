@@ -132,9 +132,9 @@ namespace JonnyHammer.Game.Scenes
                 return;
             }
             else if (keyboard.IsPressing(Keys.OemPlus))
-                Screen.Scale += 0.05f;
+                Screen.ScaleUp(.05f);
             else if (keyboard.IsPressing(Keys.OemMinus))
-                Screen.Scale -= 0.05f;
+                Screen.ScaleDown(.05f);
 
             Camera.Follow(player);
         }

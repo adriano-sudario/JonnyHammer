@@ -8,7 +8,9 @@ namespace JonnyHamer.Engine.Helpers
     {
         private static GraphicsDeviceManager graphics;
         private static GraphicsDevice graphicsDevice;
+        private static float MaxZoon => MinScale + 5;
 
+        public static float MinScale { get; set; }
         public static float Scale { get; set; }
         public static int Width => graphics.PreferredBackBufferWidth;
         public static int Height => graphics.PreferredBackBufferHeight;
@@ -59,12 +61,27 @@ namespace JonnyHamer.Engine.Helpers
                 ChangeResolution(RenderWidth, RenderHeight);
                 Scale = 1f;
             }
+
+            if (MinScale == 0)
+                MinScale = Scale;
+        }
+
+        public static void ScaleUp(float scale)
+        {
+            var newScale = Scale + scale;
+            Scale = MathHelper.Clamp(newScale, MinScale, MaxZoon);
+        }
+        public static void ScaleDown(float scale)
+        {
+            var newScale = Scale - scale;
+            Scale = MathHelper.Clamp(newScale, MinScale, MaxZoon);
         }
 
         public static void AdjustScale()
         {
             var scaleX = (double)Width / RenderWidth;
             var scaleY = (double)Height / RenderHeight;
+            MinScale = (int)Math.Ceiling(Math.Min(scaleX, scaleY));
             Scale = (int)Math.Ceiling(Math.Max(scaleX, scaleY));
         }
     }
