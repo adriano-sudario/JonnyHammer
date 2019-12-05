@@ -66,12 +66,10 @@ namespace JonnyHamer.Engine.Manipulators
         {
             var positionHorizontal = -(followPosition.X.ScaleScreen() - (Screen.Width / 2) + (followWidth.ScaleScreen() / 2));
             var minWidth = AreaWidth.ScaleScreen() - Screen.Width;
-            minWidth -= (minWidth - (AreaWidth.ScaleScreen() - Screen.RenderWidth.ScaleScreen()));
             float maxWidth = 0;
 
             float positionVertical = -(followPosition.Y.ScaleScreen() - (Screen.Height / 2) + (followHeight.ScaleScreen() / 2));
             float minHeight = AreaHeight.ScaleScreen() - Screen.Height;
-            minHeight -= (minHeight - (AreaHeight.ScaleScreen() - Screen.RenderHeight.ScaleScreen()));
             float maxHeight = 0;
 
             position.X = MathHelper.Clamp(positionHorizontal, -minWidth, maxWidth);
