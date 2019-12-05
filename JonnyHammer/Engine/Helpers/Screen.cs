@@ -82,7 +82,7 @@ namespace JonnyHamer.Engine.Helpers
             var scaleX = (double)Width / RenderWidth;
             var scaleY = (double)Height / RenderHeight;
             MinScale = (int)Math.Ceiling(Math.Min(scaleX, scaleY));
-            Scale = (int)Math.Ceiling(Math.Max(scaleX, scaleY));
+            Scale = MinScale;
         }
     }
 
