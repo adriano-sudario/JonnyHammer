@@ -69,7 +69,8 @@ namespace JonnyHamer.Engine.Manipulators
             while (newArea < axisSize)
                 newArea += area;
 
-            return axisSize - newArea;
+            var x = axisSize - newArea;
+            return x > 0 ? x : 0;
         }
 
         static void AdjustPosition(Vector2 followPosition, int followWidth, int followHeight)
