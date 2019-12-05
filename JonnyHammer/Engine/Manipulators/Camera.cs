@@ -62,14 +62,24 @@ namespace JonnyHamer.Engine.Manipulators
                 position.Y -= scrollIncrement;
         }
 
-        static void AdjustPosition(Vector2 followPosition, int followWidth = 0, int followHeight = 0)
+        static float GetDifferencePixels(float area, float axisSize)
+        {
+            var newArea = area;
+
+            while (newArea < axisSize)
+                newArea += area;
+
+            return axisSize - newArea;
+        }
+
+        static void AdjustPosition(Vector2 followPosition, int followWidth, int followHeight)
         {
             var positionHorizontal = -(followPosition.X.ScaleScreen() - (Screen.Width / 2) + (followWidth.ScaleScreen() / 2));
-            var minWidth = AreaWidth.ScaleScreen() - Screen.Width;
+            var minWidth = AreaWidth.ScaleScreen() - Screen.Width + GetDifferencePixels(AreaWidth, Screen.Width);
             float maxWidth = 0;
 
             float positionVertical = -(followPosition.Y.ScaleScreen() - (Screen.Height / 2) + (followHeight.ScaleScreen() / 2));
-            float minHeight = AreaHeight.ScaleScreen() - Screen.Height;
+            float minHeight = AreaHeight.ScaleScreen() - Screen.Height + GetDifferencePixels(AreaHeight, Screen.Height);
             float maxHeight = 0;
 
             position.X = MathHelper.Clamp(positionHorizontal, -minWidth, maxWidth);

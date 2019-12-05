@@ -26,7 +26,7 @@ namespace JonnyHammer
             base.Initialize();
             //Screen.ChangeResolution(1920, 1080);
             //Screen.ChangeResolution(1280, 720);
-            //Screen.Scale = 2;
+            //Screen.Scale = 3;
         }
 
         /// <summary>
