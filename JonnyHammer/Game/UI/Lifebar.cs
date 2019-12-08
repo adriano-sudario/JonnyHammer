@@ -1,5 +1,4 @@
 ﻿using JonnyHamer.Engine.Entities.Sprites;
-using JonnyHamer.Engine.Helpers;
 using JonnyHammer.Engine;
 using JonnyHammer.Engine.Entities;
 using Microsoft.Xna.Framework;
@@ -97,8 +96,8 @@ namespace JonnyHammer.Game.UI
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-            lifebarBack.Draw(spriteBatch, bounds.ScaleScreen());
-            lifebar.Draw(spriteBatch, lifeBounds.ScaleScreen());
+            lifebarBack.Draw(spriteBatch, bounds);
+            lifebar.Draw(spriteBatch, lifeBounds);
 
 
         }

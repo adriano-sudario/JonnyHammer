@@ -7,6 +7,7 @@ using JonnyHammer.Game.Environment;
 using JonnyHammer.Tiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 
 namespace JonnyHammer.Game.Scenes
@@ -109,29 +110,29 @@ namespace JonnyHammer.Game.Scenes
 
             keyboard.Update();
 
-            //if (keyboard.IsPressing(Keys.LeftControl))
-            //{
-            //    if (keyboard.HasPressed(Keys.Left))
-            //        Camera.GoTo(new Vector2(Camera.Position.X + 5, Camera.Position.Y));
-            //    else if (keyboard.HasPressed(Keys.Right))
-            //        Camera.GoTo(new Vector2(Camera.Position.X - 5, Camera.Position.Y));
+            if (keyboard.IsPressing(Keys.LeftControl))
+            {
+                if (keyboard.IsPressing(Keys.Left))
+                    Camera2D.SetPosition(new Vector2(Camera2D.Position.X + 5, Camera2D.Position.Y));
+                else if (keyboard.IsPressing(Keys.Right))
+                    Camera2D.SetPosition(new Vector2(Camera2D.Position.X - 5, Camera2D.Position.Y));
 
-            //    if (keyboard.HasPressed(Keys.Up))
-            //        Camera.GoTo(new Vector2(Camera.Position.X, Camera.Position.Y + 5));
-            //    else if (keyboard.IsPressing(Keys.Down))
-            //        Camera.GoTo(new Vector2(Camera.Position.X, Camera.Position.Y - 5));
+                if (keyboard.IsPressing(Keys.Up))
+                    Camera2D.SetPosition(new Vector2(Camera2D.Position.X, Camera2D.Position.Y + 5));
+                else if (keyboard.IsPressing(Keys.Down))
+                    Camera2D.SetPosition(new Vector2(Camera2D.Position.X, Camera2D.Position.Y - 5));
 
-            //    return;
-            //}
-            //else if (keyboard.HasPressed(Keys.F11))
-            //{
-            //    Screen.ToggleFullScreen();
-            //    return;
-            //}
-            //else if (keyboard.IsPressing(Keys.OemPlus))
-            //    Screen.ScaleUp(.05f);
-            //else if (keyboard.IsPressing(Keys.OemMinus))
-            //    Screen.ScaleDown(.05f);
+                return;
+            }
+            else if (keyboard.HasPressed(Keys.F11))
+            {
+                Screen.ToggleFullScreen();
+                return;
+            }
+            else if (keyboard.IsPressing(Keys.OemPlus))
+                Camera2D.Zoom += (.05f);
+            else if (keyboard.IsPressing(Keys.OemMinus))
+                Camera2D.Zoom -= (.05f);
 
             //Camera.Follow(player);
         }
