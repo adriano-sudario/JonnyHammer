@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using TiledSharp;
@@ -57,11 +58,16 @@ namespace JonnyHammer.Engine.Helpers
             return new TiledData(objects, layers);
         }
 
+        static float round(float x)
+        {
+            return MathF.Floor(x + 0.5f);
+        }
+
         static Dictionary<string, TileLayer[]> LoadTiledLayers(TmxMap map)
         {
             var ret = new Dictionary<string, TileLayer[]>();
 
-            foreach (var (index, layer) in map.TileLayers.AsIndexed())
+            foreach (var (index, layer) in map.TileLayers.WithIndex())
             {
                 var tiles = new List<TileLayer>();
 

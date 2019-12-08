@@ -27,7 +27,7 @@ namespace JonnyHammer.Game.Scenes
         void SpawnTiledLayers(Dictionary<string, TileLayer[]> layers)
         {
             foreach (var (layer, tiles) in layers)
-                foreach (var (index, tile) in tiles.AsIndexed())
+                foreach (var (index, tile) in tiles.WithIndex())
                     switch (tile.Name)
                     {
                         case "bg":
@@ -75,7 +75,7 @@ namespace JonnyHammer.Game.Scenes
         private void SpawnTiledObjects(Dictionary<string, TiledObject[]> objects)
         {
             foreach (var (layer, tiles) in objects)
-                foreach (var (index, tile) in tiles.AsIndexed())
+                foreach (var (index, tile) in tiles.WithIndex())
                     switch (layer)
                     {
                         case "one_way_blocks":
