@@ -25,7 +25,7 @@ namespace JonnyHammer.Engine
             set
             {
                 isFullScreen = value;
-                //Screen.Adjust(isFullScreen);
+                Screen.Adjust(isFullScreen);
             }
         }
 
@@ -54,7 +54,7 @@ namespace JonnyHammer.Engine
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Loader.Initialize(Content);
 
-            Screen.Initialize(GraphicsDevice);
+            Screen.Initialize(GraphicsDevice, Graphics);
             Camera2D.Initialize();
             IsFullScreen = isFullScreen;
         }
