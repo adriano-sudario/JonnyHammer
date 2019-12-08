@@ -13,14 +13,6 @@ namespace JonnyHammer.Engine.Helpers
         public int Width { get; set; }
         public int Height { get; set; }
         public float MoveAmount { get; set; }
-        //public Vector2 LocalPosition { get; set; }
-        //public int LocalWidth { get; set; }
-        //public int LocalHeight { get; set; }
-        //public float MoveAmount { get; set; }
-
-        //public Vector2 Position => LocalPosition * Screen.Scale;
-        //public float Width => LocalWidth * Screen.Scale;
-        //public float Height => LocalHeight * Screen.Scale;
 
     }
     public class TileLayer

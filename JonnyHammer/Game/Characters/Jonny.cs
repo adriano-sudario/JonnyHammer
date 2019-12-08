@@ -165,10 +165,10 @@ namespace JonnyHammer.Game.Characters
             locked = false;
             life = totalLife;
             lifebar.UpdateLife(life);
-            Transform.MoveTo(RespawnPosition);
             physics.Body.IgnoreGravity = false;
             physics.ResetVelocity();
             isActive = true;
+            Transform.MoveTo(RespawnPosition);
         }
 
         public override void Update(GameTime gameTime)
