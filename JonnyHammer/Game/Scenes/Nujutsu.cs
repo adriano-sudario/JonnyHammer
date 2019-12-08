@@ -1,5 +1,6 @@
 ﻿using JonnyHamer.Engine.Entities;
 using JonnyHamer.Engine.Helpers;
+using JonnyHammer.Engine.Helpers;
 using JonnyHammer.Engine.Scenes;
 using JonnyHammer.Game.Characters;
 using JonnyHammer.Game.Tiles;
@@ -19,8 +20,7 @@ namespace JonnyHammer.Game.Scenes
         public Nujutsu()
         {
             background = Loader.LoadTexture("bg");
-            //Camera.AreaWidth = background.Width * 2;
-            //Camera.AreaHeight = background.Height;
+            Camera2D.SetBounds(background.Width * 2, background.Height);
 
             narutao = Spawn<Jonny>("Narutao", new Vector2(100, 200));
             narutitos = Spawn<BigNaruto>("NarutoRed", new Vector2(150, 200));
@@ -39,12 +39,12 @@ namespace JonnyHammer.Game.Scenes
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            //Camera.Follow(narutao);
+            Camera2D.Follow(narutao);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            //spriteBatch.Begin(transformMatrix: Camera.ViewMatrix);
+            spriteBatch.Begin(transformMatrix: Camera2D.GetViewTransformationMatrix());
             spriteBatch.Draw(background, new Rectangle(0, 0, background.Width, background.Height), Color.White);
             spriteBatch.Draw(background, new Vector2(background.Width, 0), null, Color.White, 0, Vector2.Zero, 1,
                 SpriteEffects.FlipHorizontally, 0);

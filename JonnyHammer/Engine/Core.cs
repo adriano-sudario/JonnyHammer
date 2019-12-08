@@ -57,6 +57,8 @@ namespace JonnyHammer.Engine
             Screen.Initialize(GraphicsDevice, Graphics);
             Camera2D.Initialize();
             IsFullScreen = isFullScreen;
+
+            //Camera2D.InferScale();
         }
 
         protected override void UnloadContent() { }

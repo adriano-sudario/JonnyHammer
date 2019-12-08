@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
 
 namespace JonnyHammer.Engine.Helpers
 {
@@ -12,7 +13,7 @@ namespace JonnyHammer.Engine.Helpers
         static GraphicsDevice graphicsDevice;
         static GraphicsDeviceManager graphics;
 
-        public static Color BackgroundColor = Color.DarkSlateGray;
+        public static Color BackgroundColor => Debugger.IsAttached ? Color.DarkSlateGray : Color.Black;
 
         public static int VirtualHeight { get; private set; }
         public static int VirtualWidth { get; private set; }

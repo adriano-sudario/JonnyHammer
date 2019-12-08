@@ -113,14 +113,14 @@ namespace JonnyHammer.Game.Scenes
             if (keyboard.IsPressing(Keys.LeftControl))
             {
                 if (keyboard.IsPressing(Keys.Left))
-                    Camera2D.SetPosition(new Vector2(Camera2D.Position.X + 5, Camera2D.Position.Y));
+                    Camera2D.Move(new Vector2(-5, 0));
                 else if (keyboard.IsPressing(Keys.Right))
-                    Camera2D.SetPosition(new Vector2(Camera2D.Position.X - 5, Camera2D.Position.Y));
+                    Camera2D.Move(new Vector2(5, 0));
 
                 if (keyboard.IsPressing(Keys.Up))
-                    Camera2D.SetPosition(new Vector2(Camera2D.Position.X, Camera2D.Position.Y + 5));
+                    Camera2D.Move(new Vector2(0, -5));
                 else if (keyboard.IsPressing(Keys.Down))
-                    Camera2D.SetPosition(new Vector2(Camera2D.Position.X, Camera2D.Position.Y - 5));
+                    Camera2D.Move(new Vector2(0, 5));
 
                 return;
             }
@@ -130,11 +130,11 @@ namespace JonnyHammer.Game.Scenes
                 return;
             }
             else if (keyboard.IsPressing(Keys.OemPlus))
-                Camera2D.Zoom += (.05f);
+                Camera2D.ZoomUp(.02f);
             else if (keyboard.IsPressing(Keys.OemMinus))
-                Camera2D.Zoom -= (.05f);
+                Camera2D.ZoomDown(.02f);
 
-            //Camera.Follow(player);
+            Camera2D.Follow(player);
         }
 
         public override void Draw(SpriteBatch spriteBatch)

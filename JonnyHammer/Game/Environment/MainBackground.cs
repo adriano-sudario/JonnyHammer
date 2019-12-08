@@ -8,7 +8,7 @@ namespace JonnyHammer.Game.Environment
         {
             base.Load();
 
-            Screen.SetVirtualArea(sprite.Width, sprite.Height);
+            Camera2D.SetBounds(sprite.Width, sprite.Height);
         }
     }
 }
