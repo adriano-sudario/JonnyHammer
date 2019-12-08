@@ -1,4 +1,4 @@
-﻿using JonnyHamer.Engine.Manipulators;
+﻿using JonnyHammer.Engine;
 
 namespace JonnyHammer.Game.Environment
 {
@@ -8,8 +8,7 @@ namespace JonnyHammer.Game.Environment
         {
             base.Load();
 
-            Camera.AreaWidth = sprite.Width;
-            Camera.AreaHeight = sprite.Height;
+            Core.Instance.ResolutionIndependence.SetVirtualArea(sprite.Width, sprite.Height);
         }
     }
 }

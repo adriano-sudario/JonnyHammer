@@ -23,4 +23,8 @@
     <ProjectReference Include="..\Libs\TiledSharp\TiledSharp.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Engine\Manipulators\" />
+  </ItemGroup>
+
 </Project>

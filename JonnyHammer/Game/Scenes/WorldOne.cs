@@ -1,6 +1,4 @@
-﻿using JonnyHamer.Engine.Helpers;
-using JonnyHamer.Engine.Inputs;
-using JonnyHamer.Engine.Manipulators;
+﻿using JonnyHamer.Engine.Inputs;
 using JonnyHammer.Engine;
 using JonnyHammer.Engine.Helpers;
 using JonnyHammer.Engine.Scenes;
@@ -9,7 +7,6 @@ using JonnyHammer.Game.Environment;
 using JonnyHammer.Tiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 
 namespace JonnyHammer.Game.Scenes
@@ -112,36 +109,36 @@ namespace JonnyHammer.Game.Scenes
 
             keyboard.Update();
 
-            if (keyboard.IsPressing(Keys.LeftControl))
-            {
-                if (keyboard.IsPressing(Keys.Left))
-                    Camera.GoTo(new Vector2(Camera.Position.X + 3, Camera.Position.Y));
-                else if (keyboard.IsPressing(Keys.Right))
-                    Camera.GoTo(new Vector2(Camera.Position.X - 3, Camera.Position.Y));
+            //if (keyboard.IsPressing(Keys.LeftControl))
+            //{
+            //    if (keyboard.HasPressed(Keys.Left))
+            //        Camera.GoTo(new Vector2(Camera.Position.X + 5, Camera.Position.Y));
+            //    else if (keyboard.HasPressed(Keys.Right))
+            //        Camera.GoTo(new Vector2(Camera.Position.X - 5, Camera.Position.Y));
 
-                if (keyboard.IsPressing(Keys.Up))
-                    Camera.GoTo(new Vector2(Camera.Position.X, Camera.Position.Y + 3));
-                else if (keyboard.IsPressing(Keys.Down))
-                    Camera.GoTo(new Vector2(Camera.Position.X, Camera.Position.Y - 3));
+            //    if (keyboard.HasPressed(Keys.Up))
+            //        Camera.GoTo(new Vector2(Camera.Position.X, Camera.Position.Y + 5));
+            //    else if (keyboard.IsPressing(Keys.Down))
+            //        Camera.GoTo(new Vector2(Camera.Position.X, Camera.Position.Y - 5));
 
-                return;
-            }
-            else if (keyboard.HasPressed(Keys.F11))
-            {
-                Screen.ToggleFullScreen();
-                return;
-            }
-            else if (keyboard.IsPressing(Keys.OemPlus))
-                Screen.ScaleUp(.05f);
-            else if (keyboard.IsPressing(Keys.OemMinus))
-                Screen.ScaleDown(.05f);
+            //    return;
+            //}
+            //else if (keyboard.HasPressed(Keys.F11))
+            //{
+            //    Screen.ToggleFullScreen();
+            //    return;
+            //}
+            //else if (keyboard.IsPressing(Keys.OemPlus))
+            //    Screen.ScaleUp(.05f);
+            //else if (keyboard.IsPressing(Keys.OemMinus))
+            //    Screen.ScaleDown(.05f);
 
-            Camera.Follow(player);
+            //Camera.Follow(player);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Camera.ViewMatrix);
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Core.Instance.Camera.GetViewTransformationMatrix());
             base.Draw(spriteBatch);
             spriteBatch.End();
         }

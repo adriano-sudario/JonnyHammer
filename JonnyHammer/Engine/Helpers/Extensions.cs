@@ -9,7 +9,7 @@ namespace JonnyHammer.Engine
     public static class Extensions
     {
 
-        public static void DrawScaled(
+        public static void DrawEntity(
             this SpriteBatch spriteBatch,
             Texture2D spriteStrip,
             Transform transform,
@@ -18,9 +18,9 @@ namespace JonnyHammer.Engine
             Vector2 origin,
             SpriteEffects effect,
             float layerDepth) =>
-            spriteBatch.DrawScaled(spriteStrip, transform.Position, transform.Scale, source, color, transform.Rotation, origin, effect, layerDepth);
+            spriteBatch.DrawnEntity(spriteStrip, transform.Position, transform.Scale, source, color, transform.Rotation, origin, effect, layerDepth);
 
-        public static void DrawScaled(
+        public static void DrawnEntity(
             this SpriteBatch spriteBatch,
             Texture2D spriteStrip,
             Vector2 position,
@@ -37,12 +37,14 @@ namespace JonnyHammer.Engine
             var rotateOrigin = new Vector2(source.Width / 2f, source.Height / 2f);
             spriteBatch.Draw(
                 spriteStrip,
-                (position + (rotateOrigin * scale)) * Screen.Scale,
+                (position),
+                //(position + (rotateOrigin * scale)),
                 source,
                 color,
                 rotation,
-                rotateOrigin + origin,
-                Screen.Scale * scale,
+                 //rotateOrigin + origin,
+                 origin,
+                 scale,
                 effect, layerDepth);
         }
 

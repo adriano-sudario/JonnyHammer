@@ -1,6 +1,5 @@
 ﻿using JonnyHamer.Engine.Entities;
 using JonnyHamer.Engine.Entities.Sprites;
-using JonnyHamer.Engine.Manipulators;
 using JonnyHammer.Engine.Entities.Components.Phisycs;
 using JonnyHammer.Engine.Helpers;
 using Microsoft.Xna.Framework;
@@ -74,8 +73,8 @@ namespace JonnyHammer.Engine.Entities
             }
 
 
-            position.X = MathHelper.Clamp(position.X, 0, Camera.AreaWidth - width);
-            position.Y = MathHelper.Clamp(position.Y, 0, Camera.AreaHeight - height);
+            position.X = MathHelper.Clamp(position.X, 0, Core.Instance.ResolutionIndependence.VirtualWidth - width);
+            position.Y = MathHelper.Clamp(position.Y, 0, Core.Instance.ResolutionIndependence.VirtualHeight - height);
         }
 
         public void MoveTo(float x, float y, bool setFacingDirection = true) =>

@@ -36,7 +36,7 @@ namespace JonnyHamer.Engine.Entities.Sprites
 
             var effect = FacingDirection == Direction.Horizontal.Left ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
-            spriteBatch.DrawScaled(
+            spriteBatch.DrawEntity(
                 spriteStrip,
                 Entity.Transform,
                 Source,

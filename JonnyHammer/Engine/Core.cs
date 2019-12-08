@@ -1,5 +1,6 @@
 ﻿using JonnyHamer.Engine.Helpers;
 using JonnyHamer.Engine.Managers;
+using JonnyHammer.Engine.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -9,6 +10,8 @@ namespace JonnyHammer.Engine
     public class Core : Microsoft.Xna.Framework.Game
     {
         protected GraphicsDeviceManager Graphics;
+        public ResolutionIndependentRenderer ResolutionIndependence;
+        public Camera2D Camera;
         SpriteBatch spriteBatch;
         static bool isFullScreen;
 
@@ -24,7 +27,7 @@ namespace JonnyHammer.Engine
             set
             {
                 isFullScreen = value;
-                Screen.Adjust(isFullScreen);
+                //Screen.Adjust(isFullScreen);
             }
         }
 
@@ -38,6 +41,10 @@ namespace JonnyHammer.Engine
                 color = Color.LightGreen;
 
             Color = color.Value;
+
+
+            ResolutionIndependence = new ResolutionIndependentRenderer(this);
+            Camera = new Camera2D(ResolutionIndependence);
         }
 
         protected override void Initialize()
@@ -51,7 +58,8 @@ namespace JonnyHammer.Engine
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Loader.Initialize(Content);
-            Screen.Initialize(Graphics, GraphicsDevice);
+
+            Camera.Initialize();
             IsFullScreen = isFullScreen;
         }
 
@@ -66,7 +74,7 @@ namespace JonnyHammer.Engine
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color);
+            ResolutionIndependence.BeginDraw();
             SceneManager.Draw(spriteBatch);
             base.Draw(gameTime);
         }

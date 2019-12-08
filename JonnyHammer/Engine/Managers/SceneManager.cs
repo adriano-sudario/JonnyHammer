@@ -1,11 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using JonnyHamer.Engine.Sounds;
+using JonnyHammer.Engine.Scenes;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using JonnyHamer.Engine.Sounds;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using JonnyHammer.Engine.Scenes;
-using JonnyHamer.Engine.Manipulators;
 
 namespace JonnyHamer.Engine.Managers
 {
@@ -51,7 +50,7 @@ namespace JonnyHamer.Engine.Managers
 
         public static void Update(GameTime gameTime)
         {
-            Camera.Update();
+            //Camera.Update();
             SoundTrack.Update(gameTime);
             CurrentScene?.Update(gameTime);
         }
