@@ -33,15 +33,14 @@ namespace JonnyHammer.Engine
             )
         {
 
-            //var rotateOrigin = new Vector2(source.Width / 2f, source.Height / 2f);
+            var rotateOrigin = new Vector2(source.Width / 2f, source.Height / 2f);
             spriteBatch.Draw(
                 spriteStrip,
-                //(position + (rotateOrigin * scale)),
-                (position),
+                (position + (rotateOrigin * scale)),
                 source,
                 color,
                 rotation,
-                  origin,
+                 rotateOrigin + origin,
                  scale,
                 effect, layerDepth);
         }
