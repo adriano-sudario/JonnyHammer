@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Diagnostics;
+using System.Linq;
 
 namespace JonnyHammer.Engine.Helpers
 {
@@ -54,16 +55,23 @@ namespace JonnyHammer.Engine.Helpers
         {
             if (graphics.IsFullScreen)
             {
-                var width = graphicsDevice.DisplayMode.Width;
-                var height = graphicsDevice.DisplayMode.Height;
+
+                var currentResolution = graphicsDevice.DisplayMode;
+
+                var largerMode = GraphicsAdapter
+                                    .DefaultAdapter
+                                    .SupportedDisplayModes
+                                    .First(x => x.Width >= currentResolution.Width);
+
+                var width = largerMode.Width;
+                var height = largerMode.Height;
 
                 ChangeResolution(width, height);
 
             }
             else
             {
-                //ChangeResolution(GraphicsDeviceManager.DefaultBackBufferWidth, GraphicsDeviceManager.DefaultBackBufferHeight);
-                ChangeResolution(1536, 864);
+                ChangeResolution(GraphicsDeviceManager.DefaultBackBufferWidth, GraphicsDeviceManager.DefaultBackBufferHeight);
 
             }
 
