@@ -7,8 +7,8 @@ namespace JonnyHammer.Engine
 {
     public interface IComponent : IDraw, IUpdate, IStartable, IDisposable
     {
-        Entity Entity { get; }
-        void SetEntity(Entity entity);
+        GameObject Entity { get; }
+        void SetEntity(GameObject entity);
 
         public T GetComponent<T>() where T : IComponent => Entity.GetComponent<T>();
         public T[] GetComponents<T>() where T : IComponent => Entity.GetComponents<T>();

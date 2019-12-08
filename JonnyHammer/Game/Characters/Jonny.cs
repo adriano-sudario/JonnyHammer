@@ -17,7 +17,7 @@ namespace JonnyHammer.Game.Characters
     using System.Collections;
     using tainicom.Aether.Physics2D.Dynamics;
 
-    public class Jonny : Entity
+    public class Jonny : GameObject
     {
         enum State
         {

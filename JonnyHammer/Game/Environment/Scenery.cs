@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace JonnyHammer.Game.Environment
 {
-    public class Scenery : Entity
+    public class Scenery : GameObject
     {
         protected SpriteRenderer sprite;
 

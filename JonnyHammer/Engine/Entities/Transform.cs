@@ -62,7 +62,7 @@ namespace JonnyHammer.Engine.Entities
                 physicsComponent.MoveTo(position);
         }
 
-        public void KeepOnCameraBounds(Entity entity)
+        public void KeepOnCameraBounds(GameObject entity)
         {
             int width = 1, height = 1;
 

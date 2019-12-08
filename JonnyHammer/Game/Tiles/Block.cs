@@ -6,7 +6,7 @@ using tainicom.Aether.Physics2D.Dynamics;
 
 namespace JonnyHammer.Tiles
 {
-    public class Block : Entity
+    public class Block : GameObject
     {
 
         public int Width { get; set; }

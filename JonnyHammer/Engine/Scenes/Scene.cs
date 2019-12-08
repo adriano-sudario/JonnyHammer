@@ -11,8 +11,8 @@ namespace JonnyHammer.Engine.Scenes
 {
     public abstract class Scene
     {
-        IList<Entity> entities = new List<Entity>();
-        public IReadOnlyList<Entity> Entities => entities.ToArray();
+        IList<GameObject> entities = new List<GameObject>();
+        public IReadOnlyList<GameObject> Entities => entities.ToArray();
         public World World { get; }
 
         public Scene()
@@ -24,13 +24,13 @@ namespace JonnyHammer.Engine.Scenes
                 SceneManager.CurrentScene = this;
         }
 
-        public void Destroy(Entity entity)
+        public void Destroy(GameObject entity)
         {
             entity.Dispose();
             entities.Remove(entity);
         }
 
-        public T Spawn<T>(string name = "no name", Vector2? position = null, Action<T> configure = null) where T : Entity, new()
+        public T Spawn<T>(string name = "no name", Vector2? position = null, Action<T> configure = null) where T : GameObject, new()
         {
             var entity = new T { Name = name };
             entity.Transform.MoveTo((position ?? Vector2.Zero));

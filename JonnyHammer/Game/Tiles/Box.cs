@@ -6,7 +6,7 @@ using tainicom.Aether.Physics2D.Dynamics;
 
 namespace JonnyHammer.Game.Tiles
 {
-    public class Box : Entity
+    public class Box : GameObject
     {
         private Physics physics;
 

@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework;
 
 namespace JonnyHammer.Game.Characters
 {
-    public class BigNaruto : Entity
+    public class BigNaruto : GameObject
     {
         private float speed = 2f;
 
@@ -40,7 +40,7 @@ namespace JonnyHammer.Game.Characters
             collider.OnTrigger += Collider_OnCollide;
         }
 
-        private void Collider_OnCollide(Entity obj)
+        private void Collider_OnCollide(GameObject obj)
         {
             if (obj is Jonny jonnny)
             {

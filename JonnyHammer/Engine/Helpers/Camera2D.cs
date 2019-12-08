@@ -98,8 +98,8 @@ namespace JonnyHammer.Engine.Helpers
         {
             if (_isViewTransformationDirty)
             {
-                _camTranslationVector.X = -_position.X;
-                _camTranslationVector.Y = -_position.Y;
+                _camTranslationVector.X = -(int)_position.X;
+                _camTranslationVector.Y = -(int)_position.Y;
 
                 Matrix.CreateTranslation(ref _camTranslationVector, out _camTranslationMatrix);
                 Matrix.CreateRotationZ(_rotation, out _camRotationMatrix);
@@ -141,7 +141,7 @@ namespace JonnyHammer.Engine.Helpers
             MinScale = (MathF.Max(scaleX, scaleY));
         }
 
-        public static void Follow(Entity player)
+        public static void Follow(GameObject player)
         {
             var (x, y) = player.Transform.Position;
 

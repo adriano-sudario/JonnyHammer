@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace JonnyHammer.Game.Environment
 {
-    public class Cloud : Entity
+    public class Cloud : GameObject
     {
         private SpriteRenderer sprite;
 

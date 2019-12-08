@@ -12,8 +12,8 @@ namespace JonnyHammer.Game.Scenes
 {
     public class Nujutsu : Scene
     {
-        private Entity narutao;
-        private Entity narutitos;
+        private GameObject narutao;
+        private GameObject narutitos;
         private Texture2D background;
         //Floor testFloor;
 

@@ -20,8 +20,8 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
         private Rectangle bounds;
         private Texture2D debugTexture;
 
-        public event Action<Entity> OnCollide = delegate { };
-        public event Action<Entity> OnTrigger = delegate { };
+        public event Action<GameObject> OnCollide = delegate { };
+        public event Action<GameObject> OnTrigger = delegate { };
 
         Physics physics = null;
 
@@ -60,16 +60,16 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
         }
 
         public bool CollideOrTriggersWithAnyEntity(bool stopOnFirst = false) => CollideOrTriggersWithAnyEntity(out var _, stopOnFirst);
-        public bool CollideOrTriggersWithAnyEntity(out Entity[] entity, bool stopOnFirst = false)
+        public bool CollideOrTriggersWithAnyEntity(out GameObject[] entity, bool stopOnFirst = false)
         {
             if (SceneManager.CurrentScene == null)
             {
-                entity = Array.Empty<Entity>();
+                entity = Array.Empty<GameObject>();
                 return false;
             }
 
             var entities = SceneManager.CurrentScene.Entities;
-            var entityList = new List<Entity>();
+            var entityList = new List<GameObject>();
 
             for (var i = 0; i < entities.Count; i++)
                 if (!IsTrigger && CollidesWith(entities[i]) || (IsTrigger && TriggerWith(entities[i])))
@@ -112,7 +112,7 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
 
         public bool CollidesWith(Collider collider) => CollidesWith(collider.Bounds);
 
-        public bool CollidesWith(Entity entity)
+        public bool CollidesWith(GameObject entity)
         {
             if (Entity == entity || IsTrigger)
                 return false;
@@ -131,7 +131,7 @@ namespace JonnyHammer.Engine.Entities.Components.Collider
 
         public bool TriggerWith(Collider collider) => CollidesWith(collider.Bounds);
 
-        public bool TriggerWith(Entity entity)
+        public bool TriggerWith(GameObject entity)
         {
             if (Entity == entity || !IsTrigger)
                 return false;
