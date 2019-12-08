@@ -134,7 +134,12 @@ namespace JonnyHammer.Game.Scenes
             else if (keyboard.IsPressing(Keys.OemMinus))
                 Camera2D.ZoomDown(.02f);
 
-            Camera2D.Follow(player);
+            if (keyboard.IsPressing(Keys.F12))
+            {
+                Camera2D.Center();
+            }
+            else
+                Camera2D.Follow(player);
         }
 
         public override void Draw(SpriteBatch spriteBatch)

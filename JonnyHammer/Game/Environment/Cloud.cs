@@ -1,6 +1,7 @@
 ﻿using JonnyHamer.Engine.Entities;
 using JonnyHamer.Engine.Entities.Sprites;
 using JonnyHamer.Engine.Helpers;
+using JonnyHammer.Engine.Helpers;
 using Microsoft.Xna.Framework;
 
 namespace JonnyHammer.Game.Environment
@@ -29,8 +30,8 @@ namespace JonnyHammer.Game.Environment
 
             Transform.MoveAndSlideHorizontally(Speed, false);
 
-            //if ((Speed < 0 && Transform.X + Width < 0) || (Speed > 0 && Transform.X > Camera.AreaWidth))
-            //    Transform.MoveTo(Cloudrespawn);
+            if ((Speed < 0 && Transform.X + Width < 0) || (Speed > 0 && Transform.X > Screen.VirtualWidth))
+                Transform.MoveTo(Cloudrespawn);
         }
     }
 }

@@ -138,7 +138,7 @@ namespace JonnyHammer.Engine.Helpers
         {
             var scaleX = (float)Screen.VirtualWidth / Screen.ScreenWidth;
             var scaleY = (float)Screen.VirtualHeight / Screen.ScreenHeight;
-            MinScale = (MathF.Min(scaleX, scaleY));
+            MinScale = (MathF.Max(scaleX, scaleY));
         }
 
         public static void Follow(Entity player)
@@ -146,8 +146,8 @@ namespace JonnyHammer.Engine.Helpers
             var (x, y) = player.Transform.Position;
 
             var size = player.GetComponent<SpriteRenderer>();
-            var halfCharWidth = size?.Width / 2f ?? 0f;
-            var halfCharHeight = size?.Height / 2f ?? 0f;
+            var halfCharWidth = Screen.IsFullScreen ? size?.Width / 2f ?? 0f : 0;
+            var halfCharHeight = Screen.IsFullScreen ? size?.Height / 2f ?? 0f : 0;
 
             var halfRenderWidth = Screen.VirtualWidth / 2;
             var halfRenderHeight = Screen.VirtualHeight / 2;

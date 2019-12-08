@@ -13,6 +13,8 @@ namespace JonnyHammer.Engine.Helpers
         static GraphicsDevice graphicsDevice;
         static GraphicsDeviceManager graphics;
 
+        public static bool IsFullScreen => graphics.IsFullScreen;
+
         public static Color BackgroundColor => Debugger.IsAttached ? Color.DarkSlateGray : Color.Black;
 
         public static int VirtualHeight { get; private set; }
@@ -60,7 +62,8 @@ namespace JonnyHammer.Engine.Helpers
             }
             else
             {
-                ChangeResolution(GraphicsDeviceManager.DefaultBackBufferWidth, GraphicsDeviceManager.DefaultBackBufferHeight);
+                //ChangeResolution(GraphicsDeviceManager.DefaultBackBufferWidth, GraphicsDeviceManager.DefaultBackBufferHeight);
+                ChangeResolution(1536, 864);
 
             }
 
