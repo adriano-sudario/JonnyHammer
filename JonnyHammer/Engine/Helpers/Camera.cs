@@ -2,43 +2,33 @@
 
 namespace JonnyHammer.Engine.Helpers
 {
-    public class Camera2D
+    public static class Camera2D
     {
-        private float _zoom;
-        private float _rotation;
-        private Vector2 _position;
-        private Matrix _transform = Matrix.Identity;
-        private bool _isViewTransformationDirty = true;
-        private Matrix _camTranslationMatrix = Matrix.Identity;
-        private Matrix _camRotationMatrix = Matrix.Identity;
-        private Matrix _camScaleMatrix = Matrix.Identity;
-        private Matrix _resTranslationMatrix = Matrix.Identity;
-
-        protected ResolutionIndependentRenderer ResolutionIndependentRenderer;
-        private Vector3 _camTranslationVector = Vector3.Zero;
-        private Vector3 _camScaleVector = Vector3.Zero;
-        private Vector3 _resTranslationVector = Vector3.Zero;
-
-        public Camera2D(ResolutionIndependentRenderer resolutionIndependence)
-        {
-            ResolutionIndependentRenderer = resolutionIndependence;
-
-            _zoom = 0.1f;
-            _rotation = 0.0f;
-            _position = Vector2.Zero;
+        static float _zoom;
+        static float _rotation;
+        static Vector2 _position;
+        static Matrix _transform = Matrix.Identity;
+        static bool _isViewTransformationDirty = true;
+        static Matrix _camTranslationMatrix = Matrix.Identity;
+        static Matrix _camRotationMatrix = Matrix.Identity;
+        static Matrix _camScaleMatrix = Matrix.Identity;
+        static Matrix _resTranslationMatrix = Matrix.Identity;
+        static Vector3 _camTranslationVector = Vector3.Zero;
+        static Vector3 _camScaleVector = Vector3.Zero;
+        static Vector3 _resTranslationVector = Vector3.Zero;
 
 
-        }
-
-        public void Initialize()
+        public static void Initialize()
         {
             Zoom = 1f;
-            Position = new Vector2(ResolutionIndependentRenderer.VirtualWidth / 2, ResolutionIndependentRenderer.VirtualHeight / 2);
+            _rotation = 0.0f;
+            _position = Vector2.Zero;
+            Position = new Vector2(Screen.VirtualWidth / 2, Screen.VirtualHeight / 2);
             //Position = new Vector2(ResolutionIndependentRenderer.ScreenWidth / 2, ResolutionIndependentRenderer.ScreenHeight / 2);
 
         }
 
-        public Vector2 Position
+        public static Vector2 Position
         {
             get { return _position; }
             set
@@ -48,17 +38,17 @@ namespace JonnyHammer.Engine.Helpers
             }
         }
 
-        public void Move(Vector2 amount)
+        public static void Move(Vector2 amount)
         {
             Position += amount;
         }
 
-        public void SetPosition(Vector2 position)
+        public static void SetPosition(Vector2 position)
         {
             Position = position;
         }
 
-        public float Zoom
+        public static float Zoom
         {
             get { return _zoom; }
             set
@@ -72,7 +62,7 @@ namespace JonnyHammer.Engine.Helpers
             }
         }
 
-        public float Rotation
+        public static float Rotation
         {
             get
             {
@@ -85,7 +75,7 @@ namespace JonnyHammer.Engine.Helpers
             }
         }
 
-        public Matrix GetViewTransformationMatrix()
+        public static Matrix GetViewTransformationMatrix()
         {
             if (_isViewTransformationDirty)
             {
@@ -101,8 +91,8 @@ namespace JonnyHammer.Engine.Helpers
 
                 Matrix.CreateScale(ref _camScaleVector, out _camScaleMatrix);
 
-                _resTranslationVector.X = ResolutionIndependentRenderer.VirtualWidth * 0.5f;
-                _resTranslationVector.Y = ResolutionIndependentRenderer.VirtualHeight * 0.5f;
+                _resTranslationVector.X = Screen.VirtualWidth * 0.5f;
+                _resTranslationVector.Y = Screen.VirtualHeight * 0.5f;
                 _resTranslationVector.Z = 0;
 
                 Matrix.CreateTranslation(ref _resTranslationVector, out _resTranslationMatrix);
@@ -111,7 +101,7 @@ namespace JonnyHammer.Engine.Helpers
                              _camRotationMatrix *
                              _camScaleMatrix *
                              _resTranslationMatrix *
-                             ResolutionIndependentRenderer.GetTransformationMatrix();
+                             Screen.GetTransformationMatrix();
 
                 _isViewTransformationDirty = false;
             }
@@ -119,7 +109,7 @@ namespace JonnyHammer.Engine.Helpers
             return _transform;
         }
 
-        public void RecalculateTransformationMatrices()
+        public static void RecalculateTransformationMatrices()
         {
             _isViewTransformationDirty = true;
         }

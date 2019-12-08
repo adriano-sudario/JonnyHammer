@@ -1,5 +1,4 @@
 ﻿using JonnyHamer.Engine.Entities.Sprites;
-using JonnyHammer.Engine.Entities.Components.Collider;
 using Microsoft.Xna.Framework;
 
 namespace JonnyHammer.Engine.Entities.Components

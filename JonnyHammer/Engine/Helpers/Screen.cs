@@ -1,89 +1,140 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
-namespace JonnyHamer.Engine.Helpers
+namespace JonnyHammer.Engine.Helpers
 {
     public static class Screen
     {
-        private static GraphicsDeviceManager graphics;
-        private static GraphicsDevice graphicsDevice;
-        private static float MaxZoon => MinScale + 5;
+        static Viewport _viewport;
+        static float _ratioX;
+        static float _ratioY;
+        static Vector2 _virtualMousePosition = new Vector2();
 
-        public static float MinScale { get; set; }
-        public static float Scale { get; set; } = 1;
-        public static int Width => graphics.PreferredBackBufferWidth;
-        public static int Height => graphics.PreferredBackBufferHeight;
+        static GraphicsDevice device;
 
-        public static int RenderWidth => GraphicsDeviceManager.DefaultBackBufferWidth;
-        public static int RenderHeight => GraphicsDeviceManager.DefaultBackBufferHeight;
+        public static Color BackgroundColor = Color.DarkSlateGray;
 
-        public static void Initialize(GraphicsDeviceManager graphics, GraphicsDevice graphicsDevice)
+        public static void Initialize(GraphicsDevice graphicsDevice)
         {
-            Screen.graphics = graphics;
-            Screen.graphicsDevice = graphicsDevice;
+
+            device = graphicsDevice;
+            ScreenWidth = GraphicsDeviceManager.DefaultBackBufferWidth;
+            ScreenHeight = GraphicsDeviceManager.DefaultBackBufferHeight;
+
+            VirtualWidth = ScreenWidth;
+            VirtualHeight = ScreenHeight;
+
         }
 
-        public static void ChangeResolution(int width, int height)
+        public static int VirtualHeight;
+        public static int VirtualWidth;
+
+        public static int ScreenWidth;
+        public static int ScreenHeight;
+
+        public static void SetVirtualArea(int width, int height)
         {
-            graphics.PreferredBackBufferWidth = width;
-            graphics.PreferredBackBufferHeight = height;
-            graphics.ApplyChanges();
+            VirtualWidth = width;
+            VirtualHeight = height;
+            Configure();
         }
 
-        public static void ToggleFullScreen(Action afterToggle = null)
+
+        public static void ChangeResolution(int realScreenWidth, int realScreenHeight)
         {
-            graphics.IsFullScreen = !graphics.IsFullScreen;
-            AdjustScreen();
-            afterToggle?.Invoke();
+            ScreenWidth = realScreenWidth;
+            ScreenHeight = realScreenHeight;
+            Configure();
+
+            Camera2D.RecalculateTransformationMatrices();
         }
 
-        public static void Adjust(bool isFullScreen, Action afterAdjustment = null)
+        public static void Configure()
         {
-            graphics.IsFullScreen = isFullScreen;
-            AdjustScreen();
-            afterAdjustment?.Invoke();
+            SetupVirtualScreenViewport();
+
+            _ratioX = (float)_viewport.Width / VirtualWidth;
+            _ratioY = (float)_viewport.Height / VirtualHeight;
+
+            _dirtyMatrix = true;
         }
 
-        static void AdjustScreen()
+        public static void SetupFullViewport()
         {
-            if (graphics.IsFullScreen)
+            var vp = new Viewport();
+            vp.X = vp.Y = 0;
+            vp.Width = ScreenWidth;
+            vp.Height = ScreenHeight;
+            device.Viewport = vp;
+            _dirtyMatrix = true;
+        }
+
+        public static void BeginDraw()
+        {
+            // Start by reseting viewport to (0,0,1,1)
+            SetupFullViewport();
+            // Clear to Black
+            device.Clear(BackgroundColor);
+            // Calculate Proper Viewport according to Aspect Ratio
+            SetupVirtualScreenViewport();
+            // and clear that
+            // This way we are gonna have black bars if aspect ratio requires it and
+            // the clear color on the rest
+        }
+
+        public static bool RenderingToScreenIsFinished;
+        private static Matrix _scaleMatrix;
+        private static bool _dirtyMatrix = true;
+
+        public static Matrix GetTransformationMatrix()
+        {
+            if (_dirtyMatrix)
+                RecreateScaleMatrix();
+
+            return _scaleMatrix;
+        }
+
+        static void RecreateScaleMatrix()
+        {
+            Matrix.CreateScale((float)ScreenWidth / VirtualWidth, (float)ScreenWidth / VirtualWidth, 1f, out _scaleMatrix);
+            _dirtyMatrix = false;
+        }
+
+        public static Vector2 ScaleMouseToScreenCoordinates(Vector2 screenPosition)
+        {
+            var realX = screenPosition.X - _viewport.X;
+            var realY = screenPosition.Y - _viewport.Y;
+
+            _virtualMousePosition.X = realX / _ratioX;
+            _virtualMousePosition.Y = realY / _ratioY;
+
+            return _virtualMousePosition;
+        }
+
+        public static void SetupVirtualScreenViewport()
+        {
+            var targetAspectRatio = VirtualWidth / (float)VirtualHeight;
+            // figure out the largest area that fits in this resolution at the desired aspect ratio
+            var width = ScreenWidth;
+            var height = (int)(width / targetAspectRatio + .5f);
+
+            if (height > ScreenHeight)
             {
-                var width = graphicsDevice.DisplayMode.Width;
-                var height = graphicsDevice.DisplayMode.Height;
-
-                ChangeResolution(width, height);
-
-                AdjustScale();
+                height = ScreenHeight;
+                // PillarBox
+                width = (int)(height * targetAspectRatio + .5f);
             }
-            else
+
+            // set up the new viewport centered in the backbuffer
+            _viewport = new Viewport
             {
-                ChangeResolution(RenderWidth, RenderHeight);
-                Scale = 1f;
-            }
+                X = (ScreenWidth / 2) - (width / 2),
+                Y = (ScreenHeight / 2) - (height / 2),
+                Width = width,
+                Height = height
+            };
 
-            if (MinScale == 0)
-                MinScale = Scale;
-        }
-
-        public static void ScaleUp(float scale)
-        {
-            var newScale = Scale + scale;
-            Scale = newScale;// MathHelper.Clamp(newScale, MinScale, MaxZoon);
-        }
-        public static void ScaleDown(float scale)
-        {
-            var newScale = Scale - scale;
-            Scale = newScale; //MathHelper.Clamp(newScale, MinScale, MaxZoon);
-        }
-
-        public static void AdjustScale()
-        {
-            var scaleX = (float)Width / RenderWidth;
-            var scaleY = (float)Height / RenderHeight;
-            MinScale = (MathF.Min(scaleX, scaleY));
-            Scale = (MathF.Max(scaleX, scaleY));
+            device.Viewport = _viewport;
         }
     }
-
 }

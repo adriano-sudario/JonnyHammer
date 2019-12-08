@@ -50,14 +50,14 @@ namespace JonnyHammer.Engine
 
         public static Rectangle ScaleScreen(this Rectangle rectangle) =>
             new Rectangle(
-                (int)(rectangle.X * Screen.Scale),
-                (int)(rectangle.Y * Screen.Scale),
-                (int)(rectangle.Width * Screen.Scale),
-                (int)(rectangle.Height * Screen.Scale));
+                (int)(rectangle.X * Screen_.Scale),
+                (int)(rectangle.Y * Screen_.Scale),
+                (int)(rectangle.Width * Screen_.Scale),
+                (int)(rectangle.Height * Screen_.Scale));
 
-        public static int ScaleScreen(this int value) => (int)(value * Screen.Scale);
-        public static float ScaleScreen(this float value) => (value * Screen.Scale);
-        public static Vector2 ScaleScreen(this Vector2 value) => (value * Screen.Scale);
+        public static int ScaleScreen(this int value) => (int)(value * Screen_.Scale);
+        public static float ScaleScreen(this float value) => (value * Screen_.Scale);
+        public static Vector2 ScaleScreen(this Vector2 value) => (value * Screen_.Scale);
 
         public static void Deconstruct<K, V>(this KeyValuePair<K, V> pair, out K key, out V value) =>
             (key, value) = (pair.Key, pair.Value);

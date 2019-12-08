@@ -10,8 +10,6 @@ namespace JonnyHammer.Engine
     public class Core : Microsoft.Xna.Framework.Game
     {
         protected GraphicsDeviceManager Graphics;
-        public ResolutionIndependentRenderer ResolutionIndependence;
-        public Camera2D Camera;
         SpriteBatch spriteBatch;
         static bool isFullScreen;
 
@@ -42,9 +40,6 @@ namespace JonnyHammer.Engine
 
             Color = color.Value;
 
-
-            ResolutionIndependence = new ResolutionIndependentRenderer(this);
-            Camera = new Camera2D(ResolutionIndependence);
         }
 
         protected override void Initialize()
@@ -59,7 +54,8 @@ namespace JonnyHammer.Engine
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Loader.Initialize(Content);
 
-            Camera.Initialize();
+            Screen.Initialize(GraphicsDevice);
+            Camera2D.Initialize();
             IsFullScreen = isFullScreen;
         }
 
@@ -74,7 +70,7 @@ namespace JonnyHammer.Engine
 
         protected override void Draw(GameTime gameTime)
         {
-            ResolutionIndependence.BeginDraw();
+            Screen.BeginDraw();
             SceneManager.Draw(spriteBatch);
             base.Draw(gameTime);
         }

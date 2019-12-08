@@ -138,7 +138,7 @@ namespace JonnyHammer.Game.Scenes
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Core.Instance.Camera.GetViewTransformationMatrix());
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Camera2D.GetViewTransformationMatrix());
             base.Draw(spriteBatch);
             spriteBatch.End();
         }

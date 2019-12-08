@@ -73,8 +73,8 @@ namespace JonnyHammer.Engine.Entities
             }
 
 
-            position.X = MathHelper.Clamp(position.X, 0, Core.Instance.ResolutionIndependence.VirtualWidth - width);
-            position.Y = MathHelper.Clamp(position.Y, 0, Core.Instance.ResolutionIndependence.VirtualHeight - height);
+            position.X = MathHelper.Clamp(position.X, 0, Screen.VirtualWidth - width);
+            position.Y = MathHelper.Clamp(position.Y, 0, Screen.VirtualHeight - height);
         }
 
         public void MoveTo(float x, float y, bool setFacingDirection = true) =>

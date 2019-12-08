@@ -1,4 +1,4 @@
-﻿using JonnyHammer.Engine;
+﻿using JonnyHammer.Engine.Helpers;
 
 namespace JonnyHammer.Game.Environment
 {
@@ -8,7 +8,7 @@ namespace JonnyHammer.Game.Environment
         {
             base.Load();
 
-            Core.Instance.ResolutionIndependence.SetVirtualArea(sprite.Width, sprite.Height);
+            Screen.SetVirtualArea(sprite.Width, sprite.Height);
         }
     }
 }
