@@ -39,14 +39,14 @@ namespace JonnyHammer.Game.Scenes
                             SpawnClouds(layer, tile);
                             break;
 
-                        default:
-                            var scenery = new Scenery();
-                            scenery.TextureName = tile.TextureName;
-                            scenery.Source = tile.Source;
-                            scenery.Width = tile.Width;
-                            scenery.Height = tile.Height;
-                            Spawn(scenery, tile.Position, $"{layer}_sc_{index}");
-                            break;
+                         default:
+                             var scenery = new Scenery(
+                                 tile.TextureName,
+                                 tile.Source,
+                                 tile.Width,
+                                 tile.Height);
+                             Spawn(scenery, tile.Position, $"{layer}_sc_{index}");
+                             break;
 
                     }
         }

@@ -34,6 +34,8 @@ namespace JonnyHammer.Engine.Scenes
         public void Spawn(GameObject gameObject, Vector2? position = null, string name = null) 
         {
             gameObject.Transform.MoveTo(position ?? Vector2.Zero);
+            if (name is not null)
+                gameObject.Name = name;
             entities.Add(gameObject);
         }
 

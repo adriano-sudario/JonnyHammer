@@ -10,7 +10,7 @@ namespace JonnyHammer
     /// </summary>
     public class Main : Core
     {
-        public Main() : base(startOnFullScreen: true)
+        public Main() : base(startOnFullScreen: false)
         {
 
         }
@@ -37,7 +37,7 @@ namespace JonnyHammer
         {
             base.LoadContent();
 
-            // SceneManager.AddScene("world_one", new WorldOne());
+            SceneManager.AddScene("world_one", new WorldOne());
             SceneManager.AddScene("nujustu_scene", new Nujutsu());
         }
 
