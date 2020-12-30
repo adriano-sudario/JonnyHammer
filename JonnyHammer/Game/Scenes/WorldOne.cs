@@ -80,7 +80,7 @@ namespace JonnyHammer.Game.Scenes
                             break;
 
                         case "big_narutos":
-                            Spawn(new BigNaruto((int)tile.MoveAmount), tile.Position,"NarutoRed");
+                            Spawn(new BigNaruto(tile.MoveAmount, tile.Position), tile.Position,"NarutoRed");
                             break;
                     }
         }

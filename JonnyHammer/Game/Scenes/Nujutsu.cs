@@ -23,10 +23,10 @@ namespace JonnyHammer.Game.Scenes
             background = Loader.LoadTexture("bg");
             Camera2D.SetBounds(background.Width * 2, background.Height);
             narutao  = new Jonny();
-            narutitos  = new BigNaruto(100);
+            narutitos  = new BigNaruto(100,new (200, 100));
             
             Spawn(narutao, new (150, 200), "Narutao");
-            Spawn(narutitos , new Vector2(200, 100),"NarutoRed");
+            Spawn(narutitos , name: "NarutoRed");
             
             Spawn(new Block("floor 1", 600, 10) ,new (0, 350));
             Spawn(new Block("floor 2", 500, 10) ,new (700,350));

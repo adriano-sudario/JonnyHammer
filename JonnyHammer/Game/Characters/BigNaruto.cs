@@ -1,4 +1,5 @@
-﻿using Caieta.Components.Utils;
+﻿using System;
+using Caieta.Components.Utils;
 using JonnyHamer.Engine.Entities;
 using JonnyHamer.Engine.Entities.Sprites;
 using JonnyHamer.Engine.Helpers;
@@ -23,7 +24,7 @@ namespace JonnyHammer.Game.Characters
         public int Height => animatedSprite.Height;
         public int Width => animatedSprite.Width;
 
-        public BigNaruto(int moveAmount)
+        public BigNaruto(float moveAmount, Vector2 position)
         {
             MoveAmount = moveAmount;
             keyboard = new KeyboardInput();
@@ -40,9 +41,10 @@ namespace JonnyHammer.Game.Characters
 
             collider.OnTrigger += Collider_OnCollide;
             
-            
+            Transform.MoveTo(position);
             HorizontalPosition = Transform.X;
-            AddComponent(new Tween(TweenMode.Loop, this, nameof(HorizontalPosition),
+            AddComponent(
+                new Tween(TweenMode.Loop, this, nameof(HorizontalPosition),
                 HorizontalPosition + MoveAmount, EaseFunction.Linear, 1000));
             
         }
