@@ -14,10 +14,8 @@ namespace JonnyHammer.Game.Environment
         public int Width { get; set; }
         public int Height { get; set; }
 
-        protected override void Load()
+        public Scenery()
         {
-            base.Load();
-
             sprite = new SpriteRenderer(Loader.LoadTexture(TextureName),
                 source: new Rectangle((int)Source.X, (int)Source.Y, Width, Height));
             AddComponent(sprite);

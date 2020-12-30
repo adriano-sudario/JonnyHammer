@@ -31,13 +31,10 @@ namespace JonnyHammer.Engine.Scenes
             entities.Remove(entity);
         }
 
-        public T Spawn<T>(string name = "no name", Vector2? position = null, Action<T> configure = null) where T : GameObject, new()
+        public void Spawn(GameObject gameObject, Vector2? position = null, string name = null) 
         {
-            var entity = new T { Name = name };
-            entity.Transform.MoveTo((position ?? Vector2.Zero));
-            entities.Add(entity);
-            configure?.Invoke(entity);
-            return entity;
+            gameObject.Transform.MoveTo(position ?? Vector2.Zero);
+            entities.Add(gameObject);
         }
 
         public virtual void Update(GameTime gameTime)

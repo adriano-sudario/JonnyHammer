@@ -16,10 +16,10 @@ namespace JonnyHammer.Game.Environment
         public int Width { get => sprite.Width; }
         public Vector2 Cloudrespawn { get; set; }
 
-        protected override void Load()
+        public Cloud(in float tileSpeed, in Vector2 cloudRespawn)
         {
-            base.Load();
-
+            Speed = tileSpeed;
+            Cloudrespawn = cloudRespawn;
             sprite = new SpriteRenderer(Loader.LoadTexture("cloud"));
             AddComponent(sprite);
         }

@@ -1,16 +1,17 @@
-﻿using JonnyHamer.Engine.Entities.Sprites;
+﻿using System;
+using JonnyHamer.Engine.Entities.Sprites;
 using Microsoft.Xna.Framework;
 
 namespace JonnyHammer.Engine.Entities.Components
 {
     public class SlimPhysics : Component
     {
-        private Collider.Collider collider;
-        private SpriteRenderer renderer;
-        private bool applyGravity = true;
-        private float gravityForce = 0;
-        private Vector2 velocity;
-        private Vector2 previousPosition;
+        Lazy<Collider.Collider> collider;
+        Lazy<SpriteRenderer> renderer;
+        bool applyGravity = true;
+        float gravityForce = 0;
+        Vector2 velocity;
+        Vector2 previousPosition;
         public float Gravity { get; set; } = 8f;
         public bool KeepOnCameraBounds { get; set; }
 
@@ -19,8 +20,8 @@ namespace JonnyHammer.Engine.Entities.Components
             collider = GetComponent<Collider.Collider>();
             renderer = GetComponent<SpriteRenderer>();
 
-            collider.IsTrigger = true;
-            collider.OnTrigger += (collidedEntity) =>
+            collider.Value.IsTrigger = true;
+            collider.Value.OnTrigger += (collidedEntity) =>
             {
                 if (!collidedEntity.Name.StartsWith("floor"))
                     return;
@@ -28,11 +29,11 @@ namespace JonnyHammer.Engine.Entities.Components
                 var fixedPosition = new Vector2(Entity.Transform.X, Entity.Transform.Y);
 
                 var collidedEntityRenderer = collidedEntity.GetComponent<SpriteRenderer>();
-                var collidedOnBottom = previousPosition.Y < Entity.Transform.Y && Entity.Transform.Y + renderer?.Height > collidedEntity.Transform.Y;
+                var collidedOnBottom = previousPosition.Y < Entity.Transform.Y && Entity.Transform.Y + renderer?.Value.Height > collidedEntity.Transform.Y;
                 var collidedOnTop = previousPosition.Y > Entity.Transform.Y && Entity.Transform.Y < collidedEntity.Transform.Y + collidedEntityRenderer?.Height;
 
                 if (collidedOnBottom)
-                    fixedPosition.Y = collidedEntity.Transform.Y - (renderer?.Height ?? 1) - 1;
+                    fixedPosition.Y = collidedEntity.Transform.Y - (renderer?.Value.Height ?? 1) - 1;
                 else if (collidedOnTop)
                     fixedPosition.Y = collidedEntity.Transform.Y;
 

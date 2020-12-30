@@ -22,18 +22,21 @@ namespace JonnyHammer.Game.Scenes
         {
             background = Loader.LoadTexture("bg");
             Camera2D.SetBounds(background.Width * 2, background.Height);
-
-            narutao = Spawn<Jonny>("Narutao", new Vector2(150, 200));
-            narutitos = Spawn<BigNaruto>("NarutoRed", new Vector2(200, 100), x => x.MoveAmount = 100);
-            Spawn<Block>("floor 1", new Vector2(0, 350), f => f.Width = 600);
-            Spawn<Block>("floor 2", new Vector2(700, 350), f => f.Width = 500);
-            Spawn<Block>("floor 2", new Vector2(1300, 300), f => f.Width = 400);
+            narutao  = new Jonny();
+            narutitos  = new BigNaruto(100);
             
-            Spawn<Box>("Box 1", new Vector2(800, 300));
-            Spawn<Box>("Box 2", new Vector2(800, 250));
-            Spawn<Box>("Box 3", new Vector2(800, 200));
-            Spawn<Box>("Box 4", new Vector2(600, 300));
-            Spawn<Box>("Box 5", new Vector2(600, 200));
+            Spawn(narutao, new (150, 200), "Narutao");
+            Spawn(narutitos , new Vector2(200, 100),"NarutoRed");
+            
+            Spawn(new Block("floor 1", 600, 10) ,new (0, 350));
+            Spawn(new Block("floor 2", 500, 10) ,new (700,350));
+            Spawn(new Block("floor 2",  400, 10),new (1300,300));
+            
+            // Spawn(new Box("Box 1", new Vector2(800, 300));
+            // Spawn(new Box("Box 2", new Vector2(800, 250));
+            // Spawn(new Box("Box 3", new Vector2(800, 200));
+            // Spawn(new Box("Box 4", new Vector2(600, 300));
+            // Spawn(new Box("Box 5", new Vector2(600, 200));
 
             foreach (var go in Entities)
                 if (go is Box or Block)

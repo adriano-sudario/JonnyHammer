@@ -23,8 +23,9 @@ namespace JonnyHammer.Game.Characters
         public int Height => animatedSprite.Height;
         public int Width => animatedSprite.Width;
 
-        public BigNaruto()
+        public BigNaruto(int moveAmount)
         {
+            MoveAmount = moveAmount;
             keyboard = new KeyboardInput();
 
             var animations = CreateNarutaoAnimations();
@@ -38,6 +39,12 @@ namespace JonnyHammer.Game.Characters
             Transform.Scale = 0.6f;
 
             collider.OnTrigger += Collider_OnCollide;
+            
+            
+            HorizontalPosition = Transform.X;
+            AddComponent(new Tween(TweenMode.Loop, this, nameof(HorizontalPosition),
+                HorizontalPosition + MoveAmount, EaseFunction.Linear, 1000));
+            
         }
 
         private void Collider_OnCollide(GameObject obj)
@@ -46,13 +53,6 @@ namespace JonnyHammer.Game.Characters
             {
                 jonnny.TakeDamage(25, Transform.Position);
             }
-        }
-
-        protected override void Load()
-        {
-            HorizontalPosition = Transform.X;
-            AddComponent(new Tween(TweenMode.Loop, this, nameof(HorizontalPosition),
-                HorizontalPosition + MoveAmount, EaseFunction.Linear, 1000));
         }
 
         AnimationRenderer CreateNarutaoAnimations()

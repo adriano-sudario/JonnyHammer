@@ -35,7 +35,6 @@ namespace JonnyHammer.Game.Characters
 
         const float JumpForce = 4f;
         float speed = 2f;
-        bool isScaling = false;
         bool touchGround = true;
         bool canDash = true;
         State state = State.Jumping;
@@ -49,7 +48,12 @@ namespace JonnyHammer.Game.Characters
 
         public Vector2 RespawnPosition { get; set; }
 
-        protected override void Load()
+        public Jonny(Vector2 respawnPosition) : this()
+        {
+            RespawnPosition = respawnPosition;
+        }
+        
+        public Jonny()
         {
             life = totalLife;
             keyboard = new KeyboardInput();

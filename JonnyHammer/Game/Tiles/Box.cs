@@ -8,7 +8,7 @@ namespace JonnyHammer.Game.Tiles
 {
     public class Box : GameObject
     {
-        protected override void Load()
+        public Box()
         {
             var collider = AddComponent(new Collider(new Rectangle(0, 0, 20, 20), false, true, Color.Blue));
             AddComponent(new Physics(BodyType.Dynamic, collider));

@@ -32,8 +32,7 @@ namespace JonnyHammer.Game.Scenes
                     switch (tile.Name)
                     {
                         case "bg":
-                            Spawn<MainBackground>($"{layer}_bg_{index}", tile.Position,
-                                s => s.TextureName = tile.TextureName);
+                            Spawn(new MainBackground(tile.TextureName),  tile.Position, $"{layer}_bg_{index}");
                             break;
 
                         case "cloud":
@@ -41,14 +40,12 @@ namespace JonnyHammer.Game.Scenes
                             break;
 
                         default:
-                            Spawn<Scenery>($"{layer}_sc_{index}", tile.Position,
-                                s =>
-                                {
-                                    s.TextureName = tile.TextureName;
-                                    s.Source = tile.Source;
-                                    s.Width = tile.Width;
-                                    s.Height = tile.Height;
-                                });
+                            var scenery = new Scenery();
+                            scenery.TextureName = tile.TextureName;
+                            scenery.Source = tile.Source;
+                            scenery.Width = tile.Width;
+                            scenery.Height = tile.Height;
+                            Spawn(scenery, tile.Position, $"{layer}_sc_{index}");
                             break;
 
                     }
@@ -60,13 +57,9 @@ namespace JonnyHammer.Game.Scenes
             var cloudRespawn = new Vector2((tile.Width * multiplier) - multiplier, tile.Position.Y);
 
             for (var i = 0; i < tile.Amount; i++)
-                Spawn<Cloud>($"{layer}_cloud_{i}",
+                Spawn(new Cloud(tile.Speed, cloudRespawn),
                     (tile.Position + new Vector2((i * tile.Width) - 1, 0)),
-                    c =>
-                    {
-                        c.Speed = tile.Speed;
-                        c.Cloudrespawn = cloudRespawn;
-                    });
+                    $"{layer}_cloud_{i}");
         }
 
         private void SpawnTiledObjects(Dictionary<string, TiledObject[]> objects)
@@ -77,26 +70,17 @@ namespace JonnyHammer.Game.Scenes
                     {
                         case "one_way_blocks":
                         case "blocks":
-                            Spawn<Block>(
-                               $"floor_{layer}_{index}",
-                               new Vector2(tile.Position.X, tile.Position.Y + tile.Height),
-                               f =>
-                               {
-                                   f.Width = tile.Width;
-                                   f.Height = tile.Height;
-                               });
+                            Spawn(new Block($"floor_{layer}_{index}",tile.Width, tile.Height), 
+                                new Vector2(tile.Position.X, tile.Position.Y + tile.Height));
                             break;
 
                         case "player_spawn":
-                            player = Spawn<Jonny>(
-                                "Jonny",
-                                tile.Position,
-                                j => j.RespawnPosition = tile.Position);
+                            player = new Jonny(respawnPosition: tile.Position);
+                            Spawn(player, tile.Position, "Jonny");
                             break;
 
                         case "big_narutos":
-                            Spawn<BigNaruto>("NarutoRed", tile.Position,
-                                bg => bg.MoveAmount = tile.MoveAmount);
+                            Spawn(new BigNaruto((int)tile.MoveAmount), tile.Position,"NarutoRed");
                             break;
                     }
         }

@@ -9,8 +9,6 @@ namespace JonnyHammer.Engine
 {
     public class Component : IComponent
     {
-        public Component() { }
-
         public GameObject Entity { get; private set; }
         public bool IsActive { get; set; }
 
@@ -23,8 +21,10 @@ namespace JonnyHammer.Engine
         public virtual void Start() { }
 
         public virtual void Update(GameTime gameTime) { }
-        public T GetComponent<T>() where T : IComponent => Entity.GetComponent<T>();
-        public T[] GetComponents<T>() where T : IComponent => Entity.GetComponents<T>();
+
+        public T AddComponent<T>(T component) where T : IComponent => Entity.AddComponent(component);
+        public T AddComponent<T>() where T : IComponent, new() => Entity.AddComponent<T>();
+        public Lazy<T> GetComponent<T>() where T : IComponent => new (() => Entity.GetComponent<T>());
         public void StartCoroutine(IEnumerator coroutine) => Entity.StartCoroutine(coroutine);
         public void StopCoroutine(IEnumerator coroutine) => Entity.StopCoroutine(coroutine);
         public void StopCoroutines() => Entity.StopCoroutines();

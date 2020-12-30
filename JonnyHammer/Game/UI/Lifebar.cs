@@ -12,7 +12,7 @@ namespace JonnyHammer.Game.UI
     {
         SolidColorTexture lifebar;
         SolidColorTexture lifebarBack;
-        SpriteRenderer renderer;
+        Lazy<SpriteRenderer> renderer;
         private Rectangle bounds;
         private Rectangle lifeBounds;
 
@@ -35,7 +35,6 @@ namespace JonnyHammer.Game.UI
 
         public void UpdateLife(int currentLife)
         {
-
             CurrentLife = currentLife;
             StartCoroutine(ShowBars());
             desapearing = false;
@@ -83,7 +82,7 @@ namespace JonnyHammer.Game.UI
             bounds = new Rectangle(
             (int)Entity.Transform.Position.X,
             (int)Entity.Transform.Position.Y - 5,
-            renderer.Width, 4);
+            renderer.Value.Width, 4);
 
             var currentLife = bounds.Width * CurrentLife / TotalLife;
 

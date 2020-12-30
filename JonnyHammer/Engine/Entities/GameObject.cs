@@ -15,18 +15,21 @@ namespace JonnyHamer.Engine.Entities
     {
         IList<IComponent> components = new List<IComponent>();
         protected bool isActive = true;
-        bool didStart;
         public Transform Transform { get; private set; } = new Transform();
         CoroutineManager coroutineManager = new CoroutineManager();
 
+        bool didLoad;
         public string Name { get; set; }
 
-        protected virtual void Load() { }
+        public GameObject(string name) => Name = name;
 
-        void LoadComponents()
+        protected GameObject() { }
+
+        protected void LoadComponents()
         {
             for (var i = 0; i < components.Count; i++)
                 components[i].Start();
+            didLoad = true;
         }
         protected virtual void Update(GameTime gameTime) { }
 
@@ -42,14 +45,8 @@ namespace JonnyHamer.Engine.Entities
             if (!isActive)
                 return;
 
-            if (!didStart)
-            {
-                Load();
+            if (!didLoad)
                 LoadComponents();
-                didStart = true;
-                return;
-            }
-
             for (var i = 0; i < components.Count; i++)
                 components[i].Update(gameTime);
 

@@ -4,11 +4,10 @@ namespace JonnyHammer.Game.Environment
 {
     public class MainBackground : Scenery
     {
-        protected override void Load()
+        public MainBackground(string textureName)
         {
-            base.Load();
-
             Camera2D.SetBounds(sprite.Width, sprite.Height);
+            TextureName = textureName;
         }
     }
 }
