@@ -7,7 +7,7 @@ using System.Collections;
 
 namespace JonnyHammer.Engine
 {
-    public class Component : IComponent
+    public class Component : IDisposable
     {
         public GameObject Entity { get; private set; }
         public bool IsActive { get; set; }
@@ -22,13 +22,7 @@ namespace JonnyHammer.Engine
 
         public virtual void Update(GameTime gameTime) { }
 
-        public T AddComponent<T>(T component) where T : IComponent => Entity.AddComponent(component);
-        public T AddComponent<T>() where T : IComponent, new() => Entity.AddComponent<T>();
-        public Lazy<T> GetComponent<T>() where T : IComponent => new (() => Entity.GetComponent<T>());
-        public void StartCoroutine(IEnumerator coroutine) => Entity.StartCoroutine(coroutine);
-        public void StopCoroutine(IEnumerator coroutine) => Entity.StopCoroutine(coroutine);
-        public void StopCoroutines() => Entity.StopCoroutines();
-        public void Invoke(Action action, TimeSpan waitFor) => Entity.Invoke(action, waitFor);
+        public Lazy<T> GetComponent<T>() where T : Component => new (() => Entity.GetComponent<T>());
 
         public virtual void Dispose() { }
     }

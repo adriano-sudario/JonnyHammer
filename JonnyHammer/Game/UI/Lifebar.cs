@@ -21,22 +21,23 @@ namespace JonnyHammer.Game.UI
 
         public bool desapearing;
 
-        public Lifebar(int totalLife) => CurrentLife = TotalLife = totalLife;
-
-        public override void Start()
+        public Lifebar(int totalLife)
         {
+            CurrentLife = TotalLife = totalLife;
             lifebar = new SolidColorTexture(Color.ForestGreen);
             lifebarBack = new SolidColorTexture(Color.Red);
             renderer = GetComponent<SpriteRenderer>();
-
-            StartCoroutine(Desapear());
-
+        }
+        
+        public override void Start()
+        {
+            Entity.StartCoroutine(Desapear());
         }
 
         public void UpdateLife(int currentLife)
         {
             CurrentLife = currentLife;
-            StartCoroutine(ShowBars());
+            Entity.StartCoroutine(ShowBars());
             desapearing = false;
         }
 

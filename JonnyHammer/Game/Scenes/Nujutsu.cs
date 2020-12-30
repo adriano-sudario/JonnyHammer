@@ -55,7 +55,7 @@ namespace JonnyHammer.Game.Scenes
         private void RainBlocks()
         {
             if (random.Next(30) != 5) return;
-            var pos = random.Next(0, Screen.VirtualWidth);
+            var pos = random.Next(0, background.Width * 2);
             var box = new Box();
             box.GetComponent<Collider>().IsDebug = true;
             Spawn(box, new (pos, -30),"Box 1");

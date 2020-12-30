@@ -1,7 +1,6 @@
 ﻿using JonnyHamer.Engine.Managers;
 using JonnyHammer.Engine;
 using JonnyHammer.Engine.Entities;
-using JonnyHammer.Engine.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -11,12 +10,12 @@ using System.Linq;
 
 namespace JonnyHamer.Engine.Entities
 {
-    public class GameObject : IDraw, IUpdate, IDisposable
+    public class GameObject : IDisposable
     {
-        IList<IComponent> components = new List<IComponent>();
+        IList<Component> components = new List<Component>();
         protected bool isActive = true;
-        public Transform Transform { get; private set; } = new Transform();
-        CoroutineManager coroutineManager = new CoroutineManager();
+        public Transform Transform { get; private set; } = new();
+        CoroutineManager coroutineManager = new();
 
         bool didLoad;
         public string Name { get; set; }
@@ -33,7 +32,6 @@ namespace JonnyHamer.Engine.Entities
         }
         protected virtual void Update(GameTime gameTime) { }
 
-        void IUpdate.Update(GameTime gameTime) => UpdateObject(gameTime);
         public void UpdateObject(GameTime gameTime)
         {
             BaseUpdate(gameTime);
@@ -62,23 +60,23 @@ namespace JonnyHamer.Engine.Entities
                 components[i].Draw(spriteBatch);
         }
 
-        public T AddComponent<T>(T component) where T : IComponent
+        public T AddComponent<T>(T component) where T : Component
         {
             component.SetEntity(this);
             components.Add(component);
             return component;
         }
 
-        public T AddComponent<T>() where T : IComponent, new() => AddComponent(new T());
-        public T RequireComponent<T>() where T : IComponent, new() => GetComponent<T>() ?? AddComponent<T>();
-        public T GetComponent<T>() where T : IComponent => components.OfType<T>().SingleOrDefault();
-        public bool TryGetComponent<T>(out T component) where T : IComponent
+        public T AddComponent<T>() where T : Component, new() => AddComponent(new T());
+        public T RequireComponent<T>() where T : Component, new() => GetComponent<T>() ?? AddComponent<T>();
+        public T GetComponent<T>() where T : Component => components.OfType<T>().SingleOrDefault();
+        public bool TryGetComponent<T>(out T component) where T : Component
         {
             component = components.OfType<T>().SingleOrDefault();
             return component != null;
         }
 
-        public T[] GetComponents<T>() where T : IComponent => components.OfType<T>().ToArray();
+        public T[] GetComponents<T>() where T : Component => components.OfType<T>().ToArray();
 
         public void StartCoroutine(IEnumerator coroutine) =>
             coroutineManager.StartCoroutine(coroutine);
