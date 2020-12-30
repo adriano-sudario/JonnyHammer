@@ -12,16 +12,16 @@ namespace JonnyHammer.Engine.Entities.Components
 
     public class Tween : Component
     {
-        private Vector2 _position;
-        private float _scale;
-        private float _angle;
-        private float _opacity;
-        private float _custom;
-        private double elapsedTime;
-        private SpriteRenderer entitySprite;
-        private object reference;
-        private PropertyInfo customProperty;
-
+        Vector2 _position;
+        float _scale;
+        float _angle;
+        float _opacity;
+        float _custom;
+        double elapsedTime;
+        SpriteRenderer entitySprite;
+        Func<float> getCustomValue;
+        Action<float> setCustomValue;
+        
         public Action OnStart;
         public Action OnFinish;
         public TweenMode Mode { get; private set; }
@@ -35,8 +35,8 @@ namespace JonnyHammer.Engine.Entities.Components
         {
             get
             {
-                if (reference != null && customProperty != null)
-                    return (float)customProperty.GetValue(reference);
+                if (getCustomValue != null)
+                    return getCustomValue();
 
                 switch (Property)
                 {
@@ -65,9 +65,9 @@ namespace JonnyHammer.Engine.Entities.Components
             }
             private set
             {
-                if (reference != null && customProperty != null)
+                if (setCustomValue != null)
                 {
-                    customProperty.SetValue(reference, Convert.ChangeType(MathHelper.Lerp(_custom, TargetValue, value), customProperty.PropertyType), null);
+                    setCustomValue(MathHelper.Lerp(_custom, TargetValue, value) );
                     return;
                 }
 
@@ -122,16 +122,6 @@ namespace JonnyHammer.Engine.Entities.Components
                 throw new Exception($"[Tween]: Duration must be a positive integer. Setting from '{millisecondsDuration}'to 0 (zero).");
         }
 
-        public Tween(TweenMode mode, object reference, string propertyName, float value, EaseFunction.Ease easer, float millisecondsDuration, Action onStart = null, Action onFinish = null) :
-            this(mode, value, easer, millisecondsDuration, onStart, onFinish)
-        {
-            this.reference = reference;
-            customProperty = reference.GetType().GetProperty(propertyName);
-
-            if (customProperty.PropertyType != typeof(float))
-                throw new Exception("[Tween]: Property must be a float type.");
-        }
-
         public Tween(TweenMode mode, TweenProperty property, float value, EaseFunction.Ease easer, float millisecondsDuration, Action onStart = null, Action onFinish = null) :
             this(mode, value, easer, millisecondsDuration, onStart, onFinish)
         {
@@ -140,20 +130,12 @@ namespace JonnyHammer.Engine.Entities.Components
 
         public override void Start()
         {
-            base.Start();
-
-            if ((reference == null || customProperty == null) && Entity == null)
-                throw new Exception("[Tween]: Entity cannot be null if it's not a custom property.");
-            else if (Entity != null)
-                entitySprite = Entity.GetComponent<SpriteRenderer>();
-
+            entitySprite = Entity.GetComponent<SpriteRenderer>();
             Begin();
         }
 
         public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
-
             if (!IsActive)
                 return;
 
@@ -170,13 +152,23 @@ namespace JonnyHammer.Engine.Entities.Components
                 Finish();
         }
 
+        public Tween(
+            TweenMode mode, 
+            Func<float> valueGetter, 
+            Action<float> valueSetter, 
+            float value, 
+            EaseFunction.Ease easer, 
+            float millisecondsDuration, 
+            Action onStart = null, 
+            Action onFinish = null) :
+            this(mode, value, easer, millisecondsDuration, onStart, onFinish)
+        {
+            getCustomValue = valueGetter;
+            setCustomValue = valueSetter;
+        }
         private void Increment()
         {
-            if (Ease != null)
-                Eased = Ease(Percent);
-            else
-                Eased = Percent;
-
+            Eased = Ease?.Invoke(Percent) ?? Percent;
             CurrentValue = Eased;
         }
 
@@ -249,8 +241,8 @@ namespace JonnyHammer.Engine.Entities.Components
                 _scale = Entity.Transform.Scale;
                 _angle = Entity.Transform.Rotation;
 
-                if (reference != null && customProperty != null)
-                    _custom = (float)customProperty.GetValue(reference);
+                if (getCustomValue != null)
+                    _custom = getCustomValue();
 
                 if (entitySprite != null)
                     _opacity = entitySprite.Opacity;

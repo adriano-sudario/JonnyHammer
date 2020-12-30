@@ -44,8 +44,11 @@ namespace JonnyHammer.Game.Characters
             Transform.MoveTo(position);
             HorizontalPosition = Transform.X;
             AddComponent(
-                new Tween(TweenMode.Loop, this, nameof(HorizontalPosition),
-                HorizontalPosition + MoveAmount, EaseFunction.Linear, 1000));
+                new Tween(TweenMode.Loop, 
+                    () => HorizontalPosition,
+                    v => HorizontalPosition = v,
+                HorizontalPosition + MoveAmount,
+                    EaseFunction.Linear, 1000));
             
         }
 
