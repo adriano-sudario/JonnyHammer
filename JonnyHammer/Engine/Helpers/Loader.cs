@@ -3,10 +3,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Newtonsoft.Json;
+using System.Text.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using JonnyHammer.Engine.Helpers;
 
 namespace JonnyHamer.Engine.Helpers
 {
@@ -31,35 +32,35 @@ namespace JonnyHamer.Engine.Helpers
         public static Texture2D LoadTexture(string textureName) => content.Load<Texture2D>("Graphics/" + textureName);
         public static IDictionary<string, Frame[]> LoadAsepriteFrames(string asepriteJsonFile)
         {
-            dynamic data = LoadDeserializedJsonFile(asepriteJsonFile);
+            var data = LoadDeserializedJsonFile<AsepriteModel>(asepriteJsonFile);
             return ParseAsepriteJson(data);
         }
 
-        static IDictionary<string, Frame[]> ParseAsepriteJson(dynamic data)
+        
+        static IDictionary<string, Frame[]> ParseAsepriteJson(AsepriteModel data)
         {
             var frameData = new Dictionary<string, Frame[]>();
 
-            IDictionary<string, dynamic> dataFrames = data.frames.ToObject<Dictionary<string, dynamic>>();
-            dataFrames = dataFrames
+            var dataFrames = data.Frames
                             .Select(x => (Key: x.Key.Split(" ")[1], x.Value))
                             .ToDictionary(x => x.Key, x => x.Value);
 
-            foreach (var anim in data.meta.frameTags)
+            foreach (var anim in data.Meta.FrameTags)
             {
-                var animationName = anim.name.ToString();
-                int from = anim.from;
-                int to = anim.to;
+                var animationName = anim.Name;
+                var from = anim.From;
+                var to = anim.To;
 
                 var frames = new List<Frame>();
-                for (int i = from; i < to; i++)
+                for (var i = from; i < to; i++)
                 {
                     var jsonFrame = dataFrames[$"{i}.aseprite"];
 
-                    int x = jsonFrame.frame.x;
-                    int y = jsonFrame.frame.y;
-                    int w = jsonFrame.frame.w;
-                    int h = jsonFrame.frame.h;
-                    int duration = jsonFrame.duration;
+                    int x = jsonFrame.Frame.X;
+                    int y = jsonFrame.Frame.Y;
+                    int w = jsonFrame.Frame.W;
+                    int h = jsonFrame.Frame.H;
+                    int duration = jsonFrame.Duration;
 
                     frames.Add(new Frame
                     {
@@ -82,18 +83,13 @@ namespace JonnyHamer.Engine.Helpers
         public static T LoadDeserializedJsonFile<T>(string fileName)
         {
             var jsonString = LoadJsonFile(fileName);
-            return JsonConvert.DeserializeObject<T>(jsonString);
-        }
-        public static object LoadDeserializedJsonFile(string fileName)
-        {
-            var jsonString = LoadJsonFile(fileName);
-            return JsonConvert.DeserializeObject(jsonString);
+            var jsonSerializer = new JsonSerializerOptions {PropertyNameCaseInsensitive = true};
+            return JsonSerializer.Deserialize<T>(jsonString, jsonSerializer);
         }
 
         private static string LoadJsonFile(string fileName) => File.ReadAllText(Path.Combine(ContentFullPath, "Data/" + fileName + ".json"));
 
-
-        public static void SaveJsonFile<T>(string fileName, T data) => SaveJsonFile(fileName, JsonConvert.SerializeObject(data));
+        public static void SaveJsonFile<T>(string fileName, T data) => SaveJsonFile(fileName, JsonSerializer.Serialize(data));
 
         private static void SaveJsonFile(string fileName, string jsonText) => File.WriteAllText(Path.Combine(ContentFullPath, "Data/" + fileName + ".json"), jsonText);
     }
