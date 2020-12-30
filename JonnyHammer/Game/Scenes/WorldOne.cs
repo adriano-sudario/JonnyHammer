@@ -32,7 +32,7 @@ namespace JonnyHammer.Game.Scenes
                     switch (tile.Name)
                     {
                         case "bg":
-                            Spawn(new MainBackground(tile.TextureName),  tile.Position, $"{layer}_bg_{index}");
+                            Spawn(new MainBackground(tile.TextureName),  tile.Position , $"{layer}_bg_{index}");
                             break;
 
                         case "cloud":

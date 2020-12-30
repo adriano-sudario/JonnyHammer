@@ -82,7 +82,6 @@ namespace JonnyHammer.Game.Characters
 
             floorTrigger.OnTrigger += e =>
             {
-                Console.WriteLine();
                 if (state == State.Dashing || !e.Name.Contains("floor") || locked) return;
                 state = State.Grounded;
                 touchGround = true;
