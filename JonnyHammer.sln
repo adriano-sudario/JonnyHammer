@@ -9,8 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{2A220C0B-1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TiledSharp", "Libs\TiledSharp\TiledSharp.csproj", "{E4230123-EFE1-4547-9F75-9DE6ECCD9282}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aether.Physics2D", "Libs\Aether.Physics2D\Aether.Physics2D.csproj", "{BAC36AAE-7BB9-43B8-989C-3654589FF2A3}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,7 +33,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E4230123-EFE1-4547-9F75-9DE6ECCD9282} = {2A220C0B-18A5-4E8A-8C06-76F7CAAF7A96}
-		{BAC36AAE-7BB9-43B8-989C-3654589FF2A3} = {2A220C0B-18A5-4E8A-8C06-76F7CAAF7A96}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C53E51D7-BE10-4EF3-9547-BFE670E6842D}

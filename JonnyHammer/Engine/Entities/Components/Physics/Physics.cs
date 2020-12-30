@@ -1,5 +1,4 @@
 ﻿using JonnyHamer.Engine.Managers;
-using JonnyHammer.Engine.Entities.Components.Collider;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using tainicom.Aether.Physics2D.Common;

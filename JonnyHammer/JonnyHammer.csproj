@@ -14,10 +14,10 @@
   <ItemGroup>
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.0.1641" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.0.1641" />
+    <PackageReference Include="Aether.Physics2D.MG" Version="1.5.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Libs\Aether.Physics2D\Aether.Physics2D.csproj" />
     <ProjectReference Include="..\Libs\TiledSharp\TiledSharp.csproj" />
   </ItemGroup>
 
