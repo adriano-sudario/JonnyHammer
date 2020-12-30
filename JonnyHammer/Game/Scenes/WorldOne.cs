@@ -9,13 +9,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using JonnyHamer.Engine.Managers;
 
 namespace JonnyHammer.Game.Scenes
 {
     public class WorldOne : Scene
     {
         private Jonny player;
-        private KeyboardInput keyboard = new KeyboardInput();
+        private KeyboardInput keyboard = new();
 
         public WorldOne()
         {
@@ -57,19 +58,15 @@ namespace JonnyHammer.Game.Scenes
         {
             var multiplier = tile.Amount - 1;
             var cloudRespawn = new Vector2((tile.Width * multiplier) - multiplier, tile.Position.Y);
-            Cloud lastCloud = null;
 
             for (var i = 0; i < tile.Amount; i++)
-            {
-
-                lastCloud = Spawn<Cloud>($"{layer}_cloud_{i}",
+                Spawn<Cloud>($"{layer}_cloud_{i}",
                     (tile.Position + new Vector2((i * tile.Width) - 1, 0)),
                     c =>
                     {
                         c.Speed = tile.Speed;
                         c.Cloudrespawn = cloudRespawn;
                     });
-            }
         }
 
         private void SpawnTiledObjects(Dictionary<string, TiledObject[]> objects)
@@ -109,7 +106,7 @@ namespace JonnyHammer.Game.Scenes
             base.Update(gameTime);
 
             keyboard.Update();
-
+            
             if (keyboard.IsPressing(Keys.LeftControl))
             {
                 if (keyboard.IsPressing(Keys.Left))
@@ -124,12 +121,14 @@ namespace JonnyHammer.Game.Scenes
 
                 return;
             }
-            else if (keyboard.HasPressed(Keys.F11))
+            
+            if (keyboard.HasPressed(Keys.F11))
             {
                 Screen.ToggleFullScreen();
                 return;
             }
-            else if (keyboard.IsPressing(Keys.OemPlus))
+            
+            if (keyboard.IsPressing(Keys.OemPlus))
                 Camera2D.ZoomUp(.02f);
             else if (keyboard.IsPressing(Keys.OemMinus))
                 Camera2D.ZoomDown(.02f);

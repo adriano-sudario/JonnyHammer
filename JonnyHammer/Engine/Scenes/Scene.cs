@@ -17,11 +17,12 @@ namespace JonnyHammer.Engine.Scenes
 
         public Scene()
         {
-            World = new World();
-            World.Gravity = new Vector2(0, 10);
+            World = new World
+            {
+                Gravity = new Vector2(0, 10)
+            };
 
-            if (SceneManager.CurrentScene == null)
-                SceneManager.CurrentScene = this;
+            SceneManager.CurrentScene ??= this;
         }
 
         public void Destroy(GameObject entity)
@@ -42,13 +43,13 @@ namespace JonnyHammer.Engine.Scenes
         public virtual void Update(GameTime gameTime)
         {
             WorldStep(gameTime);
-            for (int i = 0; i < entities.Count; i++)
-                entities[i].FullUpdate(gameTime);
+            for (var i = 0; i < entities.Count; i++)
+                entities[i].UpdateObject(gameTime);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            for (int i = 0; i < entities.Count; i++)
+            for (var i = 0; i < entities.Count; i++)
                 entities[i].Draw(spriteBatch);
         }
 

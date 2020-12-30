@@ -48,10 +48,8 @@ namespace JonnyHammer.Game.Characters
             }
         }
 
-        public override void Load()
+        protected override void Load()
         {
-            base.Load();
-
             HorizontalPosition = Transform.X;
             AddComponent(new Tween(TweenMode.Loop, this, nameof(HorizontalPosition),
                 HorizontalPosition + MoveAmount, EaseFunction.Linear, 1000));
@@ -65,11 +63,10 @@ namespace JonnyHammer.Game.Characters
             return new AnimationRenderer(spriteSheet, animationFrames);
         }
 
-        public override void Update(GameTime gameTime)
+        protected override void Update(GameTime gameTime)
         {
             keyboard.Update();
             Transform.MoveHorizontally((int)HorizontalPosition);
-            base.Update(gameTime);
         }
 
         public void Run(Direction.Horizontal direction)

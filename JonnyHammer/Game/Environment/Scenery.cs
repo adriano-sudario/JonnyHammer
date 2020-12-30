@@ -14,7 +14,7 @@ namespace JonnyHammer.Game.Environment
         public int Width { get; set; }
         public int Height { get; set; }
 
-        public override void Load()
+        protected override void Load()
         {
             base.Load();
 

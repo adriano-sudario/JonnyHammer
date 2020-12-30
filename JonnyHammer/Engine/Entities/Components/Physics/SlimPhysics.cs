@@ -11,8 +11,6 @@ namespace JonnyHammer.Engine.Entities.Components
         private float gravityForce = 0;
         private Vector2 velocity;
         private Vector2 previousPosition;
-
-        public Vector2 GravityForce => new Vector2(0, Gravity);
         public float Gravity { get; set; } = 8f;
         public bool KeepOnCameraBounds { get; set; }
 
@@ -30,8 +28,8 @@ namespace JonnyHammer.Engine.Entities.Components
                 var fixedPosition = new Vector2(Entity.Transform.X, Entity.Transform.Y);
 
                 var collidedEntityRenderer = collidedEntity.GetComponent<SpriteRenderer>();
-                bool collidedOnBottom = previousPosition.Y < Entity.Transform.Y && Entity.Transform.Y + renderer?.Height > collidedEntity.Transform.Y;
-                bool collidedOnTop = previousPosition.Y > Entity.Transform.Y && Entity.Transform.Y < collidedEntity.Transform.Y + collidedEntityRenderer?.Height;
+                var collidedOnBottom = previousPosition.Y < Entity.Transform.Y && Entity.Transform.Y + renderer?.Height > collidedEntity.Transform.Y;
+                var collidedOnTop = previousPosition.Y > Entity.Transform.Y && Entity.Transform.Y < collidedEntity.Transform.Y + collidedEntityRenderer?.Height;
 
                 if (collidedOnBottom)
                     fixedPosition.Y = collidedEntity.Transform.Y - (renderer?.Height ?? 1) - 1;

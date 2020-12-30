@@ -4,7 +4,7 @@ namespace JonnyHammer.Game.Environment
 {
     public class MainBackground : Scenery
     {
-        public override void Load()
+        protected override void Load()
         {
             base.Load();
 

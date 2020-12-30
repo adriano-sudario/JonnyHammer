@@ -13,34 +13,31 @@ namespace JonnyHamer.Engine.Entities
 {
     public class GameObject : IDraw, IUpdate, IDisposable
     {
-        private IList<IComponent> components = new List<IComponent>();
+        IList<IComponent> components = new List<IComponent>();
         protected bool isActive = true;
-        bool didStart = false;
+        bool didStart;
         public Transform Transform { get; private set; } = new Transform();
         CoroutineManager coroutineManager = new CoroutineManager();
 
         public string Name { get; set; }
 
-        public GameObject() { }
+        protected virtual void Load() { }
 
-        public virtual void Load() { }
-
-        void BaseLoad()
+        void LoadComponents()
         {
             for (var i = 0; i < components.Count; i++)
                 components[i].Start();
         }
+        protected virtual void Update(GameTime gameTime) { }
 
-        public virtual void Update(GameTime gameTime) { }
-
-        void IUpdate.Update(GameTime gameTime) => FullUpdate(gameTime);
-        public void FullUpdate(GameTime gameTime)
+        void IUpdate.Update(GameTime gameTime) => UpdateObject(gameTime);
+        public void UpdateObject(GameTime gameTime)
         {
             BaseUpdate(gameTime);
             Update(gameTime);
         }
 
-        private void BaseUpdate(GameTime gameTime)
+        void BaseUpdate(GameTime gameTime)
         {
             if (!isActive)
                 return;
@@ -48,7 +45,7 @@ namespace JonnyHamer.Engine.Entities
             if (!didStart)
             {
                 Load();
-                BaseLoad();
+                LoadComponents();
                 didStart = true;
                 return;
             }
@@ -64,7 +61,7 @@ namespace JonnyHamer.Engine.Entities
             if (!isActive)
                 return;
 
-            for (int i = 0; i < components.Count; i++)
+            for (var i = 0; i < components.Count; i++)
                 components[i].Draw(spriteBatch);
         }
 
@@ -85,8 +82,6 @@ namespace JonnyHamer.Engine.Entities
         }
 
         public T[] GetComponents<T>() where T : IComponent => components.OfType<T>().ToArray();
-
-
 
         public void StartCoroutine(IEnumerator coroutine) =>
             coroutineManager.StartCoroutine(coroutine);

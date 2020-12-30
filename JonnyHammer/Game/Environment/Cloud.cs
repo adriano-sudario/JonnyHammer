@@ -16,7 +16,7 @@ namespace JonnyHammer.Game.Environment
         public int Width { get => sprite.Width; }
         public Vector2 Cloudrespawn { get; set; }
 
-        public override void Load()
+        protected override void Load()
         {
             base.Load();
 
@@ -24,7 +24,7 @@ namespace JonnyHammer.Game.Environment
             AddComponent(sprite);
         }
 
-        public override void Update(GameTime gameTime)
+        protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
 

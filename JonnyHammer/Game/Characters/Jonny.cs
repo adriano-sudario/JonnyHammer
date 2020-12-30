@@ -49,7 +49,7 @@ namespace JonnyHammer.Game.Characters
 
         public Vector2 RespawnPosition { get; set; }
 
-        public override void Load()
+        protected override void Load()
         {
             life = totalLife;
             keyboard = new KeyboardInput();
@@ -78,12 +78,11 @@ namespace JonnyHammer.Game.Characters
 
             floorTrigger.OnTrigger += e =>
             {
-                if (state != State.Dashing && e.Name.Contains("floor") && !locked)
-                {
-                    state = State.Grounded;
-                    touchGround = true;
-                    physics.SetVelocity(y: 0);
-                }
+                Console.WriteLine();
+                if (state == State.Dashing || !e.Name.Contains("floor") || locked) return;
+                state = State.Grounded;
+                touchGround = true;
+                physics.SetVelocity(y: 0);
             };
 
             physics = AddComponent(new Physics(BodyType.Dynamic, collider, mass: 1));
@@ -103,29 +102,8 @@ namespace JonnyHammer.Game.Characters
             StartCoroutine(Blink());
             StartCoroutine(HitStun());
 
-
             var sideModifier = Transform.X <= reference.X ? -1 : 1;
             physics.ApplyForce(new Vector2(5f * sideModifier, (state != State.Jumping ? -1f : -2f)));
-        }
-
-        IEnumerator Scale()
-        {
-            yield return new WaitUntil(() => !isScaling);
-            isScaling = true;
-
-            while (Transform.Scale < 3)
-            {
-                Transform.Scale += 0.01f;
-                yield return null; // wait 1 frame
-            }
-
-            while (Transform.Scale > 1)
-            {
-                Transform.Scale -= 0.01f;
-                yield return null;
-            }
-
-            isScaling = false;
         }
 
         IEnumerator HitStun()
@@ -171,14 +149,10 @@ namespace JonnyHammer.Game.Characters
             Transform.MoveTo(RespawnPosition);
         }
 
-        public override void Update(GameTime gameTime)
+        protected override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
-
-
             if (life == 0)
                 Respawn();
-
 
             if (state == State.Dashing)
             {
@@ -209,11 +183,6 @@ namespace JonnyHammer.Game.Characters
                 physics.ApplyForce(new Vector2(0, -JumpForce));
                 state = State.Jumping;
             }
-
-            if (keyboard.HasPressed(Keys.S))
-                StartCoroutine(Scale());
-
-
 
             if (keyboard.IsPressing(Keys.Right))
                 Run(Direction.Horizontal.Right);
@@ -262,8 +231,6 @@ namespace JonnyHammer.Game.Characters
             var m = direction == Direction.Horizontal.Left ? -speed : speed;
             physics.MoveForward(m);
         }
-
-
 
     }
 }
