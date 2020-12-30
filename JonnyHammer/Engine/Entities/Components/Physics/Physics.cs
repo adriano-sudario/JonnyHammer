@@ -10,7 +10,6 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
     public class Physics : Component
     {
         readonly Collider.Collider collider;
-        float mass;
         float friction;
         float restitution;
 
@@ -18,7 +17,7 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
         public BodyType BodyType { get; private set; }
         public Vector2 MaxVelocity { get; set; } = new Vector2(3, 3);
 
-        public float Mass { get => mass; set => Body.Mass = mass = value; }
+        public float Mass { get; set;}
         public bool UseMaxVelocityX { get; set; } = false;
         public bool UseMaxVelocityY { get; set; } = false;
 
@@ -36,8 +35,8 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
         public Physics(BodyType bodyType, Collider.Collider collider, float mass = 1, float friction = 0, float restitution = 0)
         {
             BodyType = bodyType;
+            Mass = mass;
             this.collider = collider;
-            this.mass = mass;
             this.friction = friction;
             this.restitution = restitution;
         }
@@ -95,7 +94,7 @@ namespace JonnyHammer.Engine.Entities.Components.Phisycs
             body.BodyType = BodyType;
             body.OnCollision += Body_OnCollision;
             body.Tag = Entity;
-            body.Mass = mass;
+            body.Mass = Mass;
             return body;
         }
 
