@@ -11,7 +11,7 @@ namespace JonnyHammer.Game.Tiles
         public Box()
         {
             var collider = AddComponent(new Collider(new Rectangle(0, 0, 20, 20), false, true, Color.Blue));
-            AddComponent(new Physics(BodyType.Dynamic, collider));
+            AddComponent(new Physics(BodyType.Dynamic, collider, friction: 100));
         }
     }
 }

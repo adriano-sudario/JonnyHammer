@@ -97,8 +97,6 @@ namespace JonnyHammer.Game.UI
             base.Draw(spriteBatch);
             lifebarBack.Draw(spriteBatch, bounds);
             lifebar.Draw(spriteBatch, lifeBounds);
-
-
         }
 
     }

@@ -105,6 +105,13 @@ namespace JonnyHammer.Game.Scenes
 
                 return;
             }
+ 
+            
+            if (keyboard.HasPressed(Keys.D1))
+            {
+                SceneManager.ChangeScene("nujustu_scene");
+                return;
+            }
             
             if (keyboard.HasPressed(Keys.F11))
             {

@@ -14,7 +14,6 @@ namespace JonnyHammer.Game.Scenes
     public class Nujutsu : Scene
     {
         private GameObject narutao;
-        private GameObject narutitos;
         private Texture2D background;
         //Floor testFloor;
 
@@ -23,25 +22,24 @@ namespace JonnyHammer.Game.Scenes
             background = Loader.LoadTexture("bg");
             Camera2D.SetBounds(background.Width * 2, background.Height);
             narutao  = new Jonny();
-            narutitos  = new BigNaruto(100,new (200, 100));
+            var narutitos  = new BigNaruto(100,new (200, 100));
             
             Spawn(narutao, new (150, 200), "Narutao");
             Spawn(narutitos , name: "NarutoRed");
             
-            Spawn(new Block("floor 1", 600, 10) ,new (0, 350));
-            Spawn(new Block("floor 2", 500, 10) ,new (700,350));
-            Spawn(new Block("floor 2",  400, 10),new (1300,300));
+            Spawn(new Block("floor 1", 600, 30) ,new (0, 350));
+            Spawn(new Block("floor 2", 500, 30) ,new (700,350));
+            Spawn(new Block("floor 2",  400, 30),new (1300,300));
             
-            // Spawn(new Box("Box 1", new Vector2(800, 300));
-            // Spawn(new Box("Box 2", new Vector2(800, 250));
-            // Spawn(new Box("Box 3", new Vector2(800, 200));
-            // Spawn(new Box("Box 4", new Vector2(600, 300));
-            // Spawn(new Box("Box 5", new Vector2(600, 200));
+            Spawn(new Box(), new (800, 300),"Box 1");
+            Spawn(new Box(), new (800, 250),"Box 2");
+            Spawn(new Box(), new (800, 200),"Box 3");
+            Spawn(new Box(), new (700, 300),"Box 4");
+            Spawn(new Box(), new (700, 200),"Box 5");
 
             foreach (var go in Entities)
                 if (go is Box or Block)
                     go.GetComponent<Collider>().IsDebug = true;
-            
         }
 
         public override void Update(GameTime gameTime)
