@@ -1,4 +1,5 @@
-﻿using JonnyHamer.Engine.Entities;
+﻿using System;
+using JonnyHamer.Engine.Entities;
 using JonnyHamer.Engine.Helpers;
 using JonnyHammer.Engine.Entities.Components.Collider;
 using JonnyHammer.Engine.Helpers;
@@ -13,10 +14,11 @@ namespace JonnyHammer.Game.Scenes
 {
     public class Nujutsu : Scene
     {
-        private GameObject narutao;
-        private Texture2D background;
-        //Floor testFloor;
+        GameObject narutao;
+        Texture2D background;
 
+        private Random random = new();
+        
         public Nujutsu()
         {
             background = Loader.LoadTexture("bg");
@@ -32,10 +34,10 @@ namespace JonnyHammer.Game.Scenes
             Spawn(new Block("floor 2",  400, 30),new (1300,300));
             
             Spawn(new Box(), new (800, 300),"Box 1");
-            Spawn(new Box(), new (800, 250),"Box 2");
-            Spawn(new Box(), new (800, 200),"Box 3");
-            Spawn(new Box(), new (700, 300),"Box 4");
-            Spawn(new Box(), new (700, 200),"Box 5");
+            Spawn(new Box(), new (800, 270),"Box 2");
+            Spawn(new Box(), new (800, 240),"Box 3");
+            Spawn(new Box(), new (750, 370),"Box 4");
+            Spawn(new Box(), new (750, 340),"Box 5");
 
             foreach (var go in Entities)
                 if (go is Box or Block)
@@ -46,6 +48,17 @@ namespace JonnyHammer.Game.Scenes
         {
             base.Update(gameTime);
             Camera2D.Follow(narutao);
+
+            RainBlocks();
+        }
+
+        private void RainBlocks()
+        {
+            if (random.Next(30) != 5) return;
+            var pos = random.Next(0, Screen.VirtualWidth);
+            var box = new Box();
+            box.GetComponent<Collider>().IsDebug = true;
+            Spawn(box, new (pos, -30),"Box 1");
         }
 
         public override void Draw(SpriteBatch spriteBatch)
