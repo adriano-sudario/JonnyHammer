@@ -2,6 +2,7 @@
 using Chamboco.Engine.Entities.Components.Physics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using tainicom.Aether.Physics2D.Dynamics;
 
@@ -57,16 +58,25 @@ namespace Chamboco.Engine.Helpers
                 yield return (index++, item);
         }
 
-
-    }
-
-    public static class BodyExtensions
-    {
         public static void MoveAndSlide(this Body body, Vector2 addPosition)
         {
             body.SetTransform(body.Position + (addPosition / Physics.PixelsPerMeter), 0);
         }
 
+        public static Lazy<TR> Select<T, TR>(this Lazy<T> @this, Func<T, TR> map) =>
+            new(() => map(@this.Value));
+
+        public static Lazy<TR> SelectMany<T, TMap, TR>(this Lazy<T> @this, Func<T, Lazy<TMap>> map,
+            Func<T, TMap, TR> project) =>
+            new(() =>
+            {
+                var actual = @this.Value;
+                var mapped = map(actual);
+                return project(actual, mapped.Value);
+            });
+
+        public static Lazy<TR> SelectMany<T, TR>(this Lazy<T> @this, Func<T, Lazy<TR>> map) =>
+            @this.SelectMany(map, (_, r) => r);
     }
 
 }

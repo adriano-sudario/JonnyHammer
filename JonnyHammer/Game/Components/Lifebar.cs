@@ -2,6 +2,7 @@
 using System.Collections;
 using Chamboco.Engine.Entities;
 using Chamboco.Engine.Entities.Components;
+using Chamboco.Engine.Entities.Components.Collider;
 using Chamboco.Engine.Entities.Components.Sprites;
 using Chamboco.Engine.Helpers;
 using Microsoft.Xna.Framework;

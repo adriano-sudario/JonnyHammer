@@ -77,7 +77,6 @@ namespace JonnyHammer.Game.Characters
                     isTrigger: true,
                     debugColor: Color.Yellow));
 
-
             floorTrigger.OnTrigger += e =>
             {
                 if (state == State.Dashing || !e.Name.Contains("floor") || locked) return;

@@ -124,9 +124,7 @@ namespace JonnyHammer.Game.Scenes
                 Camera2D.ZoomDown(.02f);
 
             if (keyboard.IsPressing(Keys.F12))
-            {
                 Camera2D.Center();
-            }
             else
                 Camera2D.Follow(player);
         }

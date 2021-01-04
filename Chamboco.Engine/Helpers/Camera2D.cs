@@ -54,15 +54,9 @@ namespace Chamboco.Engine.Helpers
             }
         }
 
-        public static void Move(Vector2 amount)
-        {
-            Position += amount;
-        }
+        public static void Move(Vector2 amount) => Position += amount;
 
-        public static void SetPosition(Vector2 position)
-        {
-            Position = position;
-        }
+        public static void SetPosition(Vector2 position) => Position = position;
 
         public static float Zoom
         {
@@ -88,49 +82,46 @@ namespace Chamboco.Engine.Helpers
             }
         }
 
-
         public static Matrix GetViewTransformationMatrix()
         {
-            if (isViewTransformationDirty)
-            {
-                camTranslationVector.X = -(int)position.X;
-                camTranslationVector.Y = -(int)position.Y;
+            if (!isViewTransformationDirty) return transform;
 
-                Matrix.CreateTranslation(ref camTranslationVector, out camTranslationMatrix);
-                Matrix.CreateRotationZ(rotation, out camRotationMatrix);
+            camTranslationVector.X = -(int)position.X;
+            camTranslationVector.Y = -(int)position.Y;
 
-                camScaleVector.X = zoom;
-                camScaleVector.Y = zoom;
-                camScaleVector.Z = 1;
+            Matrix.CreateTranslation(ref camTranslationVector, out camTranslationMatrix);
+            Matrix.CreateRotationZ(rotation, out camRotationMatrix);
 
-                Matrix.CreateScale(ref camScaleVector, out camScaleMatrix);
+            camScaleVector.X = zoom;
+            camScaleVector.Y = zoom;
+            camScaleVector.Z = 1;
 
-                resTranslationVector.X = Screen.VirtualWidth * 0.5f;
-                resTranslationVector.Y = Screen.VirtualHeight * 0.5f;
-                resTranslationVector.Z = 0;
+            Matrix.CreateScale(ref camScaleVector, out camScaleMatrix);
 
-                Matrix.CreateTranslation(ref resTranslationVector, out resTranslationMatrix);
+            resTranslationVector.X = Screen.VirtualWidth * 0.5f;
+            resTranslationVector.Y = Screen.VirtualHeight * 0.5f;
+            resTranslationVector.Z = 0;
 
-                transform = camTranslationMatrix *
-                             camRotationMatrix *
-                             camScaleMatrix *
-                             resTranslationMatrix *
-                             Screen.GetTransformationMatrix();
+            Matrix.CreateTranslation(ref resTranslationVector, out resTranslationMatrix);
 
-                isViewTransformationDirty = false;
-            }
+            transform = camTranslationMatrix *
+                        camRotationMatrix *
+                        camScaleMatrix *
+                        resTranslationMatrix *
+                        Screen.GetTransformationMatrix();
+
+            isViewTransformationDirty = false;
 
             return transform;
         }
 
         public static void RecalculateTransformationMatrices() => isViewTransformationDirty = true;
 
-
         public static void InferMinZoon()
         {
             var scaleX = (float)Screen.VirtualWidth / Screen.ScreenWidth;
             var scaleY = (float)Screen.VirtualHeight / Screen.ScreenHeight;
-            MinScale = (MathF.Max(scaleX, scaleY));
+            MinScale = MathF.Max(scaleX, scaleY);
         }
 
         public static void Follow(GameObject player)

@@ -1,4 +1,5 @@
-﻿using Chamboco.Engine.Entities.Components.Physics;
+﻿using Chamboco.Engine.Entities.Components;
+using Chamboco.Engine.Entities.Components.Physics;
 using Chamboco.Engine.Entities.Components.Sprites;
 using Chamboco.Engine.Helpers;
 using Microsoft.Xna.Framework;
@@ -6,7 +7,7 @@ using System;
 
 namespace Chamboco.Engine.Entities
 {
-    public class Transform
+    public class Transform : Component
     {
         Physics physicsComponent;
         Vector2 position;

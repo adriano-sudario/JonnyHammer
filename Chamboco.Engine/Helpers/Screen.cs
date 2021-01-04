@@ -21,12 +21,11 @@ namespace Chamboco.Engine.Helpers
         public static int VirtualHeight { get; private set; }
         public static int VirtualWidth { get; private set; }
 
-        public static int ScreenWidth;
-        public static int ScreenHeight;
+        public static int ScreenWidth { get; private set; }
+        public static int ScreenHeight { get; private set; }
 
         public static void Initialize(GraphicsDevice device, GraphicsDeviceManager graphicsDeviceManager)
         {
-
             graphicsDevice = device;
             graphics = graphicsDeviceManager;
             ScreenWidth = GraphicsDeviceManager.DefaultBackBufferWidth;
@@ -34,9 +33,7 @@ namespace Chamboco.Engine.Helpers
 
             VirtualWidth = ScreenWidth;
             VirtualHeight = ScreenHeight;
-
         }
-
 
         public static void SetVirtualArea(int width, int height)
         {
@@ -55,7 +52,6 @@ namespace Chamboco.Engine.Helpers
         {
             if (graphics.IsFullScreen)
             {
-
                 var currentResolution = graphicsDevice.DisplayMode;
 
                 var largerMode = GraphicsAdapter
@@ -72,13 +68,11 @@ namespace Chamboco.Engine.Helpers
             else
             {
                 ChangeResolution(GraphicsDeviceManager.DefaultBackBufferWidth, GraphicsDeviceManager.DefaultBackBufferHeight);
-
             }
 
         }
         public static void ChangeResolution(int realScreenWidth, int realScreenHeight)
         {
-
             graphics.PreferredBackBufferWidth = realScreenWidth;
             graphics.PreferredBackBufferHeight = realScreenHeight;
             graphics.ApplyChanges();
@@ -104,7 +98,7 @@ namespace Chamboco.Engine.Helpers
             ratioX = (float)viewport.Width / VirtualWidth;
             ratioY = (float)viewport.Height / VirtualHeight;
 
-            _dirtyMatrix = true;
+            dirtyMatrix = true;
         }
 
         public static void SetupFullViewport()
@@ -114,7 +108,7 @@ namespace Chamboco.Engine.Helpers
             vp.Width = ScreenWidth;
             vp.Height = ScreenHeight;
             graphicsDevice.Viewport = vp;
-            _dirtyMatrix = true;
+            dirtyMatrix = true;
         }
 
         public static void BeginDraw()
@@ -130,21 +124,21 @@ namespace Chamboco.Engine.Helpers
             // the clear color on the rest
         }
 
-        private static Matrix _scaleMatrix;
-        private static bool _dirtyMatrix = true;
+        private static Matrix scaleMatrix;
+        private static bool dirtyMatrix = true;
 
         public static Matrix GetTransformationMatrix()
         {
-            if (_dirtyMatrix)
+            if (dirtyMatrix)
                 RecreateScaleMatrix();
 
-            return _scaleMatrix;
+            return scaleMatrix;
         }
 
         static void RecreateScaleMatrix()
         {
-            Matrix.CreateScale((float)ScreenWidth / VirtualWidth, (float)ScreenWidth / VirtualWidth, 1f, out _scaleMatrix);
-            _dirtyMatrix = false;
+            Matrix.CreateScale((float)ScreenWidth / VirtualWidth, (float)ScreenWidth / VirtualWidth, 1f, out scaleMatrix);
+            dirtyMatrix = false;
         }
 
         public static Vector2 ScaleMouseToScreenCoordinates(Vector2 screenPosition)

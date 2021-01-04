@@ -13,15 +13,15 @@ namespace Chamboco.Engine.Entities
     {
         readonly IList<Component> components = new List<Component>();
         protected bool isActive = true;
-        public Transform Transform { get; protected set; } = new();
+        public Transform Transform => new Lazy<Transform>(GetComponent<Transform>).Value;
         readonly CoroutineManager coroutineManager = new();
 
         bool didLoad;
         public string Name { get; set; }
 
-        public GameObject(string name) => Name = name;
+        public GameObject(string name) : this() => Name = name;
 
-        protected GameObject() { }
+        public GameObject() => AddComponent<Transform>();
 
         protected void LoadComponents()
         {

@@ -152,31 +152,13 @@ namespace Chamboco.Engine.Entities.Components.Collider
             if (!AutoCheck)
                 return;
 
-            CollideOrTriggersWithAnyEntity(out var _);
+            CollideOrTriggersWithAnyEntity(out _);
 
             base.Update(gameTime);
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (!IsDebug) return;
-
-            //var origin =
-            //     new Vector2(
-            //        (Entity.Width / 2),
-            //         (Entity.Height / 2));
-
-            //var position = new Vector2(Bounds.X, Bounds.Y);
-
-            //spriteBatch.Draw(
-            //    debugTexture,
-            //    position + origin,
-            //    Bounds,
-            //    Color.White,
-            //    Entity.Transform.Rotation,
-            //    origin,
-            //    1,
-            //    SpriteEffects.None, 0
-            //    );
 
             spriteBatch.Draw(
                 debugTexture,
