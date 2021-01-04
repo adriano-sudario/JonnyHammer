@@ -15,13 +15,15 @@ namespace JonnyHammer.Game.Components
         SolidColorTexture lifebar;
         SolidColorTexture lifebarBack;
         SpriteRenderer renderer;
-        private Rectangle bounds;
-        private Rectangle lifeBounds;
+        Transform transform = new ();
 
         public int TotalLife { get; }
         public int CurrentLife { get; private set; }
 
-        public bool desapearing;
+        bool desapearing;
+
+        int lifeBarWidth;
+        int lifeBarHeight = 4;
 
         public Lifebar(int totalLife)
         {
@@ -34,6 +36,8 @@ namespace JonnyHammer.Game.Components
         {
             Entity.StartCoroutine(Desapear());
             renderer = Entity.GetComponent<SpriteRenderer>();
+            transform.Position = new(0, -5);
+            transform.Parent = Entity.Transform;
         }
 
         public void UpdateLife(int currentLife)
@@ -46,14 +50,11 @@ namespace JonnyHammer.Game.Components
 
         public IEnumerator ShowBars()
         {
-
             lifebar.Opacity = 1;
             lifebarBack.Opacity = 1;
             yield return new WaitUntil(() => !desapearing);
             yield return Desapear();
-
         }
-
 
         IEnumerator Desapear()
         {
@@ -82,24 +83,14 @@ namespace JonnyHammer.Game.Components
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            bounds = new Rectangle(
-            (int)Entity.Transform.Position.X,
-            (int)Entity.Transform.Position.Y - 5,
-            renderer.Width, 4);
-
-            var currentLife = bounds.Width * CurrentLife / TotalLife;
-
-            lifeBounds = new Rectangle(
-                bounds.X, bounds.Y,
-                currentLife, bounds.Height);
-
+            lifeBarWidth = renderer.Width * CurrentLife / TotalLife;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-            lifebarBack.Draw(spriteBatch, bounds);
-            lifebar.Draw(spriteBatch, lifeBounds);
+            lifebarBack.Draw(spriteBatch, new ((int)transform.X, (int)transform.Y, renderer.Width, lifeBarHeight));
+            lifebar.Draw(spriteBatch, new ((int)transform.X, (int)transform.Y, lifeBarWidth, lifeBarHeight));
         }
 
     }

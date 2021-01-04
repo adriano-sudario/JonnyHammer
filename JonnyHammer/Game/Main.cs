@@ -38,7 +38,7 @@ namespace JonnyHammer.Game
             base.LoadContent();
 
             SceneManager.AddScene("world_one", new WorldOne());
-            SceneManager.AddScene("nujustu_scene", new Nujutsu());
+            // SceneManager.AddScene("nujustu_scene", new Nujutsu());
         }
 
         /// <summary>

@@ -7,24 +7,14 @@ using System;
 
 namespace Chamboco.Engine.Entities
 {
-    public class Transform : Transform2D.Transform2D
+    public partial class Transform
     {
         Physics physicsComponent;
 
         public Direction.Horizontal FacingDirection { get; set; } = Direction.Horizontal.Right;
 
-        public override Vector2 Scale
-        {
-            get => base.Scale;
-            set
-            {
-                base.Scale = value;
-                OnSetScale();
-            }
-        }
-
-        public float X => Position.X;
-        public float Y => Position.Y;
+        public float X => AbsolutePosition.X;
+        public float Y => AbsolutePosition.Y;
 
         public void FixPosition(Vector2 position) => Position = position;
 

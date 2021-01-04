@@ -3,16 +3,16 @@
 
 using Chamboco.Engine.Entities.Components;
 
-namespace Chamboco.Transform2D
+namespace Chamboco.Engine.Entities
 {
     using Microsoft.Xna.Framework;
     using System.Collections.Generic;
 
-    public class Transform2D : Component
+    public partial class Transform : Component
     {
         #region Constructors
 
-        public Transform2D()
+        public Transform()
         {
             this.Position = Vector2.Zero;
             this.Rotation = 0;
@@ -23,9 +23,9 @@ namespace Chamboco.Transform2D
 
         #region Fields
 
-        private Transform2D parent;
+        private Transform parent;
 
-        private List<Transform2D> children = new List<Transform2D>();
+        private List<Transform> children = new ();
 
         private Matrix absolute, invertAbsolute, local;
 
@@ -43,7 +43,7 @@ namespace Chamboco.Transform2D
         /// Gets or sets the parent transform.
         /// </summary>
         /// <value>The parent.</value>
-        public Transform2D Parent
+        public Transform Parent
         {
             get => this.parent;
             set
@@ -67,7 +67,7 @@ namespace Chamboco.Transform2D
         /// Gets all the children transform.
         /// </summary>
         /// <value>The children.</value>
-        public IEnumerable<Transform2D> Children => this.children;
+        public IEnumerable<Transform> Children => this.children;
 
         /// <summary>
         /// Gets the absolute rotation.
@@ -125,7 +125,7 @@ namespace Chamboco.Transform2D
         /// Gets or sets the scale (relative to the parent, absolute if no parent).
         /// </summary>
         /// <value>The scale.</value>
-        public virtual Vector2 Scale
+        public Vector2 Scale
         {
             get => this.localScale;
             set
@@ -134,6 +134,7 @@ namespace Chamboco.Transform2D
                 {
                     this.localScale = value;
                     this.SetNeedsLocalUpdate();
+                    OnSetScale();
                 }
             }
         }

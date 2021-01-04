@@ -2,7 +2,9 @@
 using Chamboco.Engine.Entities.Components.Physics;
 using Chamboco.Engine.Entities.Components.Sprites;
 using Chamboco.Engine.Inputs;
+using Chamboco.Engine.Managers;
 using JonnyHammer.Game.Components;
+using JonnyHammer.Game.Tiles;
 
 namespace JonnyHammer.Game.Characters
 {
@@ -46,6 +48,7 @@ namespace JonnyHammer.Game.Characters
         public Jonny(Vector2 respawnPosition) : this()
         {
             RespawnPosition = respawnPosition;
+
         }
 
         public Jonny()

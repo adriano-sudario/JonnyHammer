@@ -100,8 +100,17 @@ namespace Chamboco.Engine.Entities
 
         public void Dispose()
         {
-            for (int i = 0; i < components.Count; i++)
+            for (var i = 0; i < components.Count; i++)
                 components[i].Dispose();
+        }
+
+        public void Spawn(GameObject obj, Vector2? position = null) =>
+            SceneManager.CurrentScene.Spawn(obj, position);
+
+        public void SpawnChild(GameObject obj, Vector2? relativePosition = null)
+        {
+            obj.Transform.Parent = Transform;
+            SceneManager.CurrentScene.Spawn(obj, relativePosition);
         }
     }
 }

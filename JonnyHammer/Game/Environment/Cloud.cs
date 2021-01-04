@@ -8,8 +8,6 @@ namespace JonnyHammer.Game.Environment
     public class Cloud : GameObject
     {
         private SpriteRenderer sprite;
-
-        public Vector2 Spawn { get; set; }
         public float Speed { get; set; }
         public int Height { get => sprite.Height; }
         public int Width { get => sprite.Width; }
