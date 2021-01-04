@@ -11,15 +11,15 @@ namespace Chamboco.Engine.Scenes
 {
     public abstract class Scene
     {
-        IList<GameObject> entities = new List<GameObject>();
+        readonly IList<GameObject> entities = new List<GameObject>();
         public IReadOnlyList<GameObject> Entities => entities.ToArray();
         public World World { get; }
 
         public Scene()
         {
-            World = new World
+            World = new ()
             {
-                Gravity = new Vector2(0, 10)
+                Gravity = new (0, 10)
             };
 
             SceneManager.CurrentScene ??= this;
@@ -31,11 +31,11 @@ namespace Chamboco.Engine.Scenes
             entities.Remove(entity);
         }
 
-        public void Spawn(GameObject gameObject, Vector2? position = null, string name = null) 
+        public void Spawn(GameObject gameObject, Vector2? position = null, string name = null)
         {
             if (position.HasValue)
                 gameObject.Transform.MoveTo(position.Value);
-            
+
             if (name is not null)
                 gameObject.Name = name;
             entities.Add(gameObject);

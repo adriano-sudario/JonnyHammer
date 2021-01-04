@@ -13,19 +13,10 @@ namespace Chamboco.Engine.Inputs
             currentKeyboardState = Keyboard.GetState();
         }
 
-        public bool IsPressing(Keys key)
-        {
-            return currentKeyboardState.IsKeyDown(key);
-        }
+        public bool IsPressing(Keys key) => currentKeyboardState.IsKeyDown(key);
 
-        public bool HasPressed(Keys key)
-        {
-            return previousKeyboardState.IsKeyUp(key) && currentKeyboardState.IsKeyDown(key);
-        }
+        public bool HasPressed(Keys key) => previousKeyboardState.IsKeyUp(key) && currentKeyboardState.IsKeyDown(key);
 
-        public bool HasReleased(Keys key)
-        {
-            return previousKeyboardState.IsKeyDown(key) && currentKeyboardState.IsKeyUp(key);
-        }
+        public bool HasReleased(Keys key) => previousKeyboardState.IsKeyDown(key) && currentKeyboardState.IsKeyUp(key);
     }
 }

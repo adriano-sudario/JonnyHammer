@@ -14,15 +14,15 @@ namespace Chamboco.Engine.Helpers
     {
         private static ContentManager content;
 
-        static string _contentFullPath;
+        static string contentFullPath;
         public static string ContentFullPath
         {
             get
             {
-                if (string.IsNullOrEmpty(_contentFullPath))
-                    _contentFullPath = content.RootDirectory;
+                if (string.IsNullOrEmpty(contentFullPath))
+                    contentFullPath = content.RootDirectory;
 
-                return _contentFullPath;
+                return contentFullPath;
             }
         }
 
@@ -55,11 +55,11 @@ namespace Chamboco.Engine.Helpers
                 {
                     var jsonFrame = dataFrames[$"{i}.aseprite"];
 
-                    int x = jsonFrame.Frame.X;
-                    int y = jsonFrame.Frame.Y;
-                    int w = jsonFrame.Frame.W;
-                    int h = jsonFrame.Frame.H;
-                    int duration = jsonFrame.Duration;
+                    var x = jsonFrame.Frame.X;
+                    var y = jsonFrame.Frame.Y;
+                    var w = jsonFrame.Frame.W;
+                    var h = jsonFrame.Frame.H;
+                    var duration = jsonFrame.Duration;
 
                     frames.Add(new Frame
                     {

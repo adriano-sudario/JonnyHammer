@@ -6,16 +6,16 @@ namespace Chamboco.Engine.Helpers
     public class SolidColorTexture
     {
 
-        Color _color;
+        Color color;
 
         Texture2D texture;
         public Color Color
         {
-            get => _color;
+            get => color;
             set
             {
                 texture.SetData(new[] { value });
-                _color = value;
+                color = value;
             }
         }
 
@@ -27,9 +27,7 @@ namespace Chamboco.Engine.Helpers
             Color = color;
         }
 
-        public void Draw(SpriteBatch spriteBatch, Rectangle bounds)
-        {
+        public void Draw(SpriteBatch spriteBatch, Rectangle bounds) =>
             spriteBatch.Draw(texture, bounds, Color.White * Opacity);
-        }
     }
 }

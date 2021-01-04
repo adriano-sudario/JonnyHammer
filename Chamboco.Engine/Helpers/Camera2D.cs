@@ -7,18 +7,18 @@ namespace Chamboco.Engine.Helpers
 {
     public static class Camera2D
     {
-        static float _zoom;
-        static float _rotation;
-        static Vector2 _position;
-        static Matrix _transform = Matrix.Identity;
-        static bool _isViewTransformationDirty = true;
-        static Matrix _camTranslationMatrix = Matrix.Identity;
-        static Matrix _camRotationMatrix = Matrix.Identity;
-        static Matrix _camScaleMatrix = Matrix.Identity;
-        static Matrix _resTranslationMatrix = Matrix.Identity;
-        static Vector3 _camTranslationVector = Vector3.Zero;
-        static Vector3 _camScaleVector = Vector3.Zero;
-        static Vector3 _resTranslationVector = Vector3.Zero;
+        static float zoom;
+        static float rotation;
+        static Vector2 position;
+        static Matrix transform = Matrix.Identity;
+        static bool isViewTransformationDirty = true;
+        static Matrix camTranslationMatrix = Matrix.Identity;
+        static Matrix camRotationMatrix = Matrix.Identity;
+        static Matrix camScaleMatrix = Matrix.Identity;
+        static Matrix resTranslationMatrix = Matrix.Identity;
+        static Vector3 camTranslationVector = Vector3.Zero;
+        static Vector3 camScaleVector = Vector3.Zero;
+        static Vector3 resTranslationVector = Vector3.Zero;
 
         public static float BoundWidth { get; private set; }
         public static float BoundHeight { get; private set; }
@@ -29,8 +29,8 @@ namespace Chamboco.Engine.Helpers
         public static void Initialize()
         {
             Zoom = 1f;
-            _rotation = 0.0f;
-            _position = Vector2.Zero;
+            rotation = 0.0f;
+            position = Vector2.Zero;
 
             Center();
             InferMinZoon();
@@ -46,11 +46,11 @@ namespace Chamboco.Engine.Helpers
 
         public static Vector2 Position
         {
-            get { return _position; }
+            get => position;
             set
             {
-                _position = value;
-                _isViewTransformationDirty = true;
+                position = value;
+                isViewTransformationDirty = true;
             }
         }
 
@@ -66,70 +66,64 @@ namespace Chamboco.Engine.Helpers
 
         public static float Zoom
         {
-            get { return _zoom; }
+            get => zoom;
             set
             {
-                _zoom = value;
-                if (_zoom < 0.1f)
+                zoom = value;
+                if (zoom < 0.1f)
                 {
-                    _zoom = 0.1f;
+                    zoom = 0.1f;
                 }
-                _isViewTransformationDirty = true;
+                isViewTransformationDirty = true;
             }
         }
 
         public static float Rotation
         {
-            get
-            {
-                return _rotation;
-            }
+            get => rotation;
             set
             {
-                _rotation = value;
-                _isViewTransformationDirty = true;
+                rotation = value;
+                isViewTransformationDirty = true;
             }
         }
 
 
         public static Matrix GetViewTransformationMatrix()
         {
-            if (_isViewTransformationDirty)
+            if (isViewTransformationDirty)
             {
-                _camTranslationVector.X = -(int)_position.X;
-                _camTranslationVector.Y = -(int)_position.Y;
+                camTranslationVector.X = -(int)position.X;
+                camTranslationVector.Y = -(int)position.Y;
 
-                Matrix.CreateTranslation(ref _camTranslationVector, out _camTranslationMatrix);
-                Matrix.CreateRotationZ(_rotation, out _camRotationMatrix);
+                Matrix.CreateTranslation(ref camTranslationVector, out camTranslationMatrix);
+                Matrix.CreateRotationZ(rotation, out camRotationMatrix);
 
-                _camScaleVector.X = _zoom;
-                _camScaleVector.Y = _zoom;
-                _camScaleVector.Z = 1;
+                camScaleVector.X = zoom;
+                camScaleVector.Y = zoom;
+                camScaleVector.Z = 1;
 
-                Matrix.CreateScale(ref _camScaleVector, out _camScaleMatrix);
+                Matrix.CreateScale(ref camScaleVector, out camScaleMatrix);
 
-                _resTranslationVector.X = Screen.VirtualWidth * 0.5f;
-                _resTranslationVector.Y = Screen.VirtualHeight * 0.5f;
-                _resTranslationVector.Z = 0;
+                resTranslationVector.X = Screen.VirtualWidth * 0.5f;
+                resTranslationVector.Y = Screen.VirtualHeight * 0.5f;
+                resTranslationVector.Z = 0;
 
-                Matrix.CreateTranslation(ref _resTranslationVector, out _resTranslationMatrix);
+                Matrix.CreateTranslation(ref resTranslationVector, out resTranslationMatrix);
 
-                _transform = _camTranslationMatrix *
-                             _camRotationMatrix *
-                             _camScaleMatrix *
-                             _resTranslationMatrix *
+                transform = camTranslationMatrix *
+                             camRotationMatrix *
+                             camScaleMatrix *
+                             resTranslationMatrix *
                              Screen.GetTransformationMatrix();
 
-                _isViewTransformationDirty = false;
+                isViewTransformationDirty = false;
             }
 
-            return _transform;
+            return transform;
         }
 
-        public static void RecalculateTransformationMatrices()
-        {
-            _isViewTransformationDirty = true;
-        }
+        public static void RecalculateTransformationMatrices() => isViewTransformationDirty = true;
 
 
         public static void InferMinZoon()

@@ -7,10 +7,10 @@ namespace Chamboco.Engine.Helpers
 {
     public static class Screen
     {
-        static Viewport _viewport;
-        static float _ratioX;
-        static float _ratioY;
-        static Vector2 _virtualMousePosition;
+        static Viewport viewport;
+        static float ratioX;
+        static float ratioY;
+        static Vector2 virtualMousePosition;
         static GraphicsDevice graphicsDevice;
         static GraphicsDeviceManager graphics;
 
@@ -101,8 +101,8 @@ namespace Chamboco.Engine.Helpers
         {
             SetupVirtualScreenViewport();
 
-            _ratioX = (float)_viewport.Width / VirtualWidth;
-            _ratioY = (float)_viewport.Height / VirtualHeight;
+            ratioX = (float)viewport.Width / VirtualWidth;
+            ratioY = (float)viewport.Height / VirtualHeight;
 
             _dirtyMatrix = true;
         }
@@ -149,13 +149,13 @@ namespace Chamboco.Engine.Helpers
 
         public static Vector2 ScaleMouseToScreenCoordinates(Vector2 screenPosition)
         {
-            var realX = screenPosition.X - _viewport.X;
-            var realY = screenPosition.Y - _viewport.Y;
+            var realX = screenPosition.X - viewport.X;
+            var realY = screenPosition.Y - viewport.Y;
 
-            _virtualMousePosition.X = realX / _ratioX;
-            _virtualMousePosition.Y = realY / _ratioY;
+            virtualMousePosition.X = realX / ratioX;
+            virtualMousePosition.Y = realY / ratioY;
 
-            return _virtualMousePosition;
+            return virtualMousePosition;
         }
 
         public static void SetupVirtualScreenViewport()
@@ -173,7 +173,7 @@ namespace Chamboco.Engine.Helpers
             }
 
             // set up the new viewport centered in the backbuffer
-            _viewport = new Viewport
+            viewport = new Viewport
             {
                 X = (ScreenWidth / 2) - (width / 2),
                 Y = (ScreenHeight / 2) - (height / 2),
@@ -181,7 +181,7 @@ namespace Chamboco.Engine.Helpers
                 Height = height
             };
 
-            graphicsDevice.Viewport = _viewport;
+            graphicsDevice.Viewport = viewport;
         }
     }
 }

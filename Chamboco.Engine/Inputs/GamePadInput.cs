@@ -15,24 +15,12 @@ namespace Chamboco.Engine.Inputs
 
         public GamePadInput(PlayerIndex index) => this.index = index;
 
-        public bool IsPressing(Buttons button)
-        {
-            return currentGamePadState.IsButtonDown(button);
-        }
+        public bool IsPressing(Buttons button) => currentGamePadState.IsButtonDown(button);
 
-        public bool HasPressed(Buttons button)
-        {
-            return previousGamePadState.IsButtonUp(button) && currentGamePadState.IsButtonDown(button);
-        }
+        public bool HasPressed(Buttons button) => previousGamePadState.IsButtonUp(button) && currentGamePadState.IsButtonDown(button);
 
-        public bool HasReleased(Buttons button)
-        {
-            return previousGamePadState.IsButtonDown(button) && currentGamePadState.IsButtonUp(button);
-        }
+        public bool HasReleased(Buttons button) => previousGamePadState.IsButtonDown(button) && currentGamePadState.IsButtonUp(button);
 
-        public void Vibrate(float intensity = 1f)
-        {
-            GamePad.SetVibration(index, intensity, intensity);
-        }
+        public void Vibrate(float intensity = 1f) => GamePad.SetVibration(index, intensity, intensity);
     }
 }

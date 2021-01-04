@@ -5,36 +5,27 @@ using TiledSharp;
 
 namespace Chamboco.Engine.Helpers
 {
+    public record TiledObject
+    (
+        Vector2 Position,
+        int Width,
+        int Height,
+        float MoveAmount
+    );
 
-    public class TiledObject
-    {
-
-        public Vector2 Position { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
-        public float MoveAmount { get; set; }
-
-    }
-    public class TileLayer
-    {
-        public float Speed { get; set; }
-        public int Amount { get; set; }
-        public int Index { get; set; }
-        public TileSetAditionalInfo Info { get; set; }
-        public Vector2 Source { get; set; }
-        public string TextureName { get; set; }
-        public string Name { get; set; }
-        public Vector2 Position { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
-        //public Vector2 LocalPosition { get; set; }
-        //public int LocalWidth { get; set; }
-        //public int LocalHeight { get; set; }
-
-        //public Vector2 Position => LocalPosition * Screen.Scale;
-        //public float Width => LocalWidth * Screen.Scale;
-        //public float Height => LocalHeight * Screen.Scale;
-    }
+    public record TileLayer
+    (
+        Vector2 Position,
+        Vector2 Source,
+        TileSetAditionalInfo Info,
+        int Index,
+        int Amount,
+        float Speed,
+        string TextureName,
+        string Name,
+        int Width,
+        int Height
+    );
 
     public class TiledData
     {
@@ -59,11 +50,11 @@ namespace Chamboco.Engine.Helpers
 
         static Dictionary<string, TileLayer[]> LoadTiledLayers(TmxMap map)
         {
-            var ret = new Dictionary<string, TileLayer[]>();
+            Dictionary<string, TileLayer[]> ret = new();
 
             foreach (var (index, layer) in map.TileLayers.WithIndex())
             {
-                var tiles = new List<TileLayer>();
+                List<TileLayer> tiles = new();
 
                 foreach (var tile in layer.Tiles)
                 {
@@ -84,19 +75,17 @@ namespace Chamboco.Engine.Helpers
                     if (layer.Properties.ContainsKey("Speed"))
                         speed = float.Parse(layer.Properties["Speed"], CultureInfo.InvariantCulture);
 
-                    var layerData = new TileLayer
-                    {
-                        Position = position,
-                        Source = source,
-                        Info = info,
-                        Index = index,
-                        Amount = amount,
-                        Speed = speed,
-                        TextureName = textureName,
-                        Name = tileSet.Name,
-                        Width = tileSet.TileWidth,
-                        Height = tileSet.TileHeight,
-                    };
+                    TileLayer layerData = new (
+                        position,
+                        source,
+                        info,
+                        index,
+                        amount,
+                        speed,
+                        textureName,
+                        tileSet.Name,
+                        tileSet.TileWidth,
+                        tileSet.TileHeight);
                     tiles.Add(layerData);
                 }
 
@@ -108,11 +97,11 @@ namespace Chamboco.Engine.Helpers
 
         static Dictionary<string, TiledObject[]> LoadTiledObjects(TmxMap map)
         {
-            var ret = new Dictionary<string, TiledObject[]>();
+            Dictionary<string, TiledObject[]> ret = new();
 
             foreach (var layer in map.ObjectGroups)
             {
-                var objs = new List<TiledObject>();
+                List<TiledObject> objs = new ();
 
                 foreach (var item in layer.Objects)
                 {
@@ -121,13 +110,12 @@ namespace Chamboco.Engine.Helpers
                     if (item.Properties.ContainsKey("MoveAmount"))
                         moveAmount = float.Parse(item.Properties["MoveAmount"], NumberStyles.Float, CultureInfo.InvariantCulture);
 
-                    var obj = new TiledObject
-                    {
-                        Position = new Vector2((float)item.X, (float)item.Y),
-                        Width = (int)(item.Width),
-                        Height = (int)(item.Height),
-                        MoveAmount = moveAmount,
-                    };
+                    var obj = new TiledObject (
+                        new Vector2((float)item.X, (float)item.Y),
+                        (int)item.Width,
+                        (int)item.Height,
+                        moveAmount
+                    );
 
                     objs.Add(obj);
                 }
