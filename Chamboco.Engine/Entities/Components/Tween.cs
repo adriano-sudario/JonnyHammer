@@ -6,15 +6,15 @@ using System;
 namespace Chamboco.Engine.Entities.Components
 {
     public enum TweenMode { Persist, OneShot, Loop, Yoyo, Restart };
-    public enum TweenProperty { X, Y, Scale, Angle, Opacity };
+    public enum TweenProperty { X, Y, ScaleX, ScaleY, Angle, Opacity };
 
     public class Tween : Component
     {
-        Vector2 _position;
-        float _scale;
-        float _angle;
-        float _opacity;
-        float _custom;
+        Vector2 position;
+        Vector2 scale;
+        float angle;
+        float opacity;
+        float custom;
         double elapsedTime;
         SpriteRenderer entitySprite;
         Func<float> getCustomValue;
@@ -44,8 +44,11 @@ namespace Chamboco.Engine.Entities.Components
                     case TweenProperty.Y:
                         return Entity.Transform.Y;
 
-                    case TweenProperty.Scale:
-                        return Entity.Transform.Scale;
+                    case TweenProperty.ScaleX:
+                        return Entity.Transform.Scale.X;
+
+                    case TweenProperty.ScaleY:
+                        return Entity.Transform.Scale.Y;
 
                     case TweenProperty.Angle:
                         return Entity.Transform.Rotation;
@@ -65,31 +68,34 @@ namespace Chamboco.Engine.Entities.Components
             {
                 if (setCustomValue != null)
                 {
-                    setCustomValue(MathHelper.Lerp(_custom, TargetValue, value) );
+                    setCustomValue(MathHelper.Lerp(custom, TargetValue, value) );
                     return;
                 }
 
                 switch (Property)
                 {
                     case TweenProperty.X:
-                        Entity.Transform.MoveAndSlideHorizontally(MathHelper.Lerp(_position.X, TargetValue, value));
+                        Entity.Transform.MoveAndSlideHorizontally(MathHelper.Lerp(position.X, TargetValue, value));
                         break;
 
                     case TweenProperty.Y:
-                        Entity.Transform.MoveAndSlideVertically(MathHelper.Lerp(_position.Y, TargetValue, value));
+                        Entity.Transform.MoveAndSlideVertically(MathHelper.Lerp(position.Y, TargetValue, value));
                         break;
 
-                    case TweenProperty.Scale:
-                        Entity.Transform.Scale = MathHelper.Lerp(_scale, TargetValue, value);
+                    case TweenProperty.ScaleX:
+                        Entity.Transform.Scale = Entity.Transform.Scale.WithX(MathHelper.Lerp(scale.X, TargetValue, value));
+                        break;
+                    case TweenProperty.ScaleY:
+                        Entity.Transform.Scale = Entity.Transform.Scale.WithY(MathHelper.Lerp(scale.Y, TargetValue, value));
                         break;
 
                     case TweenProperty.Angle:
-                        Entity.Transform.Rotation = MathHelper.Lerp(_angle, MathHelper.ToRadians(TargetValue), value);
+                        Entity.Transform.Rotation = MathHelper.Lerp(angle, MathHelper.ToRadians(TargetValue), value);
                         break;
 
                     case TweenProperty.Opacity:
                         if (entitySprite != null)
-                            entitySprite.Opacity = MathHelper.Lerp(_opacity, TargetValue, value);
+                            entitySprite.Opacity = MathHelper.Lerp(opacity, TargetValue, value);
                         break;
 
                     default:
@@ -235,15 +241,15 @@ namespace Chamboco.Engine.Entities.Components
             if (Entity != null)
             {
                 InitialValue = CurrentValue;
-                _position = Entity.Transform.Position;
-                _scale = Entity.Transform.Scale;
-                _angle = Entity.Transform.Rotation;
+                position = Entity.Transform.Position;
+                scale = Entity.Transform.Scale;
+                angle = Entity.Transform.Rotation;
 
                 if (getCustomValue != null)
-                    _custom = getCustomValue();
+                    custom = getCustomValue();
 
                 if (entitySprite != null)
-                    _opacity = entitySprite.Opacity;
+                    opacity = entitySprite.Opacity;
                 else if (Property == TweenProperty.Opacity)
                     throw new Exception($"[Tween]: Couldn't start Tween property '{Property}'. Entity Sprite is null.");
             }

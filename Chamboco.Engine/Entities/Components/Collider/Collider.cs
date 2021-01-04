@@ -33,8 +33,8 @@ namespace Chamboco.Engine.Entities.Components.Collider
                 return new Rectangle(
                             (int)position.X,
                             (int)position.Y,
-                            (int)(bounds.Width * Entity.Transform.Scale),
-                            (int)(bounds.Height * Entity.Transform.Scale)
+                            (int)(bounds.Width * Entity.Transform.Scale.X),
+                            (int)(bounds.Height * Entity.Transform.Scale.Y)
                           );
             }
             private set => bounds = value;

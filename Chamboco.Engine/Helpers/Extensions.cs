@@ -26,7 +26,7 @@ namespace Chamboco.Engine.Helpers
             this SpriteBatch spriteBatch,
             Texture2D spriteStrip,
             Vector2 position,
-            float scale,
+            Vector2 scale,
             Rectangle source,
             Color color,
             float rotation,
@@ -58,6 +58,12 @@ namespace Chamboco.Engine.Helpers
                 yield return (index++, item);
         }
 
+        public static Vector2 WithX(this Vector2 @this, float x) => new(x, @this.Y);
+        public static Vector2 WithY(this Vector2 @this, float y) => new(@this.X, y);
+        public static Vector2 WithX(this Vector2 @this, int x) => new(x, @this.Y);
+        public static Vector2 WithY(this Vector2 @this, int y) => new(@this.X, y);
+        public static Vector2 ToVector2(this float f) => new(f, f);
+        public static Vector2 ToVector2(this int i) => new(i, i);
         public static void MoveAndSlide(this Body body, Vector2 addPosition)
         {
             body.SetTransform(body.Position + (addPosition / Physics.PixelsPerMeter), 0);

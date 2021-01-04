@@ -16,8 +16,8 @@ namespace Chamboco.Engine.Entities.Components.Sprites
         public Vector2 Origin { get; }
         public Color Color { get; set; } = Color.White;
         public float LayerDepth { get; set; }
-        public int Width => (int)(SpriteWidth * Entity.Transform.Scale);
-        public int Height => (int)(SpriteHeight * Entity.Transform.Scale);
+        public int Width => (int)(SpriteWidth * Entity.Transform.Scale.X);
+        public int Height => (int)(SpriteHeight * Entity.Transform.Scale.Y);
 
         public SpriteRenderer(Texture2D spriteStrip, Rectangle source = default, float opacity = 1f, Vector2 origin = default)
         {
@@ -32,7 +32,7 @@ namespace Chamboco.Engine.Entities.Components.Sprites
         {
             if (!IsVisible) return;
 
-            var effect = FacingDirection == Direction.Horizontal.Left ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            var effect = Entity.Transform.FacingDirection == Direction.Horizontal.Left ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
             spriteBatch.DrawEntity(
                 spriteStrip,

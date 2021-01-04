@@ -35,7 +35,7 @@ namespace JonnyHammer.Game.Characters
             //AddComponent(new PhysicsComponent(BodyType.Dynamic, collider, mass: 10, friction: 0.2f)); ;
             AddComponent<SlimPhysics>();
 
-            Transform.Scale = 0.6f;
+            Transform.Scale = 0.6f.ToVector2();
 
             collider.OnTrigger += Collider_OnCollide;
 
