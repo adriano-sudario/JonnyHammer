@@ -36,7 +36,7 @@ namespace JonnyHammer.Game.Characters
         bool canDash = true;
         State state = State.Jumping;
 
-        KeyboardInput keyboard;
+        KeyboardInput keyboard = new ();
         Physics physics;
         AnimationRenderer spriteRenderer;
         Lifebar lifebar;
@@ -51,7 +51,6 @@ namespace JonnyHammer.Game.Characters
         public Jonny()
         {
             life = totalLife;
-            keyboard = new KeyboardInput();
 
             spriteRenderer = AddComponent(CreateAnimations());
 
@@ -65,6 +64,10 @@ namespace JonnyHammer.Game.Characters
                     autoCheck: true,
                     isDebug: true,
                     debugColor: debugColor));
+
+            physics = AddComponent(new Physics(BodyType.Dynamic, collider, mass: 1));
+            physics.MaxVelocity = new Vector2(3, JumpForce);
+            physics.UseMaxVelocityY = true;
 
             var floorTrigger = AddComponent(
                 new Collider(
@@ -83,9 +86,6 @@ namespace JonnyHammer.Game.Characters
                 physics.SetVelocity(velocityY: 0);
             };
 
-            physics = AddComponent(new Physics(BodyType.Dynamic, collider, mass: 1));
-            physics.MaxVelocity = new Vector2(3, JumpForce);
-            physics.UseMaxVelocityY = true;
         }
 
         public void TakeDamage(int amount, Vector2 reference)
