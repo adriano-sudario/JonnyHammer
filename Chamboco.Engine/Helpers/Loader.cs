@@ -12,10 +12,11 @@ namespace Chamboco.Engine.Helpers
 {
     public static class Loader
     {
-        private static ContentManager content;
+        static ContentManager content;
 
         static string contentFullPath;
-        public static string ContentFullPath
+
+        static string ContentFullPath
         {
             get
             {
@@ -61,12 +62,11 @@ namespace Chamboco.Engine.Helpers
                     var h = jsonFrame.Frame.H;
                     var duration = jsonFrame.Duration;
 
-                    frames.Add(new Frame
-                    {
-                        Duration = duration,
-                        Name = $"{animationName}_{i}",
-                        Source = new Rectangle(x, y, w, h),
-                    });
+                    frames.Add(new (
+                        $"{animationName}_{i}",
+                        new (x, y, w, h),
+                        duration
+                    ));
                 }
                 frameData.Add(animationName, frames.ToArray());
 
@@ -82,7 +82,7 @@ namespace Chamboco.Engine.Helpers
         public static T LoadDeserializedJsonFile<T>(string fileName)
         {
             var jsonString = LoadJsonFile(fileName);
-            var jsonSerializer = new JsonSerializerOptions {PropertyNameCaseInsensitive = true};
+            JsonSerializerOptions  jsonSerializer = new() {PropertyNameCaseInsensitive = true};
             return JsonSerializer.Deserialize<T>(jsonString, jsonSerializer);
         }
 

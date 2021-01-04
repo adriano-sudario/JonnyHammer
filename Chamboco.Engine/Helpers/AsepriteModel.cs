@@ -2,16 +2,16 @@ using System.Collections.Generic;
 
 namespace Chamboco.Engine.Helpers
 {
-    public record AsepriteModel
+    internal record AsepriteModel
     {
-        public record SpriteSize (int X, int Y, int W, int H);
-        public record Size (int W, int H);
-        public record FrameTag (string Name, int From, int To, string Direction);
-        public record Layer (string Name, int Opacity, string BlendMode);
-        public record FrameData (
+        internal record SpriteSize (int X, int Y, int W, int H);
+        internal record Size (int W, int H);
+        internal record FrameTag (string Name, int From, int To, string Direction);
+        internal record Layer (string Name, int Opacity, string BlendMode);
+        internal record FrameData (
             SpriteSize Frame, bool Rotated, bool Trimmed, SpriteSize SpriteSourceSize, Size SourceSize, int Duration);
 
-        public record MetaData (
+        internal record MetaData (
             string App,
             string Version,
             string Image,

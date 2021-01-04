@@ -13,21 +13,21 @@ namespace Chamboco.Engine.Entities.Components.Sprites
         public bool HasCompletedCicle { get; set; }
     }
 
-    public class Frame
-    {
-        public string Name { get; set; }
-        public Rectangle Source { get; set; }
-        public int Duration { get; set; }
-    }
+    public record Frame
+    (
+        string Name,
+        Rectangle Source,
+        int Duration
+    );
 
     public class AnimationRenderer : SpriteRenderer
     {
-        private int elapsedTime;
-        private IDictionary<string, Frame[]> sequences;
-        private Frame[] currentSequence;
-        private int currentFrameIndex;
+        int elapsedTime;
+        IDictionary<string, Frame[]> sequences;
+        Frame[] currentSequence;
+        int currentFrameIndex;
 
-        private Frame CurrentFrame => currentSequence[currentFrameIndex];
+        Frame CurrentFrame => currentSequence[currentFrameIndex];
 
         public bool IsPlaying { get; private set; }
         public string CurrentName { get; set; }
