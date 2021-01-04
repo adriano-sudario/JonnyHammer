@@ -1,9 +1,9 @@
-﻿using JonnyHamer.Engine.Managers;
-using Chamboco.Engine;
+﻿using Chamboco.Engine;
+using Chamboco.Engine.Managers;
 using JonnyHammer.Game.Scenes;
 using Microsoft.Xna.Framework;
 
-namespace JonnyHammer
+namespace JonnyHammer.Game
 {
     /// <summary>
     /// This is the main type for your game.

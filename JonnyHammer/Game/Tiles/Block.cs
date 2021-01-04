@@ -1,10 +1,10 @@
-using JonnyHamer.Engine.Entities;
+using Chamboco.Engine.Entities;
 using Chamboco.Engine.Entities.Components.Collider;
-using Chamboco.Engine.Entities.Components.Phisycs;
+using Chamboco.Engine.Entities.Components.Physics;
 using Microsoft.Xna.Framework;
 using tainicom.Aether.Physics2D.Dynamics;
 
-namespace JonnyHammer.Tiles
+namespace JonnyHammer.Game.Tiles
 {
     public class Block : GameObject
     {
@@ -14,13 +14,13 @@ namespace JonnyHammer.Tiles
         {
             Width = width;
             Height = height;
-            
+
             var debugCollor = Color.Red;
             debugCollor.A = 50;
 
             var collider = AddComponent(new Collider(new Rectangle(0, 0, Width, Height), false, true, debugCollor));
             AddComponent(new Physics(BodyType.Static, collider));
         }
-        
+
     }
 }

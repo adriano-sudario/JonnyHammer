@@ -10,7 +10,7 @@ namespace Chamboco.Engine.Helpers
         static Viewport _viewport;
         static float _ratioX;
         static float _ratioY;
-        static Vector2 _virtualMousePosition = new Vector2();
+        static Vector2 _virtualMousePosition;
         static GraphicsDevice graphicsDevice;
         static GraphicsDeviceManager graphics;
 

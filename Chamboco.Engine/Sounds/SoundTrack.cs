@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Audio;
 using System;
 
-namespace JonnyHamer.Engine.Sounds
+namespace Chamboco.Engine.Sounds
 {
     public static class SoundTrack
     {
@@ -65,7 +65,6 @@ namespace JonnyHamer.Engine.Sounds
             if (song == null)
             {
                 StopFade();
-                return;
             }
         }
 

@@ -1,6 +1,5 @@
-﻿using JonnyHamer.Engine.Managers;
-using Chamboco.Engine;
-using Chamboco.Engine.Entities;
+﻿using Chamboco.Engine.Entities.Components;
+using Chamboco.Engine.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -8,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace JonnyHamer.Engine.Entities
+namespace Chamboco.Engine.Entities
 {
     public class GameObject : IDisposable
     {

@@ -1,6 +1,5 @@
-﻿using JonnyHamer.Engine.Entities;
-using JonnyHamer.Engine.Entities.Sprites;
-using JonnyHamer.Engine.Helpers;
+﻿using Chamboco.Engine.Entities;
+using Chamboco.Engine.Entities.Components.Sprites;
 using Chamboco.Engine.Helpers;
 using Microsoft.Xna.Framework;
 

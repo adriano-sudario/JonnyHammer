@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Chamboco.Engine.Entities
+namespace Chamboco.Engine.Helpers
 {
     public class SolidColorTexture
     {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JonnyHammer.Game;
+using System;
 
 namespace JonnyHammer
 {

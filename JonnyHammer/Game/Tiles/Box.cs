@@ -1,6 +1,6 @@
-﻿using JonnyHamer.Engine.Entities;
+﻿using Chamboco.Engine.Entities;
 using Chamboco.Engine.Entities.Components.Collider;
-using Chamboco.Engine.Entities.Components.Phisycs;
+using Chamboco.Engine.Entities.Components.Physics;
 using Microsoft.Xna.Framework;
 using tainicom.Aether.Physics2D.Dynamics;
 

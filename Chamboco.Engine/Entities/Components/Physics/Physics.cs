@@ -1,11 +1,11 @@
-﻿using JonnyHamer.Engine.Managers;
+﻿using Chamboco.Engine.Managers;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using tainicom.Aether.Physics2D.Common;
 using tainicom.Aether.Physics2D.Dynamics;
 using tainicom.Aether.Physics2D.Dynamics.Contacts;
 
-namespace Chamboco.Engine.Entities.Components.Phisycs
+namespace Chamboco.Engine.Entities.Components.Physics
 {
     public class Physics : Component
     {
@@ -14,12 +14,12 @@ namespace Chamboco.Engine.Entities.Components.Phisycs
         float restitution;
 
         public Body Body { get; private set; }
-        public BodyType BodyType { get; private set; }
-        public Vector2 MaxVelocity { get; set; } = new Vector2(3, 3);
+        public BodyType BodyType { get; }
+        public Vector2 MaxVelocity { get; set; } = new(3, 3);
 
-        public float Mass { get; set;}
-        public bool UseMaxVelocityX { get; set; } = false;
-        public bool UseMaxVelocityY { get; set; } = false;
+        public float Mass { get; }
+        public bool UseMaxVelocityX { get; } = false;
+        public bool UseMaxVelocityY { get; set; }
 
         public Vector2 Velocity
         {
@@ -128,29 +128,29 @@ namespace Chamboco.Engine.Entities.Components.Phisycs
             Collided.Clear();
         }
 
-        public void SetVelocity(float? x = null, float? y = null, bool noconvert = false)
+        public void SetVelocity(float? velocityX = null, float? velocityY = null, bool noConvert = false)
         {
-            var convertFactor = (noconvert ? 1 : PixelsPerMeter);
+            var convertFactor = (noConvert ? 1 : PixelsPerMeter);
 
-            var newX = x.HasValue ? x.Value / convertFactor : Body.LinearVelocity.X;
-            var newY = y.HasValue ? y.Value / convertFactor : Body.LinearVelocity.Y;
+            var newX = velocityX.HasValue ? velocityX.Value / convertFactor : Body.LinearVelocity.X;
+            var newY = velocityY.HasValue ? velocityY.Value / convertFactor : Body.LinearVelocity.Y;
             Velocity = new Vector2(newX, newY);
         }
-        public void ResetVelocity() => SetVelocity(x: 0, y: 0);
+        public void ResetVelocity() => SetVelocity(0, 0);
 
         public void ApplyForce(Vector2 force) => Body.ApplyLinearImpulse(force);
 
-        public void SetVelocity(Vector2 velocity, bool noconvert = false) =>
-            Velocity = velocity / (noconvert ? 1 : PixelsPerMeter);
+        public void SetVelocity(Vector2 velocity, bool noConvert = false) =>
+            Velocity = velocity / (noConvert ? 1 : PixelsPerMeter);
 
         public void MoveForward(float addPosition) =>
             SetVelocity(addPosition, Body.LinearVelocity.Y, true);
 
         public void MoveTo(Vector2 position)
         {
-            var (x, y) = position;
+            var (newX, newY) = position;
             Body.Position =
-                new Vector2(x / PixelsPerMeter, y / PixelsPerMeter)
+                new Vector2(newX / PixelsPerMeter, newY / PixelsPerMeter)
                 + new Vector2(width / 2, height / 2);
         }
     }

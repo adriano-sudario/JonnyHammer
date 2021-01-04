@@ -1,9 +1,8 @@
-﻿using Chamboco.Engine;
-using Chamboco.Engine.Helpers;
+﻿using Chamboco.Engine.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace JonnyHamer.Engine.Entities.Sprites
+namespace Chamboco.Engine.Entities.Components.Sprites
 {
     public class SpriteRenderer : Component
     {

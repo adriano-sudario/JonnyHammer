@@ -1,15 +1,14 @@
-﻿using JonnyHamer.Engine.Helpers;
-using JonnyHamer.Engine.Managers;
-using Chamboco.Engine.Helpers;
+﻿using Chamboco.Engine.Helpers;
+using Chamboco.Engine.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
 namespace Chamboco.Engine
 {
-    public class Core : Microsoft.Xna.Framework.Game
+    public class Core : Game
     {
-        protected GraphicsDeviceManager Graphics;
+        readonly GraphicsDeviceManager Graphics;
         SpriteBatch spriteBatch;
         static bool isFullScreen;
 
@@ -34,9 +33,7 @@ namespace Chamboco.Engine
             Graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             isFullScreen = startOnFullScreen;
-
-            if (color == null)
-                color = Color.LightGreen;
+            color ??= Color.LightGreen;
 
             Color = color.Value;
 

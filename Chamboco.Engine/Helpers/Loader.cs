@@ -1,15 +1,14 @@
-﻿using JonnyHamer.Engine.Entities.Sprites;
+﻿using Chamboco.Engine.Entities.Components.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System.Text.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Chamboco.Engine.Helpers;
+using System.Text.Json;
 
-namespace JonnyHamer.Engine.Helpers
+namespace Chamboco.Engine.Helpers
 {
     public static class Loader
     {
@@ -36,7 +35,7 @@ namespace JonnyHamer.Engine.Helpers
             return ParseAsepriteJson(data);
         }
 
-        
+
         static IDictionary<string, Frame[]> ParseAsepriteJson(AsepriteModel data)
         {
             var frameData = new Dictionary<string, Frame[]>();

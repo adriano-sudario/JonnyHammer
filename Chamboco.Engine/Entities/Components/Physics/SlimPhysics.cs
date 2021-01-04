@@ -1,18 +1,17 @@
-﻿using System;
-using JonnyHamer.Engine.Entities.Sprites;
+﻿using Chamboco.Engine.Entities.Components.Sprites;
 using Microsoft.Xna.Framework;
 
-namespace Chamboco.Engine.Entities.Components
+namespace Chamboco.Engine.Entities.Components.Physics
 {
     public class SlimPhysics : Component
     {
         Collider.Collider collider;
         SpriteRenderer renderer;
         bool applyGravity = true;
-        float gravityForce = 0;
+        float gravityForce;
         Vector2 velocity;
         Vector2 previousPosition;
-        public float Gravity { get; set; } = 8f;
+        public float Gravity { get; } = 8f;
         public bool KeepOnCameraBounds { get; set; }
 
         public override void Start()
@@ -45,11 +44,11 @@ namespace Chamboco.Engine.Entities.Components
             };
         }
 
-        public void AddForce(Vector2 velocity)
+        public void AddForce(Vector2 newVelocity)
         {
-            this.velocity = new Vector2(velocity.X, -velocity.Y);
+            velocity = new Vector2(newVelocity.X, -newVelocity.Y);
 
-            if (velocity.Y > 0)
+            if (newVelocity.Y > 0)
                 ApplyGravity();
         }
 

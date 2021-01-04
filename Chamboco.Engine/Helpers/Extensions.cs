@@ -1,9 +1,11 @@
 ﻿using Chamboco.Engine.Entities;
+using Chamboco.Engine.Entities.Components.Physics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using tainicom.Aether.Physics2D.Dynamics;
 
-namespace Chamboco.Engine
+namespace Chamboco.Engine.Helpers
 {
     public static class Extensions
     {
@@ -54,5 +56,17 @@ namespace Chamboco.Engine
             foreach (var item in @this)
                 yield return (index++, item);
         }
+
+
     }
+
+    public static class BodyExtensions
+    {
+        public static void MoveAndSlide(this Body body, Vector2 addPosition)
+        {
+            body.SetTransform(body.Position + (addPosition / Physics.PixelsPerMeter), 0);
+        }
+
+    }
+
 }

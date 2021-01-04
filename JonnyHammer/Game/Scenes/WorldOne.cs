@@ -1,15 +1,14 @@
-﻿using JonnyHamer.Engine.Inputs;
-using Chamboco.Engine;
-using Chamboco.Engine.Helpers;
+﻿using Chamboco.Engine.Helpers;
+using Chamboco.Engine.Inputs;
+using Chamboco.Engine.Managers;
 using Chamboco.Engine.Scenes;
 using JonnyHammer.Game.Characters;
 using JonnyHammer.Game.Environment;
-using JonnyHammer.Tiles;
+using JonnyHammer.Game.Tiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
-using JonnyHamer.Engine.Managers;
 
 namespace JonnyHammer.Game.Scenes
 {
@@ -70,7 +69,7 @@ namespace JonnyHammer.Game.Scenes
                     {
                         case "one_way_blocks":
                         case "blocks":
-                            Spawn(new Block($"floor_{layer}_{index}",tile.Width, tile.Height), 
+                            Spawn(new Block($"floor_{layer}_{index}",tile.Width, tile.Height),
                                 new Vector2(tile.Position.X, tile.Position.Y + tile.Height));
                             break;
 
@@ -90,7 +89,7 @@ namespace JonnyHammer.Game.Scenes
             base.Update(gameTime);
 
             keyboard.Update();
-            
+
             if (keyboard.IsPressing(Keys.LeftControl))
             {
                 if (keyboard.IsPressing(Keys.Left))
@@ -105,20 +104,20 @@ namespace JonnyHammer.Game.Scenes
 
                 return;
             }
- 
-            
+
+
             if (keyboard.HasPressed(Keys.D1))
             {
                 SceneManager.ChangeScene("nujustu_scene");
                 return;
             }
-            
+
             if (keyboard.HasPressed(Keys.F11))
             {
                 Screen.ToggleFullScreen();
                 return;
             }
-            
+
             if (keyboard.IsPressing(Keys.OemPlus))
                 Camera2D.ZoomUp(.02f);
             else if (keyboard.IsPressing(Keys.OemMinus))

@@ -1,16 +1,16 @@
-﻿using JonnyHamer.Engine.Sounds;
-using Chamboco.Engine.Scenes;
+﻿using Chamboco.Engine.Scenes;
+using Chamboco.Engine.Sounds;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace JonnyHamer.Engine.Managers
+namespace Chamboco.Engine.Managers
 {
     public class SceneManager
     {
-        private static Dictionary<string, Scene> scenes = new Dictionary<string, Scene>();
+        private static Dictionary<string, Scene> scenes = new();
 
         public static Scene CurrentScene { get; set; }
 

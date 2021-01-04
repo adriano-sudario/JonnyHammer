@@ -1,5 +1,5 @@
-﻿using JonnyHamer.Engine.Entities;
-using JonnyHamer.Engine.Entities.Sprites;
+﻿using Chamboco.Engine.Entities;
+using Chamboco.Engine.Entities.Components.Sprites;
 using Microsoft.Xna.Framework;
 using System;
 
@@ -36,10 +36,8 @@ namespace Chamboco.Engine.Helpers
             InferMinZoon();
         }
 
-        public static void Center()
-        {
-            Position = new Vector2(Screen.VirtualWidth, Screen.VirtualHeight / 2);
-        }
+        public static void Center() =>
+            Position = new Vector2(Screen.VirtualWidth, ((float)Screen.VirtualHeight) / 2);
 
         public static void SetBounds(float width, float height) => (BoundWidth, BoundHeight) = (width, height);
 

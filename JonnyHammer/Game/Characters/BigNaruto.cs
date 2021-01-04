@@ -1,12 +1,10 @@
-﻿using System;
-using Caieta.Components.Utils;
-using JonnyHamer.Engine.Entities;
-using JonnyHamer.Engine.Entities.Sprites;
-using JonnyHamer.Engine.Helpers;
-using JonnyHamer.Engine.Inputs;
+﻿using Chamboco.Engine.Entities;
 using Chamboco.Engine.Entities.Components;
 using Chamboco.Engine.Entities.Components.Collider;
+using Chamboco.Engine.Entities.Components.Physics;
+using Chamboco.Engine.Entities.Components.Sprites;
 using Chamboco.Engine.Helpers;
+using Chamboco.Engine.Inputs;
 using Microsoft.Xna.Framework;
 
 namespace JonnyHammer.Game.Characters
@@ -40,16 +38,16 @@ namespace JonnyHammer.Game.Characters
             Transform.Scale = 0.6f;
 
             collider.OnTrigger += Collider_OnCollide;
-            
+
             Transform.MoveTo(position);
             HorizontalPosition = Transform.X;
             AddComponent(
-                new Tween(TweenMode.Loop, 
+                new Tween(TweenMode.Loop,
                     () => HorizontalPosition,
                     v => HorizontalPosition = v,
                 HorizontalPosition + MoveAmount,
                     EaseFunction.Linear, 1000));
-            
+
         }
 
         private void Collider_OnCollide(GameObject obj)

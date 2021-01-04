@@ -1,6 +1,5 @@
-﻿using JonnyHamer.Engine.Entities;
-using JonnyHamer.Engine.Entities.Sprites;
-using Chamboco.Engine.Entities.Components.Phisycs;
+﻿using Chamboco.Engine.Entities.Components.Physics;
+using Chamboco.Engine.Entities.Components.Sprites;
 using Chamboco.Engine.Helpers;
 using Microsoft.Xna.Framework;
 using System;
@@ -38,16 +37,14 @@ namespace Chamboco.Engine.Entities
 
         public event Action OnSetScale = delegate { };
 
-        public void SetPhysicsComponent(Physics physicsComponent)
-        {
+        public void SetPhysicsComponent(Physics physicsComponent) =>
             this.physicsComponent = physicsComponent;
-        }
 
         public void MoveTo(Vector2 position, bool setFacingDirection = true, bool ignorePhysics = false)
         {
             PreviousPosition = this.position;
 
-            if (X != position.X && setFacingDirection)
+            if (Math.Abs(X - position.X) > 0.01 && setFacingDirection)
             {
                 float horizontalDifference = position.X - X;
 

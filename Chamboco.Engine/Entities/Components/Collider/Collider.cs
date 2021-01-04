@@ -1,7 +1,5 @@
-﻿using JonnyHamer.Engine.Entities;
-using JonnyHamer.Engine.Entities.Sprites;
-using JonnyHamer.Engine.Managers;
-using Chamboco.Engine.Entities.Components.Phisycs;
+﻿using Chamboco.Engine.Entities.Components.Sprites;
+using Chamboco.Engine.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -23,7 +21,7 @@ namespace Chamboco.Engine.Entities.Components.Collider
         public event Action<GameObject> OnCollide = delegate { };
         public event Action<GameObject> OnTrigger = delegate { };
 
-        Physics physics = null;
+        Physics.Physics physics;
 
         public Rectangle Bounds
         {
@@ -146,7 +144,7 @@ namespace Chamboco.Engine.Entities.Components.Collider
 
         public override void Start()
         {
-            physics = Entity.GetComponent<Physics>();
+            physics = Entity.GetComponent<Physics.Physics>();
         }
 
         public override void Update(GameTime gameTime)

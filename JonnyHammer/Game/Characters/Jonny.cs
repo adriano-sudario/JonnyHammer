@@ -1,13 +1,12 @@
-﻿using JonnyHammer.Game.Components;
+﻿using Chamboco.Engine.Entities;
+using Chamboco.Engine.Entities.Components.Physics;
+using Chamboco.Engine.Entities.Components.Sprites;
+using Chamboco.Engine.Inputs;
+using JonnyHammer.Game.Components;
 
 namespace JonnyHammer.Game.Characters
 {
-    using JonnyHamer.Engine.Entities;
-    using JonnyHamer.Engine.Entities.Sprites;
-    using JonnyHamer.Engine.Helpers;
-    using JonnyHamer.Engine.Inputs;
     using Chamboco.Engine.Entities.Components.Collider;
-    using Chamboco.Engine.Entities.Components.Phisycs;
     using Chamboco.Engine.Helpers;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Input;
@@ -26,9 +25,9 @@ namespace JonnyHammer.Game.Characters
         }
 
         int totalLife = 100;
-        int life = 0;
-        bool locked = false;
-        bool invulnerable = false;
+        int life;
+        bool locked;
+        bool invulnerable;
 
 
         const float JumpForce = 4f;
@@ -50,7 +49,7 @@ namespace JonnyHammer.Game.Characters
         {
             RespawnPosition = respawnPosition;
         }
-        
+
         public Jonny()
         {
             life = totalLife;
@@ -83,7 +82,7 @@ namespace JonnyHammer.Game.Characters
                 if (state == State.Dashing || !e.Name.Contains("floor") || locked) return;
                 state = State.Grounded;
                 touchGround = true;
-                physics.SetVelocity(y: 0);
+                physics.SetVelocity(velocityY: 0);
             };
 
             physics = AddComponent(new Physics(BodyType.Dynamic, collider, mass: 1));
@@ -193,7 +192,7 @@ namespace JonnyHammer.Game.Characters
             {
                 spriteRenderer.Change("Idle");
                 if (physics.Velocity.X != 0)
-                    physics.SetVelocity(x: physics.Velocity.X * .8f, noconvert: true);
+                    physics.SetVelocity(velocityX: physics.Velocity.X * .8f, noConvert: true);
             }
 
             if (keyboard.HasPressed(Keys.LeftShift))
@@ -209,7 +208,7 @@ namespace JonnyHammer.Game.Characters
             var oldState = state;
             state = State.Dashing;
             physics.Body.IgnoreGravity = true;
-            physics.SetVelocity(y: 0);
+            physics.SetVelocity(velocityY: 0);
             spriteRenderer.Change("Running");
             Invoke(() =>
             {
@@ -220,7 +219,7 @@ namespace JonnyHammer.Game.Characters
             Invoke(() => canDash = true, TimeSpan.FromMilliseconds(300));
         }
 
-        void Stop() => physics.SetVelocity(x: 0);
+        void Stop() => physics.SetVelocity(velocityX: 0);
 
         public void Run(Direction.Horizontal direction)
         {

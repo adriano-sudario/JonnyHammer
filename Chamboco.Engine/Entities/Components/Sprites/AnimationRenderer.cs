@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace JonnyHamer.Engine.Entities.Sprites
+namespace Chamboco.Engine.Entities.Components.Sprites
 {
     public class FrameChangeEventArgs : EventArgs
     {
@@ -29,7 +29,7 @@ namespace JonnyHamer.Engine.Entities.Sprites
 
         private Frame CurrentFrame => currentSequence[currentFrameIndex];
 
-        public bool IsPlaying { get; private set; } = false;
+        public bool IsPlaying { get; private set; }
         public string CurrentName { get; set; }
         public bool IsLooping { get; set; }
         public bool AutoPlay { get; set; }

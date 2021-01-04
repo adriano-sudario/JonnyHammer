@@ -1,5 +1,5 @@
-﻿using JonnyHamer.Engine.Entities;
-using JonnyHamer.Engine.Managers;
+﻿using Chamboco.Engine.Entities;
+using Chamboco.Engine.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;

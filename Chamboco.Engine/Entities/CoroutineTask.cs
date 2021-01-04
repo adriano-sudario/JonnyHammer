@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Chamboco.Engine
+namespace Chamboco.Engine.Entities
 {
     public class CoroutineManager
     {
@@ -28,7 +28,7 @@ namespace Chamboco.Engine
 
         public void StartCoroutine(IEnumerator coroutine)
         {
-            var c = new CoroutineTask(coroutine, null);
+            var c = new CoroutineTask(coroutine);
             coroutines.Add(c);
         }
 
@@ -45,8 +45,8 @@ namespace Chamboco.Engine
         }
 
         public void StopCoroutines() => coroutines.Clear();
-        public void StopCoroutine(IEnumerator coroutine) => coroutines.Where(x => x.Routine != coroutine);
-
+        public void StopCoroutine(IEnumerator coroutine) =>
+            coroutines = coroutines.Where(x => x.Routine != coroutine).ToList();
     }
 
     public class CoroutineTask
@@ -129,7 +129,7 @@ namespace Chamboco.Engine
 
     public class WaitFrames : ICoroutineWaitable
     {
-        int frames = 0;
+        int frames;
 
         public WaitFrames(int frames) => this.frames = frames;
 
@@ -140,7 +140,7 @@ namespace Chamboco.Engine
 
     public class WaitUntil : ICoroutineWaitable
     {
-        protected Func<bool> predicate = null;
+        Func<bool> predicate;
 
         public WaitUntil(Func<bool> predicate) => this.predicate = predicate;
 
@@ -151,7 +151,5 @@ namespace Chamboco.Engine
     public class WaitWhile : WaitUntil
     {
         public WaitWhile(Func<bool> predicate) : base(predicate) { }
-
-        public override bool ShouldWait() => base.ShouldWait();
     }
 }

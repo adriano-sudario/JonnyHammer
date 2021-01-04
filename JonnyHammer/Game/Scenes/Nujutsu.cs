@@ -1,12 +1,10 @@
-﻿using System;
-using JonnyHamer.Engine.Entities;
-using JonnyHamer.Engine.Helpers;
+﻿using Chamboco.Engine.Entities;
+using System;
 using Chamboco.Engine.Entities.Components.Collider;
 using Chamboco.Engine.Helpers;
 using Chamboco.Engine.Scenes;
 using JonnyHammer.Game.Characters;
 using JonnyHammer.Game.Tiles;
-using JonnyHammer.Tiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 

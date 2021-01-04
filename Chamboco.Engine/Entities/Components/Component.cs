@@ -1,18 +1,16 @@
-﻿using JonnyHamer.Engine.Entities;
-using Chamboco.Engine.Helpers;
+﻿using Chamboco.Engine.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections;
 
-namespace Chamboco.Engine
+namespace Chamboco.Engine.Entities.Components
 {
     public class Component : IDisposable
     {
         public GameObject Entity { get; private set; }
-        public bool IsActive { get; set; }
+        protected bool IsActive { get; set; }
 
-        public Direction.Horizontal FacingDirection { get => Entity.Transform.FacingDirection; set => Entity.Transform.FacingDirection = value; }
+        protected Direction.Horizontal FacingDirection { get => Entity.Transform.FacingDirection; set => Entity.Transform.FacingDirection = value; }
 
         public virtual void Draw(SpriteBatch spriteBatch) { }
 

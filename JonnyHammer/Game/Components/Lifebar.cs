@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections;
-using Chamboco.Engine;
 using Chamboco.Engine.Entities;
-using JonnyHamer.Engine.Entities.Sprites;
+using Chamboco.Engine.Entities.Components;
+using Chamboco.Engine.Entities.Components.Sprites;
+using Chamboco.Engine.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -27,7 +28,7 @@ namespace JonnyHammer.Game.Components
             lifebar = new SolidColorTexture(Color.ForestGreen);
             lifebarBack = new SolidColorTexture(Color.Red);
         }
-        
+
         public override void Start()
         {
             Entity.StartCoroutine(Desapear());

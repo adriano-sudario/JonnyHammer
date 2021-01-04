@@ -1,9 +1,7 @@
-﻿using Caieta.Components.Utils;
-using JonnyHamer.Engine.Entities;
-using JonnyHamer.Engine.Entities.Sprites;
+﻿using Chamboco.Engine.Entities.Components.Sprites;
+using Chamboco.Engine.Helpers;
 using Microsoft.Xna.Framework;
 using System;
-using System.Reflection;
 
 namespace Chamboco.Engine.Entities.Components
 {
@@ -21,7 +19,7 @@ namespace Chamboco.Engine.Entities.Components
         SpriteRenderer entitySprite;
         Func<float> getCustomValue;
         Action<float> setCustomValue;
-        
+
         public Action OnStart;
         public Action OnFinish;
         public TweenMode Mode { get; private set; }
@@ -153,13 +151,13 @@ namespace Chamboco.Engine.Entities.Components
         }
 
         public Tween(
-            TweenMode mode, 
-            Func<float> valueGetter, 
-            Action<float> valueSetter, 
-            float value, 
-            EaseFunction.Ease easer, 
-            float millisecondsDuration, 
-            Action onStart = null, 
+            TweenMode mode,
+            Func<float> valueGetter,
+            Action<float> valueSetter,
+            float value,
+            EaseFunction.Ease easer,
+            float millisecondsDuration,
+            Action onStart = null,
             Action onFinish = null) :
             this(mode, value, easer, millisecondsDuration, onStart, onFinish)
         {
