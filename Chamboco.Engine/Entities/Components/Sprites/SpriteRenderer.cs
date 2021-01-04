@@ -6,15 +6,14 @@ namespace Chamboco.Engine.Entities.Components.Sprites
 {
     public class SpriteRenderer : Component
     {
-        protected Texture2D spriteStrip;
+        Texture2D spriteStrip;
 
+        protected virtual Rectangle Source { get; set; }
         public bool IsVisible { get; set; }
-        public virtual Rectangle Source { get; set; }
         public virtual int SpriteWidth => spriteStrip.Width;
         public virtual int SpriteHeight => spriteStrip.Height;
         public float Opacity { get; set; }
-        public Vector2 Origin { get; set; }
-        public Vector2 RotateOrigin { get; set; }
+        public Vector2 Origin { get; }
         public Color Color { get; set; } = Color.White;
         public float LayerDepth { get; set; }
         public int Width => (int)(SpriteWidth * Entity.Transform.Scale);
@@ -23,7 +22,7 @@ namespace Chamboco.Engine.Entities.Components.Sprites
         public SpriteRenderer(Texture2D spriteStrip, Rectangle source = default, float opacity = 1f, Vector2 origin = default)
         {
             this.spriteStrip = spriteStrip;
-            Source = source == default ? new Rectangle(0, 0, SpriteWidth, SpriteHeight) : source;
+            Source = source == default ? new (0, 0, SpriteWidth, SpriteHeight) : source;
             Opacity = opacity;
             Origin = origin;
             IsVisible = true;

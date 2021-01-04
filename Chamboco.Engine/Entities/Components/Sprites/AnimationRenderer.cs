@@ -36,7 +36,8 @@ namespace Chamboco.Engine.Entities.Components.Sprites
 
         public override int SpriteWidth => currentSequence?[currentFrameIndex].Source.Width ?? 0;
         public override int SpriteHeight => currentSequence?[currentFrameIndex].Source.Height ?? 0;
-        public override Rectangle Source
+
+        protected override Rectangle Source
         {
             get => CurrentFrame.Source;
             set => base.Source = value;

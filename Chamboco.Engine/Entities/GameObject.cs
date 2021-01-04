@@ -11,10 +11,10 @@ namespace Chamboco.Engine.Entities
 {
     public class GameObject : IDisposable
     {
-        IList<Component> components = new List<Component>();
+        readonly IList<Component> components = new List<Component>();
         protected bool isActive = true;
-        public Transform Transform { get; private set; } = new();
-        CoroutineManager coroutineManager = new();
+        public Transform Transform { get; protected set; } = new();
+        readonly CoroutineManager coroutineManager = new();
 
         bool didLoad;
         public string Name { get; set; }

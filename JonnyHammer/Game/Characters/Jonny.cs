@@ -40,8 +40,6 @@ namespace JonnyHammer.Game.Characters
         Physics physics;
         AnimationRenderer spriteRenderer;
         Lifebar lifebar;
-        private Collider collider;
-        private Collider floorTrigger;
 
         public Vector2 RespawnPosition { get; set; }
 
@@ -61,20 +59,20 @@ namespace JonnyHammer.Game.Characters
 
             var debugColor = Color.Green;
             debugColor.A = 90;
-            collider = AddComponent(
-                            new Collider(
-                                   new Rectangle(0, 0, spriteRenderer.Width, spriteRenderer.Height),
-                                   autoCheck: true,
-                                   isDebug: true,
-                                   debugColor: debugColor));
+            var collider = AddComponent(
+                new Collider(
+                    new Rectangle(0, 0, spriteRenderer.Width, spriteRenderer.Height),
+                    autoCheck: true,
+                    isDebug: true,
+                    debugColor: debugColor));
 
-            floorTrigger = AddComponent(
-                               new Collider(
-                                   new Rectangle(10, spriteRenderer.Height, spriteRenderer.Width - 20, 5),
-                                   autoCheck: true,
-                                   isDebug: true,
-                                   isTrigger: true,
-                                   debugColor: Color.Yellow));
+            var floorTrigger = AddComponent(
+                new Collider(
+                    new Rectangle(10, spriteRenderer.Height, spriteRenderer.Width - 20, 5),
+                    autoCheck: true,
+                    isDebug: true,
+                    isTrigger: true,
+                    debugColor: Color.Yellow));
 
 
             floorTrigger.OnTrigger += e =>

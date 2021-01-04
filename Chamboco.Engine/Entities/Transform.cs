@@ -11,22 +11,20 @@ namespace Chamboco.Engine.Entities
         Physics physicsComponent;
         Vector2 position;
 
-        public Vector2 PreviousPosition { get; private set; }
         public Direction.Horizontal FacingDirection { get; set; } = Direction.Horizontal.Right;
 
-        float _scale = 1;
+        float scale = 1;
         public float Scale
         {
-            get => _scale;
+            get => scale;
             set
             {
-                _scale = value;
+                scale = value;
                 OnSetScale();
             }
         }
 
         public float Rotation { get; set; }
-        public Vector2 Origin { get; private set; }
         public Vector2 Position => position;
         public float X => position.X;
         public float Y => position.Y;
@@ -42,11 +40,9 @@ namespace Chamboco.Engine.Entities
 
         public void MoveTo(Vector2 position, bool setFacingDirection = true, bool ignorePhysics = false)
         {
-            PreviousPosition = this.position;
-
             if (Math.Abs(X - position.X) > 0.01 && setFacingDirection)
             {
-                float horizontalDifference = position.X - X;
+                var horizontalDifference = position.X - X;
 
                 if (Math.Abs(horizontalDifference) > .1)
                     FacingDirection = horizontalDifference < 0 ? Direction.Horizontal.Left : Direction.Horizontal.Right;
@@ -94,26 +90,6 @@ namespace Chamboco.Engine.Entities
 
         public void MoveAndSlide(Vector2 position, bool setFacingDirection = true) =>
             MoveTo(this.position + position, setFacingDirection);
-
-        //public void SetOrigin(float origin, Entity entity, bool keepInPlace = true)
-        //{
-        //    float totalScale = (Scale);
-        //    Vector2 updatedOrigin = origin == 0 ? Vector2.Zero : new Vector2((entity.Width * origin) / totalScale, (entity.Height * origin) / totalScale);
-
-        //    if (keepInPlace)
-        //        MoveAndSlide((updatedOrigin * totalScale) - (Origin * totalScale), false);
-
-        //    Origin = updatedOrigin;
-        //}
-
-        //public void SetOrigin(Vector2 origin, Entity entity, bool keepInPlace = true)
-        //{
-        //    float totalScale = (Scale);
-        //    Origin = new Vector2((entity.Width * origin.X) / totalScale, (entity.Height * origin.Y) / totalScale) * -1;
-
-        //    if (keepInPlace)
-        //        MoveAndSlide(Origin * totalScale);
-        //}
 
         public void Rotate(float degrees) => Rotation = MathHelper.ToRadians(degrees);
         public float GetRotationInDegrees() => MathHelper.ToDegrees(Rotation);
