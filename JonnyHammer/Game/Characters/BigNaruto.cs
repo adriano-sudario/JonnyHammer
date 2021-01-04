@@ -4,9 +4,9 @@ using JonnyHamer.Engine.Entities;
 using JonnyHamer.Engine.Entities.Sprites;
 using JonnyHamer.Engine.Helpers;
 using JonnyHamer.Engine.Inputs;
-using JonnyHammer.Engine.Entities.Components;
-using JonnyHammer.Engine.Entities.Components.Collider;
-using JonnyHammer.Engine.Helpers;
+using Chamboco.Engine.Entities.Components;
+using Chamboco.Engine.Entities.Components.Collider;
+using Chamboco.Engine.Helpers;
 using Microsoft.Xna.Framework;
 
 namespace JonnyHammer.Game.Characters

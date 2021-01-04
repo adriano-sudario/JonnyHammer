@@ -1,4 +1,4 @@
-﻿using JonnyHammer.Engine.Helpers;
+﻿using Chamboco.Engine.Helpers;
 using Microsoft.Xna.Framework;
 
 namespace JonnyHammer.Game.Environment

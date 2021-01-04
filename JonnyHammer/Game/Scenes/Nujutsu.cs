@@ -1,9 +1,9 @@
 ﻿using System;
 using JonnyHamer.Engine.Entities;
 using JonnyHamer.Engine.Helpers;
-using JonnyHammer.Engine.Entities.Components.Collider;
-using JonnyHammer.Engine.Helpers;
-using JonnyHammer.Engine.Scenes;
+using Chamboco.Engine.Entities.Components.Collider;
+using Chamboco.Engine.Helpers;
+using Chamboco.Engine.Scenes;
 using JonnyHammer.Game.Characters;
 using JonnyHammer.Game.Tiles;
 using JonnyHammer.Tiles;

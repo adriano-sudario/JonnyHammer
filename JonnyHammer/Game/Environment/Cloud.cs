@@ -1,7 +1,7 @@
 ﻿using JonnyHamer.Engine.Entities;
 using JonnyHamer.Engine.Entities.Sprites;
 using JonnyHamer.Engine.Helpers;
-using JonnyHammer.Engine.Helpers;
+using Chamboco.Engine.Helpers;
 using Microsoft.Xna.Framework;
 
 namespace JonnyHammer.Game.Environment

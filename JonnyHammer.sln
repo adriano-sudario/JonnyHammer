@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{2A220C0B-1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TiledSharp", "Libs\TiledSharp\TiledSharp.csproj", "{E4230123-EFE1-4547-9F75-9DE6ECCD9282}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chamboco.Engine", "Chamboco.Engine\Chamboco.Engine.csproj", "{4F4BDAA4-1F31-4567-9608-BBAF9A8921C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{BAC36AAE-7BB9-43B8-989C-3654589FF2A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAC36AAE-7BB9-43B8-989C-3654589FF2A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAC36AAE-7BB9-43B8-989C-3654589FF2A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F4BDAA4-1F31-4567-9608-BBAF9A8921C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F4BDAA4-1F31-4567-9608-BBAF9A8921C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F4BDAA4-1F31-4567-9608-BBAF9A8921C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F4BDAA4-1F31-4567-9608-BBAF9A8921C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

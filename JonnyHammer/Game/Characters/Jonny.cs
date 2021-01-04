@@ -1,16 +1,14 @@
-﻿
+﻿using JonnyHammer.Game.Components;
+
 namespace JonnyHammer.Game.Characters
 {
     using JonnyHamer.Engine.Entities;
     using JonnyHamer.Engine.Entities.Sprites;
     using JonnyHamer.Engine.Helpers;
     using JonnyHamer.Engine.Inputs;
-    using JonnyHammer.Engine;
-    using JonnyHammer.Engine.Entities;
-    using JonnyHammer.Engine.Entities.Components.Collider;
-    using JonnyHammer.Engine.Entities.Components.Phisycs;
-    using JonnyHammer.Engine.Helpers;
-    using JonnyHammer.Game.UI;
+    using Chamboco.Engine.Entities.Components.Collider;
+    using Chamboco.Engine.Entities.Components.Phisycs;
+    using Chamboco.Engine.Helpers;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Input;
     using System;

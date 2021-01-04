@@ -1,7 +1,7 @@
 ﻿using JonnyHamer.Engine.Inputs;
-using JonnyHammer.Engine;
-using JonnyHammer.Engine.Helpers;
-using JonnyHammer.Engine.Scenes;
+using Chamboco.Engine;
+using Chamboco.Engine.Helpers;
+using Chamboco.Engine.Scenes;
 using JonnyHammer.Game.Characters;
 using JonnyHammer.Game.Environment;
 using JonnyHammer.Tiles;
