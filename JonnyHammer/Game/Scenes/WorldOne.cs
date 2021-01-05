@@ -17,7 +17,7 @@ namespace JonnyHammer.Game.Scenes
         private Jonny player;
         private KeyboardInput keyboard = new();
 
-        public WorldOne()
+        public override void Start()
         {
             var map = TiledLoader.Load("world_one");
             SpawnTiledLayers(map.Layers);

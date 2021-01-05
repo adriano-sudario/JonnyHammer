@@ -165,5 +165,18 @@ namespace Chamboco.Engine.Entities.Components.Collider
                 Bounds,
                 Color.White);
         }
+
+        public override void Dispose()
+        {
+            if (OnCollide != null)
+                foreach (var d in OnCollide.GetInvocationList())
+                    OnCollide -= (Action<GameObject>)d;
+
+            if (OnTrigger != null)
+                foreach (var d in OnTrigger.GetInvocationList())
+                    OnTrigger -= (Action<GameObject>)d;
+
+            base.Dispose();
+        }
     }
 }

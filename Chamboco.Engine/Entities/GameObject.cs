@@ -56,7 +56,8 @@ namespace Chamboco.Engine.Entities
                 return;
 
             for (var i = 0; i < components.Count; i++)
-                components[i].Draw(spriteBatch);
+                if (components[i].IsActive)
+                    components[i].Draw(spriteBatch);
         }
 
         public T AddComponent<T>(T component) where T : Component
@@ -100,8 +101,13 @@ namespace Chamboco.Engine.Entities
 
         public void Dispose()
         {
+            isActive = false;
+            coroutineManager.StopCoroutines();
             for (var i = 0; i < components.Count; i++)
+            {
+                components[i].IsActive = false;
                 components[i].Dispose();
+            }
         }
 
         public void Spawn(GameObject obj, Vector2? position = null) =>

@@ -1,4 +1,5 @@
-﻿using Chamboco.Engine.Scenes;
+﻿using Chamboco.Engine.Helpers;
+using Chamboco.Engine.Scenes;
 using Chamboco.Engine.Sounds;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -42,10 +43,16 @@ namespace Chamboco.Engine.Managers
 
         public static void ChangeScene(string sceneId, Action onSceneChanged = null)
         {
+            var oldScene = CurrentScene;
+            CurrentScene = scenes[sceneId];
+            CurrentScene?.Start();
+            onSceneChanged?.Invoke();
+
+            if (CurrentScene != oldScene)
+                oldScene?.Dispose();
+
             GC.Collect();
             GC.WaitForPendingFinalizers();
-            CurrentScene = scenes[sceneId];
-            onSceneChanged?.Invoke();
         }
 
         public static void Update(GameTime gameTime)

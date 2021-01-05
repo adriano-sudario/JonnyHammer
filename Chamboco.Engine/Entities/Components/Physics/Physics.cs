@@ -52,7 +52,6 @@ namespace Chamboco.Engine.Entities.Components.Physics
         public override void Dispose()
         {
             Entity.Transform.OnSetScale -= Entity_OnSetScale;
-            Entity.Destroy();
             base.Dispose();
         }
 

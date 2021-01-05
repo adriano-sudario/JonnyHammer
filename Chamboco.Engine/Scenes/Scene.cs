@@ -9,10 +9,10 @@ using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Chamboco.Engine.Scenes
 {
-    public abstract class Scene
+    public abstract class Scene : IDisposable
     {
         readonly IList<GameObject> entities = new List<GameObject>();
-        public IReadOnlyList<GameObject> Entities => entities.ToArray();
+        public IList<GameObject> Entities => entities;
         public World World { get; }
 
         public Scene()
@@ -24,6 +24,8 @@ namespace Chamboco.Engine.Scenes
 
             SceneManager.CurrentScene ??= this;
         }
+
+        public virtual void Start() { }
 
         public void Destroy(GameObject entity)
         {
@@ -56,6 +58,12 @@ namespace Chamboco.Engine.Scenes
 
         public void WorldStep(GameTime gameTime) =>
             World.Step(Math.Min((float)gameTime.ElapsedGameTime.TotalSeconds, 1 / 30f));
+
+        public virtual void Dispose()
+        {
+            while (Entities.Count > 0)
+                Destroy(Entities[0]);
+        }
     }
 
 }

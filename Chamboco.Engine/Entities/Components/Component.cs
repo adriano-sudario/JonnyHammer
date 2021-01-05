@@ -8,7 +8,7 @@ namespace Chamboco.Engine.Entities.Components
     public class Component : IDisposable
     {
         public GameObject Entity { get; private set; }
-        protected bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
 
         public virtual void Draw(SpriteBatch spriteBatch) { }
 

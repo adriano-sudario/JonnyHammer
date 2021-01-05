@@ -10,7 +10,14 @@ namespace JonnyHammer.Game
     /// </summary>
     public class Main : Core
     {
-        public Main() : base(startOnFullScreen: true)
+        const bool fullScreen =
+        #if DEBUG
+            false;
+        #else
+            true;
+        #endif
+
+        public Main() : base(startOnFullScreen: fullScreen)
         {
 
         }
@@ -38,7 +45,7 @@ namespace JonnyHammer.Game
             base.LoadContent();
 
             SceneManager.AddScene("world_one", new WorldOne());
-            // SceneManager.AddScene("nujustu_scene", new Nujutsu());
+            SceneManager.AddScene("nujustu_scene", new Nujutsu());
         }
 
         /// <summary>

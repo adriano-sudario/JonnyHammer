@@ -87,7 +87,6 @@ namespace JonnyHammer.Game.Characters
                 touchGround = true;
                 physics.SetVelocity(velocityY: 0);
             };
-
         }
 
         public void TakeDamage(int amount, Vector2 reference)

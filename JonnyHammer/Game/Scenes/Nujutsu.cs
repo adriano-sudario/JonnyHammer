@@ -16,21 +16,21 @@ namespace JonnyHammer.Game.Scenes
         Texture2D background;
 
         private Random random = new();
-        
-        public Nujutsu()
+
+        public override void Start()
         {
             background = Loader.LoadTexture("bg");
             Camera2D.SetBounds(background.Width * 2, background.Height);
             narutao  = new Jonny();
             var narutitos  = new BigNaruto(100,new (200, 100));
-            
+
             Spawn(narutao, new (150, 200), "Narutao");
             Spawn(narutitos , name: "NarutoRed");
-            
+
             Spawn(new Block("floor 1", 600, 30) ,new (0, 350));
             Spawn(new Block("floor 2", 500, 30) ,new (700,350));
             Spawn(new Block("floor 2",  400, 30),new (1300,300));
-            
+
             Spawn(new Box(), new (800, 300),"Box 1");
             Spawn(new Box(), new (800, 270),"Box 2");
             Spawn(new Box(), new (800, 240),"Box 3");
